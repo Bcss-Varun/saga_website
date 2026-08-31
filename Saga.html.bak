@@ -1,0 +1,4101 @@
+<title>SAGA Homepage Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --black: #000;
+    --s1: #08080A;
+    --s2: #0E0E11;
+    --s3: #16161A;
+    --orange: #F15B26;
+    --lift: #FF7A45;
+    --soft: #FF9A6B;
+    --deep: #C4441A;
+    --ember: #7A2A0E;
+    --ink: #F5F5F4;
+    --strong: #fff;
+    --muted: #A5A09B;
+    --faint: #8A857F;
+    --line: rgba(255, 255, 255, .08);
+    --line2: rgba(255, 255, 255, .14);
+    --lineo: rgba(241, 91, 38, .32);
+    --glass: rgba(255, 255, 255, .025);
+    --glasso: rgba(241, 91, 38, .055);
+    --ok: #5FD08A;
+    --warn: #F5A524;
+    --crit: #FF4D1F;
+    --fd: 'Outfit', system-ui, sans-serif;
+    --fb: 'Outfit', system-ui, sans-serif;
+    --fm: 'Outfit', system-ui, sans-serif;
+    --ease: cubic-bezier(.16, 1, .3, 1);
+    --frame: #EEEEF5;
+  }
+
+  * {
+    box-sizing: border-box
+  }
+
+  html {
+    scroll-behavior: smooth
+  }
+
+  body {
+    margin: 0;
+    background: var(--black);
+    color: var(--ink);
+    font-family: var(--fb);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden
+  }
+
+  ::selection {
+    background: var(--orange);
+    color: #000
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--lift);
+    outline-offset: 3px;
+    border-radius: 4px
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%
+  }
+
+  /* ── persistent canvas ─────────────────────────── */
+  #stage {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1
+  }
+
+  /* ── hero frame backdrops; both position/size synced to #hero in JS.
+   heroLightBg = the light gutter, sized to hero's outer (margin) box.
+   heroFrameBg = the black card, sized to hero's own box, painted on top of the light layer. ── */
+  #heroLightBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: -2;
+    background: var(--frame);
+    opacity: 0;
+    transition: opacity .25s var(--ease);
+    pointer-events: none
+  }
+
+  #heroLightBg.show {
+    opacity: 1
+  }
+
+  #heroFrameBg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: -1;
+    background: var(--black);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .14);
+    opacity: 0;
+    transition: opacity .25s var(--ease);
+    pointer-events: none
+  }
+
+  #heroFrameBg.show {
+    opacity: 1
+  }
+
+  /* ── nav ───────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1600px;
+    z-index: 50;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(18px, 3vw, 44px);
+    background: transparent;
+    border: 1px solid transparent;
+    will-change: transform, max-width, top, height;
+    transition: transform .5s cubic-bezier(.22, 1, .36, 1), top .5s cubic-bezier(.22, 1, .36, 1), max-width .5s cubic-bezier(.22, 1, .36, 1), height .5s cubic-bezier(.22, 1, .36, 1), padding .5s cubic-bezier(.22, 1, .36, 1)
+  }
+
+  nav.floating {
+    top: 20px;
+    max-width: 1080px;
+    height: 64px
+  }
+
+  nav.hidden {
+    transform: translateY(-150%)
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    position: relative
+  }
+
+  .brand-logo {
+    height: 52px;
+    width: auto;
+    transition: height .5s cubic-bezier(.22, 1, .36, 1), transform .2s var(--ease), opacity .4s var(--ease)
+  }
+
+  .brand-logo:hover {
+    transform: scale(1.02)
+  }
+
+  nav.floating .brand-logo {
+    height: 42px
+  }
+
+  .brand-logo.logo-dark {
+    border-radius: 10px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none
+  }
+
+  nav.floating .brand-logo.logo-dark {
+    border-radius: 8px
+  }
+
+  nav.floating .brand-logo.logo-light {
+    opacity: 0
+  }
+
+  nav.floating .brand-logo.logo-dark {
+    opacity: 1;
+    pointer-events: auto
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    transition: background .5s cubic-bezier(.22, 1, .36, 1), border-color .5s cubic-bezier(.22, 1, .36, 1), padding .5s cubic-bezier(.22, 1, .36, 1), box-shadow .5s cubic-bezier(.22, 1, .36, 1)
+  }
+
+  nav.floating .nav-menu {
+    background: rgba(12, 12, 14, .85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: var(--line2);
+    padding: 0 8px 0 24px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, .36)
+  }
+
+  .navlinks {
+    display: flex;
+    gap: 4px;
+    align-items: center
+  }
+
+  .navlinks a {
+    font-family: var(--fb);
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 13px;
+    border-radius: 8px;
+    transition: .16s, color .4s var(--ease)
+  }
+
+  .navlinks a:hover {
+    color: var(--ink);
+    background: var(--glass)
+  }
+
+  nav:not(.floating) .navlinks a {
+    color: #3D3D45
+  }
+
+  nav:not(.floating) .navlinks a:hover {
+    color: #000;
+    background: rgba(0, 0, 0, .05)
+  }
+
+  .cta {
+    font-family: var(--fd);
+    font-weight: 500;
+    font-size: 14px;
+    background: var(--orange);
+    color: #f5f5f5;
+    padding: 11px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: .18s var(--ease);
+    white-space: nowrap;
+    border: 0;
+    cursor: pointer
+  }
+
+  .cta:hover {
+    background: var(--lift);
+    box-shadow: 0 0 20px rgba(241, 91, 38, .28);
+    transform: translateY(-1px)
+  }
+
+  .cta2 {
+    font-family: var(--fd);
+    font-weight: 500;
+    font-size: 14px;
+    background: transparent;
+    color: var(--ink);
+    padding: 11px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--line2);
+    transition: .18s;
+    display: inline-block
+  }
+
+  .cta2:hover {
+    border-color: var(--lineo);
+    background: var(--glasso)
+  }
+
+  @media(max-width:940px) {
+    .navlinks a {
+      display: none
+    }
+  }
+
+  @media(max-width:560px) {
+    nav {
+      padding: 0 14px
+    }
+
+    nav.floating {
+      top: 10px
+    }
+
+    nav.floating .nav-menu {
+      padding: 0 6px 0 16px;
+      height: 56px
+    }
+
+    .brand-logo {
+      height: 38px
+    }
+
+    .brand-logo.logo-dark {
+      border-radius: 8px
+    }
+
+    .nav-menu .cta {
+      padding: 9px 14px;
+      font-size: 13px
+    }
+  }
+
+  /* ── layout ────────────────────────────────────── */
+  .sec {
+    position: relative;
+    padding: 112px clamp(20px, 4vw, 44px)
+  }
+
+  .inner {
+    max-width: 1240px;
+    margin: 0 auto
+  }
+
+  .eyebrow {
+    font-family: var(--fd);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin: 0 0 16px
+  }
+
+  #hero .eyebrow {
+    color: var(--strong);
+    font-size: 16px
+  }
+
+  h1 {
+    font-family: var(--fd);
+    font-weight: 500;
+    font-size: clamp(2.9rem, 7vw, 6rem);
+    line-height: .98;
+    letter-spacing: -.035em;
+    margin: 0 0 26px;
+    color: var(--orange);
+    text-wrap: balance
+  }
+
+  h2 {
+    font-family: var(--fd);
+    font-weight: 500;
+    font-size: clamp(1.9rem, 4vw, 3.2rem);
+    line-height: 1.08;
+    letter-spacing: -.028em;
+    margin: 0 0 18px;
+    color: var(--orange);
+    text-wrap: balance
+  }
+
+  h3 {
+    font-family: var(--fd);
+    font-weight: 500;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    letter-spacing: -.015em;
+    margin: 0 0 9px;
+    color: var(--strong)
+  }
+
+  p {
+    margin: 0 0 16px;
+    max-width: 60ch;
+    color: var(--muted)
+  }
+
+  .lead {
+    font-size: 1.14rem;
+    color: var(--ink)
+  }
+
+  .small {
+    font-size: .87rem
+  }
+
+  .mono {
+    font-family: var(--fm);
+    font-variant-numeric: tabular-nums
+  }
+
+  /* ── hero ──────────────────────────────────────── */
+  :root {
+    --p: 0;
+    --hero-top: 112px;
+    --hero-side: 200px;
+    --hero-bottom: 0px
+  }
+
+  #hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: calc(56px + var(--p) * 64px);
+    padding-bottom: 70px;
+    margin: calc((1 - var(--p)) * var(--hero-top)) calc((1 - var(--p)) * var(--hero-side)) calc((1 - var(--p)) * var(--hero-bottom))
+  }
+
+  @media(max-width:900px) {
+    :root {
+      --hero-top: 96px;
+      --hero-side: 20px;
+      --hero-bottom: 0px
+    }
+  }
+
+  @media(max-width:560px) {
+    :root {
+      --hero-top: 84px;
+      --hero-side: 12px;
+      --hero-bottom: 0px
+    }
+  }
+
+  #hero .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+  }
+
+  #hero .lead {
+    margin-left: auto;
+    margin-right: auto
+  }
+
+  #hero h1 span {
+    display: block
+  }
+
+  .herorow {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 68px;
+  }
+
+  @keyframes sweep {
+    0% {
+      transform: scaleX(.2);
+      transform-origin: left
+    }
+
+    50% {
+      transform: scaleX(1);
+      transform-origin: left
+    }
+
+    51% {
+      transform-origin: right
+    }
+
+    100% {
+      transform: scaleX(.2);
+      transform-origin: right
+    }
+  }
+
+  /* ── trust ─────────────────────────────────────── */
+  .trust {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 36px clamp(20px, 4vw, 44px);
+    background: var(--s1)
+  }
+
+  .trustgrid {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    align-items: start
+  }
+
+  .trustgrid .lbl {
+    font-family: var(--fm);
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 8px
+  }
+
+  .trustgrid p {
+    font-size: .87rem;
+    margin: 0;
+    color: var(--muted)
+  }
+
+  /* ── narrative (pinned) ────────────────────────── */
+  .pin {
+    height: 250vh;
+    position: relative
+  }
+
+  .pin .sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 0 clamp(20px, 4vw, 44px)
+  }
+
+  .pin .sticky .inner {
+    width: 100%
+  }
+
+  .pin .copy {
+    max-width: 490px
+  }
+
+  .pin .copy p {
+    max-width: 46ch
+  }
+
+  .stagechip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--fm);
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--faint);
+    border: 1px solid var(--line2);
+    border-radius: 999px;
+    padding: 5px 13px;
+    margin-bottom: 20px
+  }
+
+  .stagechip b {
+    color: var(--orange);
+    font-weight: 400
+  }
+
+  .metricrow {
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line)
+  }
+
+  .metricrow div {
+    min-width: 96px
+  }
+
+  .metricrow .k {
+    font-family: var(--fm);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: block;
+    margin-bottom: 5px
+  }
+
+  .metricrow .v {
+    font-family: var(--fm);
+    font-size: 1.5rem;
+    color: var(--strong);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em
+  }
+
+  /* ── worlds ────────────────────────────────────── */
+  .tabrail {
+    display: inline-flex;
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px;
+    gap: 2px;
+    position: relative;
+    margin-bottom: 38px;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none
+  }
+
+  .tabrail::-webkit-scrollbar {
+    display: none
+  }
+
+  .tabrail button {
+    position: relative;
+    z-index: 1;
+    font-family: var(--fd);
+    font-weight: 500;
+    font-size: 14.5px;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    padding: 10px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .24s var(--ease)
+  }
+
+  .tabrail button[aria-selected="true"] {
+    color: #000
+  }
+
+  .tabrail .ind {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    background: var(--orange);
+    border-radius: 999px;
+    transition: transform .5s var(--ease), width .5s var(--ease);
+    z-index: 0;
+    left: 0
+  }
+
+  .worldgrid {
+    display: grid;
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    gap: 44px;
+    align-items: start
+  }
+
+  @media(max-width:980px) {
+    .worldgrid {
+      grid-template-columns: 1fr;
+      gap: 32px
+    }
+  }
+
+  .worldcopy h2 {
+    margin-bottom: 14px
+  }
+
+  #worldslot {
+    position: relative;
+    height: 250px;
+    border: 1px solid var(--line);
+    border-radius: 14px 14px 0 0;
+    border-bottom: 0;
+    background: linear-gradient(180deg, var(--s1), rgba(8, 8, 10, 0));
+    overflow: hidden
+  }
+
+  #worldslot .wlabel {
+    position: absolute;
+    left: 15px;
+    bottom: 13px;
+    font-family: var(--fm);
+    font-size: 9.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--faint)
+  }
+
+  #worldslot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(0, 0, 0, .55) 100%)
+  }
+
+  #wapp .app {
+    border-radius: 0 0 14px 14px
+  }
+
+  .chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 22px 0
+  }
+
+  .chips span {
+    font-family: var(--fm);
+    font-size: 10.5px;
+    letter-spacing: .05em;
+    color: var(--soft);
+    border: 1px solid var(--lineo);
+    background: var(--glasso);
+    border-radius: 999px;
+    padding: 5px 12px
+  }
+
+  .scenario {
+    border-left: 2px solid var(--orange);
+    background: var(--glasso);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 22px 0
+  }
+
+  .scenario p {
+    margin: 0;
+    font-size: .9rem;
+    color: var(--ink)
+  }
+
+  .fade {
+    animation: fade .32s var(--ease)
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+      transform: translateY(8px)
+    }
+
+    to {
+      opacity: 1;
+      transform: none
+    }
+  }
+
+  /* ── product mockup ────────────────────────────── */
+  .app {
+    background: var(--s2);
+    border: 1px solid var(--line2);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 90px rgba(241, 91, 38, .09)
+  }
+
+  .appbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 15px;
+    border-bottom: 1px solid var(--line);
+    background: var(--s3)
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px
+  }
+
+  .dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #2a2a2f;
+    display: block
+  }
+
+  .appbar .t {
+    font-family: var(--fm);
+    font-size: 10.5px;
+    color: var(--faint);
+    letter-spacing: .06em
+  }
+
+  .appbar .live {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--fm);
+    font-size: 9.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ok)
+  }
+
+  .appbar .live i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ok);
+    display: block;
+    animation: pulse 2s infinite
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      opacity: 1
+    }
+
+    50% {
+      opacity: .35
+    }
+  }
+
+  .appbody {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    min-height: 430px
+  }
+
+  .appnav {
+    border-right: 1px solid var(--line);
+    padding: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    background: var(--s1)
+  }
+
+  .appnav i {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--faint);
+    font-family: var(--fm)
+  }
+
+  .appnav i.on {
+    background: var(--glasso);
+    color: var(--orange);
+    box-shadow: inset 0 0 0 1px var(--lineo)
+  }
+
+  .appmain {
+    padding: 15px
+  }
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+    gap: 7px;
+    margin-bottom: 13px
+  }
+
+  .kpi {
+    background: var(--s1);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 9px 10px
+  }
+
+  .kpi .k {
+    font-family: var(--fm);
+    font-size: 8.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+  }
+
+  .kpi .v {
+    font-family: var(--fm);
+    font-size: 1.02rem;
+    color: var(--strong);
+    font-variant-numeric: tabular-nums;
+    margin-top: 3px;
+    display: block
+  }
+
+  .kpi .d {
+    font-family: var(--fm);
+    font-size: 8.5px;
+    margin-top: 2px;
+    display: block
+  }
+
+  .up {
+    color: var(--crit)
+  }
+
+  .down {
+    color: var(--ok)
+  }
+
+  .appsplit {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px
+  }
+
+  @media(max-width:560px) {
+    .appsplit {
+      grid-template-columns: 1fr
+    }
+  }
+
+  .panel {
+    background: var(--s1);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 11px;
+    min-height: 210px
+  }
+
+  .panel .h {
+    font-family: var(--fm);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 9px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+  }
+
+  .panel .h em {
+    font-style: normal;
+    color: var(--orange)
+  }
+
+  .feed {
+    display: flex;
+    flex-direction: column;
+    gap: 7px
+  }
+
+  .item {
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--crit);
+    border-radius: 0 7px 7px 0;
+    padding: 8px 10px;
+    background: var(--s2)
+  }
+
+  .item.med {
+    border-left-color: var(--warn)
+  }
+
+  .item.low {
+    border-left-color: var(--ok)
+  }
+
+  .item .u {
+    font-family: var(--fm);
+    font-size: 10px;
+    color: var(--soft);
+    display: flex;
+    justify-content: space-between
+  }
+
+  .item .u b {
+    font-weight: 400
+  }
+
+  .item .u time {
+    color: var(--faint)
+  }
+
+  .item p {
+    font-size: 11.5px;
+    margin: 5px 0 6px;
+    color: var(--muted);
+    line-height: 1.45;
+    max-width: none
+  }
+
+  .item .tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap
+  }
+
+  .item .tags span {
+    font-family: var(--fm);
+    font-size: 8.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--line2);
+    color: var(--faint)
+  }
+
+  .item .tags span.hot {
+    color: var(--crit);
+    border-color: rgba(255, 77, 31, .4)
+  }
+
+  .bars {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 2px
+  }
+
+  .bar {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 11px
+  }
+
+  .bar .n {
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+  }
+
+  .bar .t {
+    width: 100%;
+    grid-column: 1/-1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--s3);
+    overflow: hidden
+  }
+
+  .bar .t i {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--orange)
+  }
+
+  .bar .c {
+    font-family: var(--fm);
+    font-size: 10.5px;
+    color: var(--faint)
+  }
+
+  .illus {
+    font-family: var(--fm);
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 11px;
+    display: flex;
+    align-items: center;
+    gap: 7px
+  }
+
+  .illus::before {
+    content: "";
+    width: 14px;
+    height: 1px;
+    background: var(--line2)
+  }
+
+  /* ── capabilities ──────────────────────────────── */
+  .caps {
+    display: grid;
+    gap: 9px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: 36px
+  }
+
+  details.cap {
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    transition: .18s var(--ease)
+  }
+
+  details.cap:hover {
+    background: var(--s3);
+    border-color: var(--lineo)
+  }
+
+  details.cap[open] {
+    background: var(--s3);
+    border-color: var(--lineo)
+  }
+
+  details.cap summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 20px 22px;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start
+  }
+
+  details.cap summary::-webkit-details-marker {
+    display: none
+  }
+
+  details.cap summary h3 {
+    margin: 0 0 5px;
+    color: var(--soft)
+  }
+
+  details.cap summary p {
+    margin: 0;
+    font-size: .85rem
+  }
+
+  details.cap summary .pl {
+    font-family: var(--fm);
+    color: var(--orange);
+    flex-shrink: 0;
+    font-size: 15px;
+    line-height: 1.6
+  }
+
+  details.cap[open] summary .pl {
+    transform: rotate(45deg)
+  }
+
+  .capbody {
+    padding: 0 22px 22px;
+    border-top: 1px solid var(--line);
+    margin-top: 2px;
+    padding-top: 16px
+  }
+
+  .capbody dl {
+    margin: 0;
+    display: grid;
+    gap: 11px
+  }
+
+  .capbody dt {
+    font-family: var(--fm);
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--orange)
+  }
+
+  .capbody dd {
+    margin: 3px 0 0;
+    font-size: .85rem;
+    color: var(--muted);
+    line-height: 1.55
+  }
+
+  /* ── flow ──────────────────────────────────────── */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+    margin-top: 34px
+  }
+
+  .fstep {
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    padding: 18px;
+    position: relative
+  }
+
+  .fstep .n {
+    font-family: var(--fm);
+    font-size: 10px;
+    color: var(--deep);
+    display: block;
+    margin-bottom: 9px
+  }
+
+  .fstep h3 {
+    font-size: .98rem;
+    margin-bottom: 5px
+  }
+
+  .fstep p {
+    font-size: .82rem;
+    margin: 0
+  }
+
+  /* ── the challenge ─────────────────────────────── */
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 9px;
+    margin-top: 34px;
+    text-align: left
+  }
+
+  .challenge-card {
+    --c: var(--orange);
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 26px 24px;
+    position: relative;
+    transition: .2s var(--ease)
+  }
+
+  .challenge-card:hover {
+    border-color: color-mix(in srgb, var(--c) 45%, transparent);
+    background: var(--s3);
+    transform: translateY(-2px)
+  }
+
+  .challenge-card .ico {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--c) 55%, transparent);
+    color: var(--c);
+    margin-bottom: 18px
+  }
+
+  .challenge-card .ico svg {
+    width: 22px;
+    height: 22px
+  }
+
+  .challenge-card .n {
+    font-family: var(--fm);
+    font-size: 12px;
+    letter-spacing: .06em;
+    color: var(--c);
+    display: block;
+    margin-bottom: 8px
+  }
+
+  .challenge-card h3 {
+    margin-bottom: 12px;
+    font-size: 1.08rem
+  }
+
+  .challenge-card .rule {
+    display: block;
+    width: 26px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--c);
+    margin-bottom: 14px
+  }
+
+  .challenge-card p {
+    font-size: .87rem;
+    margin: 0
+  }
+
+  /* ── understand ────────────────────────────────── */
+  .intel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 9px;
+    margin-top: 34px;
+    text-align: left
+  }
+
+  .intel-card {
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px;
+    transition: .2s var(--ease)
+  }
+
+  .intel-card:hover {
+    border-color: var(--lineo);
+    background: var(--s3)
+  }
+
+  .intel-ico {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--glasso);
+    color: var(--orange);
+    font-size: 16px;
+    margin-bottom: 16px
+  }
+
+  .intel-card h3 {
+    margin-bottom: 6px
+  }
+
+  .intel-card p {
+    font-size: .87rem;
+    margin: 0
+  }
+
+  /* ── routes ────────────────────────────────────── */
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 9px;
+    margin-top: 34px
+  }
+
+  .route {
+    display: block;
+    text-decoration: none;
+    background: var(--s2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    transition: .2s var(--ease)
+  }
+
+  .route:hover {
+    transform: translateY(-3px);
+    border-color: var(--lineo);
+    background: var(--s3);
+    box-shadow: 0 0 26px rgba(241, 91, 38, .14)
+  }
+
+  .route .k {
+    font-family: var(--fm);
+    font-size: 9.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    display: block;
+    margin-bottom: 12px
+  }
+
+  .route h3 {
+    color: var(--orange)
+  }
+
+  .route p {
+    font-size: .85rem;
+    margin: 0 0 14px
+  }
+
+  .route .go {
+    font-family: var(--fm);
+    font-size: 11px;
+    color: var(--soft)
+  }
+
+  /* ── final ─────────────────────────────────────── */
+  #final {
+    text-align: center;
+    padding-top: 130px;
+    padding-bottom: 130px
+  }
+
+  #final p {
+    margin-left: auto;
+    margin-right: auto
+  }
+
+  .finalrow {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px
+  }
+
+  .mailnote {
+    margin-top: 26px;
+    font-family: var(--fm);
+    font-size: 11.5px;
+    color: var(--faint)
+  }
+
+  .mailnote a {
+    color: var(--soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--lineo)
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px clamp(20px, 4vw, 44px);
+    background: var(--s1)
+  }
+
+  .foot {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 26px;
+    flex-wrap: wrap;
+    align-items: center
+  }
+
+  .foot img {
+    height: 26px;
+    opacity: .75
+  }
+
+  .foot .c {
+    font-family: var(--fm);
+    font-size: 10.5px;
+    color: var(--faint);
+    line-height: 1.8
+  }
+
+  /* reveal */
+  .rv {
+    opacity: 0;
+    transform: translateY(22px)
+  }
+
+  .rv.in {
+    opacity: 1;
+    transform: none;
+    transition: opacity .5s var(--ease), transform .5s var(--ease)
+  }
+
+  .rv.d1 {
+    transition-delay: .08s
+  }
+
+  .rv.d2 {
+    transition-delay: .16s
+  }
+
+  .rv.d3 {
+    transition-delay: .24s
+  }
+
+  /* repeatable reveal — animates in AND out every time it crosses the viewport
+     (used by sections that should feel alive on every pass, not just the first) */
+  .cv {
+    opacity: 0;
+    transform: translateY(30px) scale(.95);
+    transition: opacity .55s var(--ease), transform .55s var(--ease)
+  }
+
+  .cv.in {
+    opacity: 1;
+    transform: none
+  }
+
+  .cv.d1 {
+    transition-delay: .07s
+  }
+
+  .cv.d2 {
+    transition-delay: .14s
+  }
+
+  .cv.d3 {
+    transition-delay: .21s
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+
+    .cv,
+    .cv.in {
+      opacity: 1;
+      transform: none;
+      transition: none
+    }
+  }
+
+  /* ── product showcase: macbook + live dashboard ── */
+  .showcase {
+    text-align: center;
+    padding-top: 118px;
+    padding-bottom: 90px;
+    overflow: hidden
+  }
+
+  .showcase .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 1500px
+  }
+
+  .showcase h2 {
+    margin-bottom: 14px
+  }
+
+  .showcase .lead {
+    margin-inline: auto
+  }
+
+  .mb-device {
+    --mb: 0;
+    position: relative;
+    width: min(1340px, 96%);
+    margin: 60px auto 0;
+    perspective: 2400px;
+    perspective-origin: 50% 18%
+  }
+
+  .mb-glow {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    width: 86%;
+    height: 78%;
+    transform: translateX(-50%);
+    background: radial-gradient(58% 54% at 50% 50%, rgba(241, 91, 38, .34), rgba(241, 91, 38, .07) 55%, transparent 72%);
+    filter: blur(50px);
+    opacity: calc(.2 + var(--mb) * .8);
+    pointer-events: none
+  }
+
+  .mb-rig {
+    position: relative;
+    transform-style: preserve-3d;
+    transform-origin: 50% 100%;
+    transform:
+      translateY(calc((1 - var(--mb)) * 130px)) rotateX(calc((1 - var(--mb)) * 15deg)) scale(calc(.9 + var(--mb) * .1));
+    will-change: transform
+  }
+
+  /* the device is a real MacBook Pro frame PNG with a transparent screen cut-out;
+     the OS + dashboard sit behind it, so the bezel, notch and rounded corners mask them */
+  .mb-shell {
+    position: relative;
+    aspect-ratio: 3944/2564
+  }
+
+  .mb-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+    filter: drop-shadow(0 40px 70px rgba(0, 0, 0, .62))
+  }
+
+  /* the screen hole, measured from the PNG's alpha channel */
+  .mb-screen {
+    position: absolute;
+    left: 11.689%;
+    top: 11.740%;
+    width: 76.622%;
+    height: 76.521%;
+    overflow: hidden;
+    background: #000;
+    z-index: 1
+  }
+
+  .mb-glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background:
+      linear-gradient(112deg, rgba(255, 255, 255, .16) 0 16%, transparent 40%),
+      radial-gradient(120% 78% at 50% -12%, rgba(255, 255, 255, .1), transparent 56%);
+    mix-blend-mode: screen;
+    opacity: calc(.62 - var(--mb) * .42)
+  }
+
+  /* ── macOS desktop inside the screen ── */
+  .mb-os {
+    width: 1510px;
+    height: 980px;
+    transform-origin: 0 0;
+    transform: scale(var(--sd-s, .5));
+    display: flex;
+    flex-direction: column;
+    background: #F4F6FA;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif
+  }
+
+  .mb-menubar {
+    height: 30px;
+    flex: none;
+    background: #000;
+    color: rgba(255, 255, 255, .92);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 16px;
+    font-size: 12.5px;
+    letter-spacing: .01em
+  }
+
+  .mb-menubar .apple {
+    width: 13px;
+    height: 16px;
+    margin-right: -6px;
+    flex: none
+  }
+
+  .mb-menubar .mi {
+    width: 16px;
+    height: 16px;
+    flex: none;
+    opacity: .92
+  }
+
+  .mb-menubar .app {
+    font-weight: 700
+  }
+
+  .mb-menubar .right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px
+  }
+
+  .mb-menubar .batt {
+    width: 22px;
+    height: 11px;
+    border: 1.3px solid rgba(255, 255, 255, .75);
+    border-radius: 3.5px;
+    position: relative;
+    display: inline-block
+  }
+
+  .mb-menubar .batt::before {
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    right: auto;
+    width: 72%;
+    background: #fff;
+    border-radius: 1.5px
+  }
+
+  .mb-menubar .batt::after {
+    content: "";
+    position: absolute;
+    right: -3.5px;
+    top: 3px;
+    bottom: 3px;
+    width: 1.8px;
+    background: rgba(255, 255, 255, .75);
+    border-radius: 0 2px 2px 0
+  }
+
+  /* ── the dashboard rendered inside the screen ── */
+  .sd-viewport {
+    width: 1510px;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    background: #F4F6FA;
+    color: #111827;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    letter-spacing: 0
+  }
+
+  .sd-viewport p {
+    margin: 0;
+    max-width: none;
+    color: inherit
+  }
+
+  /* sidebar */
+  .sd-side {
+    width: 226px;
+    flex: none;
+    background: linear-gradient(180deg, #E1352C, #EE5729 46%, #F3771C);
+    color: #fff;
+    padding: 15px 13px;
+    display: flex;
+    flex-direction: column
+  }
+
+  .sd-brand {
+    display: flex;
+    align-items: center;
+    padding: 0 2px 15px
+  }
+
+  .sd-brand img {
+    height: 46px;
+    width: auto;
+    border-radius: 9px;
+    background: #fff;
+    padding: 4px 9px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .16)
+  }
+
+  .sd-nav-active {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: #E1352C;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 11px 13px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12)
+  }
+
+  .sd-group {
+    font-size: 9px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    opacity: .72;
+    margin: 12px 0 5px 6px
+  }
+
+  .sd-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, .95)
+  }
+
+  .sd-link .sd-ico {
+    width: 15px;
+    text-align: center;
+    opacity: .9;
+    flex: none
+  }
+
+  .sd-link .sd-badge {
+    margin-left: auto;
+    background: #B3170F;
+    border-radius: 999px;
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 1px 7px
+  }
+
+  .sd-status {
+    margin-top: auto;
+    background: rgba(255, 255, 255, .13);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 11px;
+    padding: 11px
+  }
+
+  .sd-status .h {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11.5px;
+    margin-bottom: 8px
+  }
+
+  .sd-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ADE80;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, .7);
+    animation: sdPulse 2.2s infinite
+  }
+
+  @keyframes sdPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, .65)
+    }
+
+    70% {
+      box-shadow: 0 0 0 7px rgba(74, 222, 128, 0)
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(74, 222, 128, 0)
+    }
+  }
+
+  .sd-status .p {
+    background: #fff;
+    color: #E1352C;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 7px;
+    padding: 6px
+  }
+
+  .sd-ver {
+    font-size: 10px;
+    opacity: .7;
+    margin: 9px 0 0 4px
+  }
+
+  /* main */
+  .sd-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column
+  }
+
+  .sd-top {
+    height: 62px;
+    flex: none;
+    background: #fff;
+    border-bottom: 1px solid #E9EDF3;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 18px
+  }
+
+  .sd-search {
+    flex: 1;
+    max-width: 470px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    height: 38px;
+    border: 1px solid #E2E7EF;
+    border-radius: 10px;
+    padding: 0 12px;
+    color: #98A2B3;
+    font-size: 12.5px
+  }
+
+  .sd-search .k {
+    margin-left: auto;
+    border: 1px solid #E2E7EF;
+    border-radius: 5px;
+    font-size: 10px;
+    padding: 1px 5px
+  }
+
+  .sd-genbtn {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(180deg, #F2542D, #E5372B);
+    color: #fff;
+    font-weight: 600;
+    font-size: 12.5px;
+    border-radius: 9px;
+    padding: 10px 16px;
+    box-shadow: 0 4px 12px rgba(229, 55, 43, .3)
+  }
+
+  .sd-icobtn {
+    position: relative;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #E9EDF3;
+    display: grid;
+    place-items: center;
+    color: #667085;
+    font-size: 13px;
+    flex: none
+  }
+
+  .sd-icobtn .n {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 999px;
+    background: #E5372B;
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 600;
+    display: grid;
+    place-items: center;
+    padding: 0 4px
+  }
+
+  .sd-user {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex: none
+  }
+
+  .sd-user .av {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, #F2764B, #C63A1E);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 600
+  }
+
+  .sd-user b {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.25
+  }
+
+  .sd-user span {
+    display: block;
+    font-size: 10.5px;
+    color: #98A2B3;
+    line-height: 1.25
+  }
+
+  .sd-body {
+    flex: 1;
+    min-height: 0;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px
+  }
+
+  .sd-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: none
+  }
+
+  .sd-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    background: #fff;
+    border: 1px solid #E4E9F0;
+    border-radius: 10px;
+    padding: 0 13px;
+    font-size: 12px;
+    color: #344054;
+    white-space: nowrap
+  }
+
+  .sd-pill .cr {
+    color: #98A2B3;
+    font-size: 9px
+  }
+
+  .sd-plats {
+    display: flex;
+    align-items: center;
+    gap: -4px
+  }
+
+  .sd-plat {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    border: 2px solid #fff;
+    margin-left: -7px
+  }
+
+  .sd-plat:first-child {
+    margin-left: 0
+  }
+
+  .sd-custom {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    background: #fff;
+    border: 1px solid #FBD9CE;
+    color: #E5372B;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 12px;
+    white-space: nowrap
+  }
+
+  /* cards */
+  .sd-card {
+    background: #fff;
+    border: 1px solid #EAEEF4;
+    border-radius: 13px;
+    padding: 11px 13px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .04)
+  }
+
+  .sd-card .ch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 11px
+  }
+
+  .sd-card .ch b {
+    font-size: 13.5px;
+    font-weight: 600
+  }
+
+  .sd-mini {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid #E4E9F0;
+    border-radius: 7px;
+    padding: 3px 8px;
+    font-size: 10.5px;
+    color: #667085;
+    white-space: nowrap
+  }
+
+  .sd-kpis {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    flex: none
+  }
+
+  .sd-kpi .t {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px
+  }
+
+  .sd-kpi .lbl {
+    font-size: 12.5px;
+    color: #475467;
+    font-weight: 500
+  }
+
+  .sd-kpi .ic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    flex: none
+  }
+
+  .sd-kpi .v {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin-top: 7px;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: baseline;
+    gap: 8px
+  }
+
+  .sd-kpi .d {
+    font-size: 11.5px;
+    font-weight: 600
+  }
+
+  .sd-kpi .sub {
+    font-size: 10.5px;
+    color: #98A2B3;
+    margin-top: 3px
+  }
+
+  .sd-up {
+    color: #12B76A
+  }
+
+  .sd-dn {
+    color: #E5372B
+  }
+
+  .sd-spark {
+    display: block;
+    width: 100%;
+    height: 33px;
+    margin-top: 5px
+  }
+
+  .sd-spark polyline {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all .9s var(--ease)
+  }
+
+  .sd-row {
+    display: grid;
+    gap: 9px;
+    flex: none
+  }
+
+  .sd-r2 {
+    grid-template-columns: 1fr 1fr 1.28fr
+  }
+
+  .sd-r3 {
+    grid-template-columns: 1fr 1fr 1fr 1fr
+  }
+
+  .sd-r4 {
+    grid-template-columns: 1.5fr 1.05fr 1fr;
+    flex: none;
+    min-height: 176px
+  }
+
+  /* donuts */
+  .sd-donut {
+    display: flex;
+    align-items: center;
+    gap: 14px
+  }
+
+  .sd-donut svg {
+    flex: none;
+    width: 104px;
+    height: 104px
+  }
+
+  .sd-donut circle {
+    transition: stroke-dasharray 1.1s var(--ease)
+  }
+
+  .sd-donut .mid {
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -.02em
+  }
+
+  .sd-donut .midl {
+    font-size: 9.5px;
+    fill: #98A2B3
+  }
+
+  .sd-leg {
+    display: grid;
+    gap: 11px;
+    flex: 1;
+    min-width: 0
+  }
+
+  .sd-leg div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px
+  }
+
+  .sd-leg i {
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    flex: none
+  }
+
+  .sd-leg .n {
+    margin-left: auto;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums
+  }
+
+  .sd-leg .pct {
+    color: #98A2B3;
+    font-size: 11px;
+    width: 52px;
+    text-align: right
+  }
+
+  /* trending */
+  .sd-trend {
+    display: grid;
+    gap: 4px
+  }
+
+  .sd-trend div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 12px;
+    border-bottom: 1px solid #F2F4F7
+  }
+
+  .sd-trend div:last-child {
+    border-bottom: 0
+  }
+
+  .sd-trend .r {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: #FEF0EC;
+    color: #E5372B;
+    font-size: 10.5px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    flex: none
+  }
+
+  .sd-trend .tag {
+    font-weight: 600;
+    width: 108px;
+    flex: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+  }
+
+  .sd-trend .m {
+    color: #667085;
+    font-size: 11px;
+    width: 92px;
+    flex: none
+  }
+
+  .sd-trend .c {
+    font-size: 11px;
+    font-weight: 600;
+    width: 54px;
+    flex: none
+  }
+
+  .sd-trend svg {
+    flex: 1;
+    height: 20px;
+    min-width: 0
+  }
+
+  /* platform bars */
+  .sd-plist {
+    display: grid;
+    gap: 9px
+  }
+
+  .sd-prow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 11.5px
+  }
+
+  .sd-prow .nm {
+    width: 74px;
+    flex: none;
+    color: #344054
+  }
+
+  .sd-prow .tr {
+    flex: 1;
+    height: 7px;
+    border-radius: 4px;
+    background: #F2F4F7;
+    overflow: hidden;
+    min-width: 0
+  }
+
+  .sd-prow .tr i {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1.1s var(--ease)
+  }
+
+  .sd-prow .vv {
+    width: 82px;
+    flex: none;
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums
+  }
+
+  .sd-prow .vv span {
+    color: #98A2B3;
+    font-weight: 400
+  }
+
+  /* list rows */
+  .sd-list {
+    display: grid;
+    gap: 3px
+  }
+
+  .sd-lrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 5px 0;
+    font-size: 11.5px;
+    border-bottom: 1px solid #F2F4F7
+  }
+
+  .sd-lrow:last-child {
+    border-bottom: 0
+  }
+
+  .sd-lrow .nm {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #1D2939
+  }
+
+  .sd-lrow .ag {
+    color: #98A2B3;
+    font-size: 10.5px;
+    flex: none
+  }
+
+  .sd-chip {
+    font-size: 9.5px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 2px 8px;
+    flex: none
+  }
+
+  .sd-hi {
+    background: #FEE4E2;
+    color: #D92D20
+  }
+
+  .sd-md {
+    background: #FEF0C7;
+    color: #B54708
+  }
+
+  .sd-lo {
+    background: #D1FADF;
+    color: #027A48
+  }
+
+  .sd-nw {
+    background: #E0F2FE;
+    color: #026AA2
+  }
+
+  .sd-ip {
+    background: #EEF4FF;
+    color: #3538CD
+  }
+
+  .sd-viewall {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #F2F4F7;
+    color: #2E6BE6;
+    font-size: 11.5px;
+    font-weight: 600
+  }
+
+  .sd-viewall .n {
+    background: #E5372B;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 9.5px;
+    padding: 1px 7px
+  }
+
+  /* heatmap */
+  .sd-heat {
+    position: relative;
+    height: 108px
+  }
+
+  .sd-heat svg {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 76%;
+    height: 100%
+  }
+
+  .sd-india {
+    fill: #EEF1F6;
+    stroke: #C6CFDC;
+    stroke-width: .7;
+    stroke-linejoin: round
+  }
+
+  .sd-blob {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: sdBlob 3.4s ease-in-out infinite
+  }
+
+  @keyframes sdBlob {
+
+    0%,
+    100% {
+      transform: scale(.72);
+      opacity: .7
+    }
+
+    50% {
+      transform: scale(1.15);
+      opacity: 1
+    }
+  }
+
+  .sd-heatleg {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: grid;
+    gap: 3px;
+    font-size: 9.5px;
+    color: #667085
+  }
+
+  .sd-heatleg div {
+    display: flex;
+    align-items: center;
+    gap: 5px
+  }
+
+  .sd-heatleg i {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px
+  }
+
+  /* live feed */
+  .sd-feed {
+    display: grid;
+    gap: 8px;
+    overflow: hidden
+  }
+
+  .sd-fitem {
+    display: flex;
+    gap: 10px;
+    padding: 6px 9px;
+    border: 1px solid #EEF1F6;
+    border-radius: 10px;
+    background: #FCFDFE;
+    animation: sdIn .55s var(--ease)
+  }
+
+  @keyframes sdIn {
+    from {
+      opacity: 0;
+      transform: translateY(-13px)
+    }
+
+    to {
+      opacity: 1;
+      transform: none
+    }
+  }
+
+  .sd-fitem .pv {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    flex: none
+  }
+
+  .sd-fitem .bd {
+    flex: 1;
+    min-width: 0
+  }
+
+  .sd-fitem .hd {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11.5px
+  }
+
+  .sd-fitem .hd b {
+    font-weight: 600
+  }
+
+  .sd-fitem .hd time {
+    color: #98A2B3;
+    font-size: 10.5px
+  }
+
+  .sd-fitem p {
+    font-size: 10.5px;
+    color: #475467;
+    margin: 2px 0 4px !important;
+    line-height: 1.35
+  }
+
+  .sd-fitem .mt {
+    display: flex;
+    align-items: center;
+    gap: 6px
+  }
+
+  .sd-fitem .rr {
+    text-align: right;
+    flex: none;
+    width: 62px
+  }
+
+  .sd-fitem .rr .k {
+    font-size: 9px;
+    color: #98A2B3;
+    display: block
+  }
+
+  .sd-fitem .rr .v {
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums
+  }
+
+  .sd-live {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #FEE4E2;
+    color: #D92D20;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 3px 9px
+  }
+
+  .sd-live i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #D92D20;
+    animation: sdPulse 1.6s infinite
+  }
+
+  /* assistant + quick actions */
+  .sd-ai {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    background: linear-gradient(120deg, #F4F0FF, #EEF4FF);
+    border: 1px solid #E4E4FB;
+    border-radius: 12px;
+    padding: 13px
+  }
+
+  .sd-ai .orb {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, #7C6BF5, #4E7BEE);
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 16px;
+    flex: none;
+    animation: sdOrb 3s ease-in-out infinite
+  }
+
+  @keyframes sdOrb {
+
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(124, 107, 245, .45)
+    }
+
+    60% {
+      box-shadow: 0 0 0 12px rgba(124, 107, 245, 0)
+    }
+  }
+
+  .sd-ai .ph {
+    flex: 1;
+    color: #98A2B3;
+    font-size: 11.5px
+  }
+
+  .sd-ai .snd {
+    color: #4E7BEE;
+    font-size: 15px
+  }
+
+  .sd-qa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px
+  }
+
+  .sd-qa div {
+    border: 1px solid #EAEEF4;
+    border-radius: 10px;
+    padding: 12px 6px;
+    text-align: center;
+    font-size: 10.5px;
+    color: #344054;
+    font-weight: 500
+  }
+
+  .sd-qa div span {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #667085
+  }
+
+  @media(max-width:760px) {
+    .showcase {
+      padding-top: 88px;
+      padding-bottom: 60px
+    }
+
+    .mb-device {
+      margin-top: 40px
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    html {
+      scroll-behavior: auto
+    }
+
+    .mb-rig {
+      transform: none
+    }
+
+    .sd-dot,
+    .sd-live i,
+    .sd-ai .orb,
+    .sd-heat .blob,
+    .sd-fitem {
+      animation: none
+    }
+
+    .rv {
+      opacity: 1;
+      transform: none;
+      transition: none
+    }
+
+    .appbar .live i {
+      animation: none
+    }
+
+    .pin {
+      height: auto
+    }
+
+    .pin .sticky {
+      position: static;
+      height: auto;
+      padding-top: 80px;
+      padding-bottom: 80px
+    }
+
+    .fade {
+      animation: none
+    }
+  }
+</style>
+
+<div id="heroLightBg" aria-hidden="true"></div>
+<div id="heroFrameBg" aria-hidden="true"></div>
+<canvas id="stage" aria-hidden="true"></canvas>
+
+<nav id="nav">
+  <a class="brand" href="#hero" aria-label="Blura SAGA home">
+    <img src="logo/saga-logo-transparent.png" alt="SAGA - Sentiment And Goodwill Analysis"
+      class="brand-logo logo-light">
+    <img src="logo/saga-logo-rounded.png" alt="SAGA - Sentiment And Goodwill Analysis" class="brand-logo logo-dark">
+  </a>
+  <div class="nav-menu">
+    <div class="navlinks">
+      <a href="#worlds">Platform</a><a href="#worlds">Products</a>
+      <a href="#caps">Capabilities</a><a href="#flow">Investigation</a>
+    </div>
+    <a class="cta" href="#final">Request a Demo</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- 01 HERO -->
+  <section class="sec" id="hero" data-scene="hero">
+    <div class="inner">
+      <p class="eyebrow rv">Blura SAGA</p>
+      <h1 class="rv d1"><span>Observe.</span><span>Understand. Act.</span></h1>
+      <p class="lead rv d2" style="max-width:44ch">Turn digital conversations and signals into
+        actionable intelligence.</p>
+
+      <!-- <p class="rv d2" style="max-width:44ch">SAGA helps teams see what is happening, understand what matters, and move -->
+      <!-- from awareness to action.</p> -->
+
+      <div class="herorow rv d3">
+        <a class="cta" href="#final">Request a Demo</a>
+        <a class="cta2" href="#worlds">Explore SAGA</a>
+      </div>
+      <p class="small mono rv d3" style="margin-top:18px;color:var(--faint);letter-spacing:.08em">One intelligence
+        platform. Four specialized worlds.</p>
+    </div>
+  </section>
+
+  <!-- 01.5 PRODUCT SHOWCASE -->
+  <section class="sec showcase" id="showcase">
+    <div class="inner">
+      <p class="eyebrow rv">The console</p>
+      <h2 class="rv d1">Every signal, one screen.</h2>
+      <p class="lead rv d2" style="max-width:54ch">Mentions, risk, grievances and sentiment — resolved live across
+        platforms, languages and regions.</p>
+
+      <div class="mb-device" id="mbDevice">
+        <div class="mb-glow"></div>
+        <div class="mb-rig">
+          <div class="mb-shell">
+            <div class="mb-screen">
+              <div class="mb-os" id="mbOs">
+                <div class="mb-menubar">
+                  <svg class="apple" viewBox="0 0 814 1000" aria-hidden="true">
+                    <path fill="currentColor"
+                      d="M788 341c-6 4-108 62-108 190 0 149 130 201 134 202-1 3-21 72-69 142-43 62-87 123-155 123s-86-39-164-39c-77 0-104 41-166 41s-106-57-156-127C47 791 0 663 0 542c0-194 126-298 251-298 66 0 121 43 162 43 40 0 101-46 176-46 29 0 131 3 199 100zM554 159c31-37 53-88 53-139 0-7-1-14-2-20-51 2-111 34-147 76-29 32-55 84-55 136 0 8 1 16 2 18 3 1 8 1 14 1 45 0 102-30 135-72z" />
+                  </svg>
+                  <span class="app">Blura SAGA</span>
+                  <span>File</span><span>Edit</span><span>View</span><span>Go</span>
+                  <span>Window</span><span>Help</span>
+                  <span class="right">
+                    <i class="batt"></i>
+                    <svg class="mi" viewBox="0 0 24 24" aria-hidden="true">
+                      <rect x="3" y="4" width="18" height="7" rx="3.5" fill="none" stroke="currentColor"
+                        stroke-width="1.7" />
+                      <circle cx="7.5" cy="7.5" r="2" fill="currentColor" />
+                      <rect x="3" y="13" width="18" height="7" rx="3.5" fill="none" stroke="currentColor"
+                        stroke-width="1.7" />
+                      <circle cx="16.5" cy="16.5" r="2" fill="currentColor" />
+                    </svg>
+                    <svg class="mi" viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="10.5" cy="10.5" r="6.6" fill="none" stroke="currentColor" stroke-width="1.9" />
+                      <path d="M15.4 15.4 21 21" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+                    </svg>
+                    <svg class="mi" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M2.4 8.4a15 15 0 0 1 19.2 0M5.6 12.2a10.4 10.4 0 0 1 12.8 0M9 16a5.2 5.2 0 0 1 6 0"
+                        fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+                      <circle cx="12" cy="19.6" r="1.5" fill="currentColor" />
+                    </svg>
+                    <span>Mon Jun 22</span>
+                    <span>9:41 AM</span>
+                  </span>
+                </div>
+                <div class="sd-viewport" id="sdViewport">
+
+                  <!-- sidebar -->
+                  <aside class="sd-side">
+                    <div class="sd-brand">
+                      <img src="logo/saga-logo-transparent.png" alt="SAGA">
+                    </div>
+                    <div class="sd-nav-active"><span class="sd-ico">▦</span> Dashboard</div>
+                    <div class="sd-group">Intelligence</div>
+                    <div class="sd-link"><span class="sd-ico">◉</span> Surveillance</div>
+                    <div class="sd-link"><span class="sd-ico">◬</span> Alerts <b class="sd-badge"
+                        id="sdAlertBadge">32</b>
+                    </div>
+                    <div class="sd-link"><span class="sd-ico">✉</span> Grievances</div>
+                    <div class="sd-link"><span class="sd-ico">▤</span> Events</div>
+                    <div class="sd-link"><span class="sd-ico">⌖</span> POI Monitoring</div>
+                    <div class="sd-link"><span class="sd-ico">#</span> Keywords</div>
+                    <div class="sd-link"><span class="sd-ico">▣</span> Reports</div>
+                    <div class="sd-group">OSINT Tools</div>
+                    <div class="sd-link"><span class="sd-ico">◎</span> SOC-EYE AI</div>
+                    <div class="sd-link"><span class="sd-ico">◐</span> Deepfake Detection</div>
+                    <div class="sd-link"><span class="sd-ico">☖</span> Profile Intelligence</div>
+                    <div class="sd-link"><span class="sd-ico">⌘</span> Location Intelligence</div>
+                    <div class="sd-link"><span class="sd-ico">⌕</span> Search Intelligence</div>
+                    <div class="sd-group">Administration</div>
+                    <div class="sd-link"><span class="sd-ico">☰</span> User Management</div>
+                    <div class="sd-link"><span class="sd-ico">⚿</span> Roles &amp; Permissions</div>
+                    <div class="sd-status">
+                      <div class="h"><i class="sd-dot"></i> System Status</div>
+                      <div class="p">All Systems Operational</div>
+                    </div>
+                    <div class="sd-ver">v2.4.0</div>
+                  </aside>
+
+                  <!-- main -->
+                  <div class="sd-main">
+                    <header class="sd-top">
+                      <div class="sd-search"><span>⌕</span> Search for keywords, users, topics, reports… <span
+                          class="k">⌘K</span></div>
+                      <div class="sd-genbtn"><span>▤</span> Generate Report</div>
+                      <div class="sd-icobtn">♧<span class="n" id="sdBell">12</span></div>
+                      <div class="sd-icobtn">?</div>
+                      <div class="sd-icobtn">⚙</div>
+                      <div class="sd-user">
+                        <div class="av">AS</div>
+                        <div><b>Arjun Sharma</b><span>Super Admin</span></div>
+                      </div>
+                    </header>
+
+                    <div class="sd-body">
+                      <div class="sd-filters">
+                        <div class="sd-pill">▤ May 12 – May 19, 2025</div>
+                        <div class="sd-pill">All Platforms <span class="cr">▾</span></div>
+                        <div class="sd-plats">
+                          <i class="sd-plat" style="background:#000">𝕏</i>
+                          <i class="sd-plat" style="background:#1877F2">f</i>
+                          <i class="sd-plat" style="background:linear-gradient(135deg,#F58529,#DD2A7B)">◙</i>
+                          <i class="sd-plat" style="background:#FF0000">▶</i>
+                          <i class="sd-plat" style="background:#229ED9">✈</i>
+                          <i class="sd-plat" style="background:#98A2B3;font-size:9px">+2</i>
+                        </div>
+                        <div class="sd-pill">All Categories <span class="cr">▾</span></div>
+                        <div class="sd-pill">All Regions <span class="cr">▾</span></div>
+                        <div class="sd-custom">✎ Customize Dashboard</div>
+                      </div>
+
+                      <!-- kpis -->
+                      <div class="sd-kpis" id="sdKpis"></div>
+
+                      <!-- donuts + trending -->
+                      <div class="sd-row sd-r2">
+                        <div class="sd-card">
+                          <div class="ch"><b>Sentiment Overview</b>
+                            <div class="sd-mini">All Platforms ▾</div>
+                          </div>
+                          <div class="sd-donut">
+                            <svg width="128" height="128" viewBox="0 0 128 128">
+                              <circle cx="64" cy="64" r="52" fill="none" stroke="#F2F4F7" stroke-width="17" />
+                              <circle class="sdSeg" data-i="0" cx="64" cy="64" r="52" fill="none" stroke="#12B76A"
+                                stroke-width="17" stroke-dasharray="0 327" transform="rotate(-90 64 64)"
+                                stroke-linecap="butt" />
+                              <circle class="sdSeg" data-i="1" cx="64" cy="64" r="52" fill="none" stroke="#2E6BE6"
+                                stroke-width="17" stroke-dasharray="0 327" transform="rotate(-90 64 64)"
+                                stroke-linecap="butt" />
+                              <circle class="sdSeg" data-i="2" cx="64" cy="64" r="52" fill="none" stroke="#E5372B"
+                                stroke-width="17" stroke-dasharray="0 327" transform="rotate(-90 64 64)"
+                                stroke-linecap="butt" />
+                              <text class="mid" x="64" y="62" text-anchor="middle" id="sdSentTotal">2.45M</text>
+                              <text class="midl" x="64" y="78" text-anchor="middle">Total Mentions</text>
+                            </svg>
+                            <div class="sd-leg" id="sdSentLeg"></div>
+                          </div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>Risk Level Distribution</b>
+                            <div class="sd-mini">All Categories ▾</div>
+                          </div>
+                          <div class="sd-donut">
+                            <svg width="128" height="128" viewBox="0 0 128 128">
+                              <circle cx="64" cy="64" r="52" fill="none" stroke="#F2F4F7" stroke-width="17" />
+                              <circle class="sdRisk" data-i="0" cx="64" cy="64" r="52" fill="none" stroke="#E5372B"
+                                stroke-width="17" stroke-dasharray="0 327" transform="rotate(-90 64 64)" />
+                              <circle class="sdRisk" data-i="1" cx="64" cy="64" r="52" fill="none" stroke="#F79009"
+                                stroke-width="17" stroke-dasharray="0 327" transform="rotate(-90 64 64)" />
+                              <circle class="sdRisk" data-i="2" cx="64" cy="64" r="52" fill="none" stroke="#12B76A"
+                                stroke-width="17" stroke-dasharray="0 327" transform="rotate(-90 64 64)" />
+                              <text class="mid" x="64" y="62" text-anchor="middle" id="sdRiskTotal">2.45M</text>
+                              <text class="midl" x="64" y="78" text-anchor="middle">Total Mentions</text>
+                            </svg>
+                            <div class="sd-leg" id="sdRiskLeg"></div>
+                          </div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>Top Trending Topics</b>
+                            <div class="sd-mini">Trending Now ▾</div>
+                          </div>
+                          <div class="sd-trend" id="sdTrend"></div>
+                        </div>
+                      </div>
+
+                      <!-- platform / alerts / grievances / heatmap -->
+                      <div class="sd-row sd-r3">
+                        <div class="sd-card">
+                          <div class="ch"><b>Platform Distribution</b></div>
+                          <div class="sd-plist" id="sdPlat"></div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>Alerts Summary</b>
+                            <div class="sd-mini">All Alerts ▾</div>
+                          </div>
+                          <div class="sd-list" id="sdAlerts"></div>
+                          <div class="sd-viewall">View All Alerts <span class="n" id="sdAlertCount">32</span> →</div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>Recent Grievances</b>
+                            <div class="sd-mini">All Status ▾</div>
+                          </div>
+                          <div class="sd-list" id="sdGriev"></div>
+                          <div class="sd-viewall">View All Grievances <span class="n">18</span> →</div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>Geo Heatmap</b>
+                            <div class="sd-mini">India ▾</div>
+                          </div>
+                          <div class="sd-heat">
+                            <svg viewBox="0 0 100 116" preserveAspectRatio="xMidYMid meet">
+                              <defs>
+                                <radialGradient id="sdH">
+                                  <stop offset="0" stop-color="#E5372B" stop-opacity=".85" />
+                                  <stop offset="1" stop-color="#E5372B" stop-opacity="0" />
+                                </radialGradient>
+                                <radialGradient id="sdM">
+                                  <stop offset="0" stop-color="#F79009" stop-opacity=".85" />
+                                  <stop offset="1" stop-color="#F79009" stop-opacity="0" />
+                                </radialGradient>
+                                <radialGradient id="sdL">
+                                  <stop offset="0" stop-color="#12B76A" stop-opacity=".8" />
+                                  <stop offset="1" stop-color="#12B76A" stop-opacity="0" />
+                                </radialGradient>
+                              </defs>
+                              <!-- India (simplified outline) -->
+                              <path class="sd-india" d="M35.4 5.6 30.1 6.3 27.4 9.4 22.6 10.2 21.9 14.6 24.4 17.9 22.1 21.3
+                              17.3 22.6 13.9 25.4 12.6 30.2 9.4 33.1 6.6 37.4 4.9 43.2 3.6 48.6 5.4 52.1 9.6 53.4
+                              13.1 52.6 15.9 55.3 17.4 60.2 18.1 65.6 19.4 71.4 21.2 77.1 23.4 82.9 26.1 88.6
+                              29.1 94.2 32.1 99.8 34.6 105.3 36.6 108.4 38.4 104.1 39.6 98.2 40.9 92.3 42.4 86.4
+                              43.9 80.4 45.6 74.6 48.4 70.1 52.6 66.4 57.4 63.1 62.1 59.9 66.4 57.1 69.1 54.1
+                              67.9 49.6 67.1 45.1 69.9 42.6 74.1 43.9 77.6 46.4 81.4 47.6 85.1 46.1 88.9 43.4
+                              92.6 40.1 95.4 36.1 91.6 33.9 87.1 32.9 82.4 31.6 77.6 30.4 72.4 29.6 66.9 28.9
+                              61.4 27.9 55.9 26.4 50.4 24.4 45.4 21.9 40.9 18.9 37.1 15.4 35.9 10.4 35.4 5.6 Z" />
+                              <!-- Sri Lanka -->
+                              <path class="sd-india" d="M41.4 108.6 39.9 112.4 41.1 115.1 43.4 113.6 43.9 110.4 Z" />
+                              <!-- live heat, pinned to real cities -->
+                              <circle class="sd-blob" cx="32.9" cy="32.6" r="9" fill="url(#sdH)"
+                                style="animation-delay:0s" />
+                              <circle class="sd-blob" cx="19.0" cy="67.4" r="8" fill="url(#sdM)"
+                                style="animation-delay:.5s" />
+                              <circle class="sd-blob" cx="37.1" cy="73.6" r="9" fill="url(#sdH)"
+                                style="animation-delay:1s" />
+                              <circle class="sd-blob" cx="69.0" cy="54.7" r="7" fill="url(#sdM)"
+                                style="animation-delay:1.5s" />
+                              <circle class="sd-blob" cx="34.2" cy="89.7" r="7" fill="url(#sdL)"
+                                style="animation-delay:2s" />
+                              <circle class="sd-blob" cx="42.9" cy="89.3" r="6" fill="url(#sdL)"
+                                style="animation-delay:2.5s" />
+                            </svg>
+                            <div class="sd-heatleg">
+                              <div><i style="background:#E5372B"></i> High</div>
+                              <div><i style="background:#F79009"></i> Medium</div>
+                              <div><i style="background:#12B76A"></i> Low</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- feed / ai / quick -->
+                      <div class="sd-row sd-r4">
+                        <div class="sd-card" style="display:flex;flex-direction:column;min-height:0">
+                          <div class="ch"><b>Real-time Feed</b>
+                            <div class="sd-live"><i></i> Live</div>
+                          </div>
+                          <div class="sd-feed" id="sdFeed"></div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>SOC-EYE AI Assistant</b></div>
+                          <div class="sd-ai">
+                            <div class="orb">◎</div>
+                            <div class="ph">Ask anything about the intelligence data…</div>
+                            <div class="snd">➤</div>
+                          </div>
+                        </div>
+
+                        <div class="sd-card">
+                          <div class="ch"><b>Quick Actions</b></div>
+                          <div class="sd-qa">
+                            <div><span>#</span>Add Keyword</div>
+                            <div><span>⌖</span>Monitor POI</div>
+                            <div><span>▤</span>Generate Report</div>
+                            <div><span>📢</span>Broadcast Alert</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mb-glare"></div>
+            </div>
+            <img class="mb-frame" src="assets/macbook.png" alt="" aria-hidden="true">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE CHALLENGE -->
+  <section class="sec challenge" id="challenge">
+    <div class="inner">
+      <p class="eyebrow cv">The challenge</p>
+      <h2 class="cv d1" style="max-width:18ch">When everything speaks, what do you listen to? </h2>
+      <p class="lead cv d2" style="max-width:58ch">The challenge isn't hearing everything.
+        It's knowing what matters. </p>
+      <p class="cv d2" style="max-width:58ch">SAGA helps turn that complexity into intelligence you can understand
+        and act on.</p>
+
+      <div class="challenge-grid">
+        <div class="challenge-card cv">
+          <span class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M3 12v0M6.5 9v6M10 6v12M13.5 8v8M17 5v14M20.5 10v4" />
+            </svg>
+          </span>
+          <span class="n">01</span>
+          <h3>Too Much Noise</h3>
+          <i class="rule"></i>
+          <p>Millions of conversations make it hard to spot what really matters.</p>
+        </div>
+        <div class="challenge-card cv d1">
+          <span class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="M20 20l-4.8-4.8" />
+            </svg>
+          </span>
+          <span class="n">02</span>
+          <h3>Hidden Signals</h3>
+          <i class="rule"></i>
+          <p>Important warnings can be buried inside everyday conversations.</p>
+        </div>
+        <div class="challenge-card cv d2">
+          <span class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M3 16l6-6 4 4 8-9" />
+              <path d="M15 5h6v6" />
+            </svg>
+          </span>
+          <span class="n">03</span>
+          <h3>Fast-Moving Stories</h3>
+          <i class="rule"></i>
+          <p>Stories, campaigns and issues can spread quickly and change fast.</p>
+        </div>
+        <div class="challenge-card cv d3">
+          <span class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="5" cy="8" r="1.8" />
+              <circle cx="12" cy="17" r="1.8" />
+              <circle cx="19" cy="9" r="1.8" />
+              <circle cx="14" cy="6" r="1.8" />
+              <path d="M6.5 9l4.5 6.3M13.5 7l4 1.4" />
+            </svg>
+          </span>
+          <span class="n">04</span>
+          <h3>Missing Context</h3>
+          <i class="rule"></i>
+          <p>A single signal rarely tells the full story. Context makes it meaningful.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 NOISE -->
+  <div class="pin" data-scene="noise">
+    <div class="sticky">
+      <div class="inner">
+        <div class="copy">
+          <span class="stagechip"><b>00</b> The problem</span>
+          <h2>You can see the activity. You can't see what matters.</h2>
+          <p>An officer screenshotting posts into a WhatsApp group. A field worker reporting mood by phone. A comms head
+            who learns about the crisis when a journalist calls.</p>
+          <p>The signal is already public. It is just buried under everything else that is also public.</p>
+          <div class="metricrow">
+            <div><span class="k">Posts / day</span><span class="v">2.8M</span></div>
+            <div><span class="k">Actually matter</span><span class="v" style="color:var(--orange)">312</span></div>
+            <div><span class="k">Found in time</span><span class="v">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 OBSERVE -->
+  <div class="pin" data-scene="observe">
+    <div class="sticky">
+      <div class="inner">
+        <div class="copy">
+          <span class="stagechip"><b>01</b> Observe</span>
+          <h2>See what is happening.</h2>
+          <p>Conversations, content, news, events and feeds — pulled continuously from every source that matters to you,
+            in the languages your region actually speaks, and organised into one readable stream.</p>
+          <div class="metricrow">
+            <div><span class="k">Sources</span><span class="v">Social · News · RSS</span></div>
+            <div><span class="k">Languages</span><span class="v">EN · TE · HI · TA</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 UNDERSTAND -->
+  <section class="sec understand" id="understand">
+    <div class="inner">
+      <p class="eyebrow rv">02 — Understand</p>
+      <h2 class="rv d1" style="max-width:16ch">Know what the signals mean.</h2>
+      <p class="lead rv d2" style="max-width:56ch">SAGA uses AI-driven analysis to turn digital activity into
+        meaningful intelligence.</p>
+      <p class="rv d2" style="max-width:56ch">It helps reveal sentiment, intent, narratives, threats, trends, entities
+        and relationships.</p>
+
+      <div class="intel-grid">
+        <div class="intel-card rv">
+          <span class="intel-ico">☺</span>
+          <h3>Sentiment</h3>
+          <p>Understand how people are responding.</p>
+        </div>
+        <div class="intel-card rv d1">
+          <span class="intel-ico">◎</span>
+          <h3>Intent</h3>
+          <p>Understand what conversations may be trying to achieve.</p>
+        </div>
+        <div class="intel-card rv d2">
+          <span class="intel-ico">◈</span>
+          <h3>Narratives</h3>
+          <p>See how stories and perceptions develop.</p>
+        </div>
+        <div class="intel-card rv">
+          <span class="intel-ico">⚠</span>
+          <h3>Threats</h3>
+          <p>Identify signals that may require attention.</p>
+        </div>
+        <div class="intel-card rv d1">
+          <span class="intel-ico">📈</span>
+          <h3>Trends</h3>
+          <p>Recognize patterns as they change.</p>
+        </div>
+        <div class="intel-card rv d2">
+          <span class="intel-ico">⌘</span>
+          <h3>Relationships</h3>
+          <p>Connect people, entities, accounts, locations and activity.</p>
+        </div>
+      </div>
+
+      <div class="scenario rv d3" style="max-width:640px;margin-left:auto;margin-right:auto;text-align:left">
+        <p>Once you understand what matters, you can decide what to do next.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 ACT -->
+  <div class="pin" data-scene="act">
+    <div class="sticky">
+      <div class="inner">
+        <div class="copy">
+          <span class="stagechip"><b>03</b> Act</span>
+          <h2>Move from insight to action.</h2>
+          <p>An alert becomes a case. A case gets an owner. A grievance routes to the department that can resolve it. A
+            report goes upward with the evidence attached — and every step is logged.</p>
+          <div class="metricrow">
+            <div><span class="k">Alert</span><span class="v">→</span></div>
+            <div><span class="k">Case</span><span class="v">→</span></div>
+            <div><span class="k">Assigned</span><span class="v">→</span></div>
+            <div><span class="k">Resolved</span><span class="v" style="color:var(--ok)">✓</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 FOUR WORLDS -->
+  <section class="sec" id="worlds" data-scene="worlds">
+    <div class="inner">
+      <p class="eyebrow rv">Four worlds</p>
+      <h2 class="rv d1" style="max-width:16ch">One intelligence foundation. Four specialised worlds.</h2>
+      <div class="tabrail rv d2" role="tablist" aria-label="Choose a SAGA product" id="rail">
+        <span class="ind" id="ind"></span>
+        <button role="tab" aria-selected="true" id="t-police" data-w="police">Police</button>
+        <button role="tab" aria-selected="false" id="t-political" data-w="political">Political</button>
+        <button role="tab" aria-selected="false" id="t-brand" data-w="brand">Brand</button>
+        <button role="tab" aria-selected="false" id="t-celebrity" data-w="celebrity">Celebrity</button>
+      </div>
+      <div class="worldgrid">
+        <div class="worldcopy" id="wcopy" role="tabpanel" aria-labelledby="t-police"></div>
+        <div>
+          <div id="worldslot" aria-hidden="true"><span class="wlabel" id="wlabel">Angular · grid</span></div>
+          <div id="wapp"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 CAPABILITIES -->
+  <section class="sec" id="caps" data-scene="orbit">
+    <div class="inner">
+      <p class="eyebrow rv">Capabilities</p>
+      <h2 class="rv d1" style="max-width:18ch">Start with the question you actually have.</h2>
+      <p class="rv d2">Every capability group answers one question a real operator asks. Open one to see what sits
+        underneath it.</p>
+      <div class="caps" id="capgrid"></div>
+    </div>
+  </section>
+
+  <!-- 08 FLOW -->
+  <section class="sec" id="flow">
+    <div class="inner">
+      <p class="eyebrow rv">Signal to action</p>
+      <h2 class="rv d1" style="max-width:17ch">Every signal has somewhere to go.</h2>
+      <div class="flow">
+        <div class="fstep rv"><span class="n">01</span>
+          <h3>Detected</h3>
+          <p>A post, article or event enters the stream and is classified in seconds.</p>
+        </div>
+        <div class="fstep rv d1"><span class="n">02</span>
+          <h3>Scored</h3>
+          <p>Sentiment, topic and risk are attached. Viral potential is estimated.</p>
+        </div>
+        <div class="fstep rv d2"><span class="n">03</span>
+          <h3>Verified</h3>
+          <p>Source attribution, identity resolution and deepfake checks where it matters.</p>
+        </div>
+        <div class="fstep rv d3"><span class="n">04</span>
+          <h3>Escalated</h3>
+          <p>An alert opens a case, routed to whoever owns that geography or subject.</p>
+        </div>
+        <div class="fstep rv d3"><span class="n">05</span>
+          <h3>Resolved</h3>
+          <p>Action taken, outcome recorded, evidence retained, report generated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 ROUTES -->
+  <section class="sec">
+    <div class="inner">
+      <p class="eyebrow rv">Explore your SAGA</p>
+      <h2 class="rv d1" style="max-width:14ch">Which one of these is you?</h2>
+      <div class="routes">
+        <a class="route rv" href="#worlds" data-go="police"><span class="k">I work in</span>
+          <h3>Law enforcement</h3>
+          <p>Threat detection, persons of interest, investigation and evidence.</p><span class="go">Police Saga →</span>
+        </a>
+        <a class="route rv d1" href="#worlds" data-go="political"><span class="k">I work in</span>
+          <h3>Political operations</h3>
+          <p>Constituency sentiment, grievances, early warning on unrest.</p><span class="go">Political Saga →</span>
+        </a>
+        <a class="route rv d2" href="#worlds" data-go="brand"><span class="k">I work in</span>
+          <h3>Brand &amp; comms</h3>
+          <p>Reputation monitoring, crisis detection, source attribution.</p><span class="go">Brand Saga →</span>
+        </a>
+        <a class="route rv d3" href="#worlds" data-go="celebrity"><span class="k">I work in</span>
+          <h3>Talent management</h3>
+          <p>Fan sentiment, coordinated attacks, endorsement intelligence.</p><span class="go">Celebrity Saga →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 FINAL -->
+  <section class="sec" id="final">
+    <div class="inner">
+      <p class="eyebrow rv">Request a demonstration</p>
+      <h2 class="rv d1" style="max-width:17ch;margin-left:auto;margin-right:auto">See it running on your own region.
+      </h2>
+      <p class="lead rv d2" style="max-width:48ch">Tell us which world you operate in and we will show you SAGA
+        configured for it — not a generic deck.</p>
+      <div class="finalrow rv d3">
+        <a class="cta" href="mailto:smartapps@bluecloudsoftech.com?subject=SAGA%20demo%20request">Request a Demo</a>
+        <a class="cta2" href="#worlds">Explore a product</a>
+      </div>
+      <p class="mailnote rv d3">Or write directly to <a
+          href="mailto:smartapps@bluecloudsoftech.com">smartapps@bluecloudsoftech.com</a><br>A product specialist
+        replies within one working day.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <div class="c">Blura SAGA — Sentiment And Goodwill Analysis<br>A product of Blue Cloud Softech Solutions Ltd.
+      </div>
+      <div class="c" style="text-align:right">Design mockup · all data shown is illustrative<br>Cloud · On-premise ·
+        Hybrid deployment</div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  /* ═══════════════ content model ═══════════════ */
+  const WLABEL = { police: 'Angular · grid · investigative', political: 'Territorial · regional · tidal', brand: 'Radial · outward · accelerating', celebrity: 'Organic · clustered · orbital' };
+  const WORLDS = {
+    police: {
+      name: 'Police Saga', title: 'See threats earlier. Investigate faster. Act with evidence.',
+      body: 'Watch the conversations that precede an incident, resolve who is behind them, and carry a clean evidence trail from first signal to closed case.',
+      chips: ['Watchlists', 'Persons of interest', 'Evidence trail', 'Deepfake verification', 'SOC-EYE assistant'],
+      scenario: 'A rumour about a communal incident surfaces at 21:04. SAGA flags it, resolves the three accounts amplifying it, maps where it is spreading, and opens a case for the district cell — before it reaches the morning news cycle.',
+      app: {
+        title: 'saga · police intelligence · district command', navOn: 5,
+        kpis: [['Signals', '4,812', '↘ 6.1%', 'down'], ['High risk', '37', '↗ 22.4%', 'up'], ['Open cases', '14', '↗ 8.0%', 'up'], ['Persons flagged', '9', '—', ''], ['Avg. triage', '4m 12s', '↘ 31%', 'down']],
+        feedTitle: 'Priority alerts', feedTag: '12 active',
+        feed: [
+          { u: '@handle_4471', t: '21:04', r: '', x: 'Unverified claim about an incident near the market area, being reposted by three linked accounts.', tags: ['High risk', 'Coordinated', 'Amaragiri'] },
+          { u: '@handle_2208', t: '20:51', r: 'med', x: 'Video circulating from an older event, re-captioned as current. Flagged for verification.', tags: ['Medium', 'Deepfake check'] },
+          { u: '@handle_9930', t: '20:37', r: 'low', x: 'Local traffic complaint escalating in replies. Routed to the traffic cell.', tags: ['Low', 'Routed'] }],
+        panelTitle: 'Case load by unit', panelTag: 'this week',
+        bars: [['District cyber cell', 82], ['Law &amp; order', 64], ['Traffic', 41], ['Special branch', 28], ['Women safety', 19]]
+      }
+    },
+    political: {
+      name: 'Political Saga', title: 'Understand sentiment. See where it moves. Act before it escalates.',
+      body: 'Constituency-level sentiment, live grievance routing and early warning on unrest — so you know which regions need attention this week, not after the next election.',
+      chips: ['Constituency sentiment', 'Grievance routing', 'Unrest risk', 'Voter profiling', 'Issue tracking'],
+      scenario: 'Negative sentiment in four adjacent constituencies rises 18 points over nine days, all tied to one water-supply issue. SAGA surfaces the pattern, routes the grievances to the right department, and tracks the sentiment recovery after the fix.',
+      app: {
+        title: 'saga · political intelligence · state deployment', navOn: 1,
+        kpis: [['Mentions', '38,104', '↗ 12.7%', 'up'], ['Negative', '11,246', '↗ 18.2%', 'up'], ['Reach', '4.1M', '↗ 9.4%', 'up'], ['Constituencies', '119', '—', ''], ['Alerts', '268', '↗ 5.9%', 'up']],
+        feedTitle: 'Escalating issues', feedTag: 'live grievance feed',
+        feed: [
+          { u: 'Amaragiri', t: '9 days', r: '', x: 'Water supply — negative sentiment up 18 points, spreading to three adjacent constituencies.', tags: ['High risk', 'Public complaint', 'Spreading'] },
+          { u: 'Sirivenna North', t: '4 days', r: 'med', x: 'Road &amp; infrastructure complaints clustering around two ward boundaries.', tags: ['Medium', 'Infrastructure'] },
+          { u: 'Kothanagar', t: '2 days', r: 'low', x: 'Positive movement following the health camp announcement. Sentiment recovering.', tags: ['Recovering', 'Government praise'] }],
+        panelTitle: 'Issues by volume', panelTag: 'last 30 days',
+        bars: [['Public complaint', 88], ['Political criticism', 71], ['Corruption complaint', 44], ['Law &amp; order', 31], ['Road &amp; infrastructure', 26]]
+      }
+    },
+    brand: {
+      name: 'Brand Saga', title: 'Know when a reputation issue is becoming a crisis.',
+      body: 'Not another listening dashboard. Viral-risk prediction, location-aware crisis detection and source attribution — the three things that tell you whether to act now or watch.',
+      chips: ['Viral risk prediction', 'Crisis detection', 'Source attribution', 'Share of voice', 'Sentiment recovery'],
+      scenario: 'A single complaint post is projected to cross 100k views within six hours. SAGA raises it before it trends, identifies the originating account and the three amplifiers, and tracks sentiment recovery once the response goes out.',
+      app: {
+        title: 'saga · brand intelligence · reputation command', navOn: 2,
+        kpis: [['Mentions', '21,573', '↗ 31.0%', 'up'], ['Negative share', '24.8%', '↗ 11.2%', 'up'], ['Viral risk', 'HIGH', '↗', 'up'], ['Share of voice', '38.2%', '↘ 3.1%', 'down'], ['Response time', '18m', '↘ 44%', 'down']],
+        feedTitle: 'Crisis watch', feedTag: '1 escalating',
+        feed: [
+          { u: '@handle_1187', t: '6h proj.', r: '', x: 'Product complaint projected to cross 100k views. Three amplifier accounts identified.', tags: ['Viral: high', 'Originating source', 'Escalating'] },
+          { u: '@handle_5502', t: '3h', r: 'med', x: 'Service delay thread gaining traction in one metro region only.', tags: ['Medium', 'Location cluster'] },
+          { u: '@handle_7741', t: '1h', r: 'low', x: 'Positive coverage from a category publication offsetting the negative trend.', tags: ['Positive', 'Earned media'] }],
+        panelTitle: 'Sentiment by channel', panelTag: 'live',
+        bars: [['Social — X', 74], ['Social — Instagram', 58], ['News &amp; web', 47], ['Video platforms', 33], ['Forums', 21]]
+      }
+    },
+    celebrity: {
+      name: 'Celebrity Saga', title: 'Understand reputation, fans, influence and attack patterns.',
+      body: 'Tell a genuine fan backlash apart from a coordinated troll operation — and see which endorsements are actually moving perception.',
+      chips: ['Fan sentiment', 'Troll &amp; bot detection', 'Coordinated attack patterns', 'Endorsement intelligence', 'Regional language reach'],
+      scenario: 'A negative trend spikes overnight. SAGA shows 71% of the volume comes from accounts under 90 days old posting in a 40-minute window — a coordinated push, not a fan reaction. The response strategy changes completely.',
+      app: {
+        title: 'saga · celebrity intelligence · reputation &amp; fandom', navOn: 3,
+        kpis: [['Mentions', '64,290', '↗ 47.3%', 'up'], ['Genuine fans', '29.1%', '↘ 22.0%', 'down'], ['Suspected bots', '71%', '↗', 'up'], ['Sentiment', '−0.34', '↘', 'up'], ['Endorsements', '6', '—', '']],
+        feedTitle: 'Attack pattern detected', feedTag: 'coordinated',
+        feed: [
+          { u: 'Cluster A · 412 accounts', t: '40 min', r: '', x: '71% of negative volume from accounts under 90 days old, posting inside one 40-minute window.', tags: ['Coordinated', 'Bot cluster', 'High confidence'] },
+          { u: 'Cluster B · 78 accounts', t: '2h', r: 'med', x: 'Recycled content from an unrelated older controversy being re-attributed.', tags: ['Medium', 'Misinformation'] },
+          { u: 'Organic fan volume', t: 'ongoing', r: 'low', x: 'Genuine fan accounts responding in defence. Regional-language sentiment holding positive.', tags: ['Organic', 'Telugu', 'Positive'] }],
+        panelTitle: 'Audience composition', panelTag: 'estimated',
+        bars: [['Suspected coordinated', 71], ['Genuine fans', 29], ['Regional language', 54], ['Media &amp; press', 12], ['Endorsement-linked', 8]]
+      }
+    }
+  };
+
+  const CAPS = [
+    ['What are people saying?', 'Monitor', 'Continuous capture across social platforms, news, RSS and the open web — in English and regional languages, with inline translation.', 'Every source you care about, watched without anyone having to refresh a page.', 'Run keyword watchlists, track named profiles and monitor events and calendars without manual searching.'],
+    ['What does it mean?', 'Analyze', 'Sentiment, intent, topic and entity analysis on every incoming signal, plus AI summarisation of long threads.', 'You read conclusions, not raw feeds.', 'Classify by topic, extract entities, and summarise a hundred posts into one paragraph.'],
+    ['What looks risky?', 'Detect', 'Threat signals, risk scoring, narrative and campaign detection, and misinformation identification.', 'The difference between a hundred angry posts and one organised campaign.', 'Separate organic anger from a manufactured push, and score how serious each is.'],
+    ['What happens next?', 'Predict', 'Trend forecasting, escalation likelihood, viral-risk projection and unrest early warning.', 'Time to act instead of time to react.', 'See which issue is about to become a problem, and roughly when.'],
+    ['Where is it happening?', 'Locate', 'Geospatial intelligence down to constituency, district and ward level, with sentiment mapped to place.', 'A map tells you where to send people. A list does not.', 'Compare regions, spot clusters, and watch an issue move across a boundary.'],
+    ['Who is behind it?', 'Investigate', 'Identity resolution, network analysis, cross-platform search, deepfake verification and the SOC-EYE AI assistant.', 'From a single post to the network behind it.', 'Trace an account across platforms, map its connections, and verify whether media is authentic.'],
+    ['What do we do about it?', 'Manage &amp; Govern', 'Alerts, cases, assignment, grievance routing and automated reporting — under role-based access control and full audit trails.', 'Intelligence that ends in an action someone owns.', 'Route work to the right team, and prove afterwards who saw what and when.']
+  ];
+
+  /* ═══════════════ worlds UI ═══════════════ */
+  const wcopy = document.getElementById('wcopy'), wapp = document.getElementById('wapp'),
+    rail = document.getElementById('rail'), ind = document.getElementById('ind'),
+    tabs = [...rail.querySelectorAll('button')];
+  let current = 'police';
+
+  const esc = s => s;
+  function renderWorld(k) {
+    const w = WORLDS[k], a = w.app;
+    wcopy.className = 'worldcopy fade';
+    wcopy.innerHTML = `<h2>${w.title}</h2><p>${w.body}</p>
+    <div class="chips">${w.chips.map(c => `<span>${c}</span>`).join('')}</div>
+    <div class="scenario"><p>${w.scenario}</p></div>
+    <a class="cta" href="#final">Request a ${w.name} demo</a>`;
+    wapp.className = 'fade';
+    wapp.innerHTML = `<div class="app">
+    <div class="appbar"><span class="dots"><i></i><i></i><i></i></span>
+      <span class="t">${a.title}</span><span class="live"><i></i>Live</span></div>
+    <div class="appbody">
+      <div class="appnav">${[...Array(9)].map((_, i) => `<i class="${i === a.navOn ? 'on' : ''}">${'▦◍▤◈⚑▣✦◐⚙'[i]}</i>`).join('')}</div>
+      <div class="appmain">
+        <div class="kpis">${a.kpis.map(([k, v, d, c]) => `<div class="kpi"><span class="k">${k}</span><span class="v">${v}</span><span class="d ${c}">${d}</span></div>`).join('')}</div>
+        <div class="appsplit">
+          <div class="panel"><div class="h">${a.feedTitle}<em>${a.feedTag}</em></div>
+            <div class="feed">${a.feed.map(f => `<div class="item ${f.r}">
+              <div class="u"><b>${f.u}</b><time>${f.t}</time></div><p>${f.x}</p>
+              <div class="tags">${f.tags.map((t, i) => `<span class="${i === 0 && !f.r ? 'hot' : ''}">${t}</span>`).join('')}</div></div>`).join('')}</div></div>
+          <div class="panel"><div class="h">${a.panelTitle}<em>${a.panelTag}</em></div>
+            <div class="bars">${a.bars.map(([n, v]) => `<div class="bar"><span class="n">${n}</span><span class="c">${v}</span><span class="t"><i style="width:${v}%"></i></span></div>`).join('')}</div>
+          </div>
+        </div>
+        <div class="illus">Illustrative data — not a live deployment</div>
+      </div>
+    </div></div>`;
+  }
+  function moveInd(btn) { ind.style.width = btn.offsetWidth + 'px'; ind.style.transform = `translateX(${btn.offsetLeft - 4}px)`; }
+  function select(k, focus) {
+    current = k;
+    tabs.forEach(t => { const on = t.dataset.w === k; t.setAttribute('aria-selected', on); if (on) { moveInd(t); if (focus) t.focus(); wcopy.setAttribute('aria-labelledby', t.id); } });
+    renderWorld(k); const wl = document.getElementById('wlabel'); if (wl) wl.textContent = WLABEL[k];
+    if (window.SCENE) SCENE.morph(k);
+  }
+  tabs.forEach(t => t.addEventListener('click', () => select(t.dataset.w)));
+  rail.addEventListener('keydown', e => {
+    const i = tabs.findIndex(t => t.dataset.w === current); let n = null;
+    if (e.key === 'ArrowRight') n = (i + 1) % tabs.length; if (e.key === 'ArrowLeft') n = (i - 1 + tabs.length) % tabs.length;
+    if (e.key === 'Home') n = 0; if (e.key === 'End') n = tabs.length - 1;
+    if (n !== null) { e.preventDefault(); select(tabs[n].dataset.w, true); }
+  });
+  document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', () => select(a.dataset.go)));
+  select('police'); addEventListener('resize', () => moveInd(tabs.find(t => t.dataset.w === current)));
+  setTimeout(() => moveInd(tabs.find(t => t.dataset.w === current)), 300);
+
+  /* capabilities */
+  document.getElementById('capgrid').innerHTML = CAPS.map(([q, g, what, why, does]) => `
+  <details class="cap"><summary><div><h3>${q}</h3><p>${g}</p></div><span class="pl">+</span></summary>
+    <div class="capbody"><dl>
+      <dt>What it is</dt><dd>${what}</dd>
+      <dt>Why it matters</dt><dd>${why}</dd>
+      <dt>What it lets you do</dt><dd>${does}</dd>
+    </dl></div></details>`).join('');
+
+  /* reveals */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  /* repeatable reveal (.cv) — toggles on every entry/exit instead of firing once */
+  const cio = new IntersectionObserver(es => es.forEach(e =>
+    e.target.classList.toggle('in', e.isIntersecting)), { threshold: .15 });
+  document.querySelectorAll('.cv').forEach(el => cio.observe(el));
+  let lastY = 0, ticking = false;
+  const heroEl = document.getElementById('hero'), frameBg = document.getElementById('heroFrameBg'), lightBg = document.getElementById('heroLightBg');
+  const SHRINK = 280;
+  function frameTick() {
+    const y = scrollY, nav = document.getElementById('nav'), diff = y - lastY;
+    const p = Math.min(1, Math.max(0, y / SHRINK));
+    document.documentElement.style.setProperty('--p', p);
+
+    if (y > 80) {
+      nav.classList.add('floating');
+      if (diff > 6 && y > 200) nav.classList.add('hidden');
+      else if (diff < -6) nav.classList.remove('hidden');
+    } else {
+      nav.classList.remove('floating', 'hidden');
+    }
+    document.body.classList.toggle('scrolled', p >= 1);
+
+    const r = heroEl.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) {
+      const cs = getComputedStyle(heroEl);
+      const mt = parseFloat(cs.marginTop), ml = parseFloat(cs.marginLeft), mr = parseFloat(cs.marginRight), mb = parseFloat(cs.marginBottom);
+
+      lightBg.classList.add('show');
+      lightBg.style.top = (r.top - mt) + 'px';
+      lightBg.style.left = (r.left - ml) + 'px';
+      lightBg.style.width = (r.width + ml + mr) + 'px';
+      lightBg.style.height = (r.height + mt + mb) + 'px';
+
+      frameBg.classList.add('show');
+      frameBg.style.top = r.top + 'px';
+      frameBg.style.left = r.left + 'px';
+      frameBg.style.width = r.width + 'px';
+      frameBg.style.height = r.height + 'px';
+      frameBg.style.borderRadius = (28 * (1 - p)) + 'px';
+    } else {
+      frameBg.classList.remove('show');
+      lightBg.classList.remove('show');
+    }
+
+    lastY = y;
+    ticking = false;
+  }
+  addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(frameTick); ticking = true; }
+  }, { passive: true });
+  addEventListener('resize', frameTick, { passive: true });
+  frameTick();
+</script>
+
+<script>/* ═══ macbook showcase — scroll rise + live dashboard ═══ */
+  (() => {
+    const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const device = document.getElementById('mbDevice');
+    const vp = document.getElementById('sdViewport');
+    const os = document.getElementById('mbOs');
+    const screenEl = os.parentElement;
+
+    /* keep the 1440×980 dashboard scaled to whatever the screen area is */
+    const fit = () => os.style.setProperty('--sd-s', screenEl.clientWidth / 1510);
+    new ResizeObserver(fit).observe(screenEl); fit();
+
+    /* rise as the device scrolls into view */
+    let raf = false;
+    const rise = () => {
+      raf = false;
+      const r = device.getBoundingClientRect();
+      const start = innerHeight * .96, end = innerHeight * .42;
+      const p = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
+      device.style.setProperty('--mb', RM ? 1 : p);
+    };
+    addEventListener('scroll', () => { if (!raf) { requestAnimationFrame(rise); raf = true; } }, { passive: true });
+    addEventListener('resize', rise, { passive: true }); rise();
+
+    /* ── data ───────────────────────────────────────── */
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(2) + 'K' : Math.round(n);
+    const spark = (n, up) => {
+      let pts = [], v = rnd(30, 55);
+      for (let i = 0; i < n; i++) { v += rnd(-9, up ? 12 : 7); v = Math.max(8, Math.min(52, v)); pts.push(`${(i / (n - 1) * 100).toFixed(1)},${(60 - v).toFixed(1)}`); }
+      return pts.join(' ');
+    };
+
+    const kpis = [
+      { lbl: 'Total Mentions', v: 2.45e6, d: 12.4, up: 1, c: '#2E6BE6', bg: '#EAF1FE', ic: '📈' },
+      { lbl: 'High Risk Alerts', v: 186, d: -8.7, up: 0, c: '#E5372B', bg: '#FEE4E2', ic: '⚠' },
+      { lbl: 'Grievances', v: 1.32e3, d: 15.1, up: 1, c: '#7C4DFF', bg: '#F0EBFF', ic: '💬' },
+      { lbl: 'Positive Sentiment', v: 62.8, d: 6.3, up: 1, c: '#12B76A', bg: '#D1FADF', ic: '☺', pct: 1 },
+      { lbl: 'Potential Reach', v: 98.6e6, d: 18.9, up: 1, c: '#2E6BE6', bg: '#EAF1FE', ic: '👥' }
+    ];
+    document.getElementById('sdKpis').innerHTML = kpis.map((k, i) => `
+      <div class="sd-card sd-kpi">
+        <div class="t"><div class="lbl">${k.lbl}</div><div class="ic" style="background:${k.bg};color:${k.c}">${k.ic}</div></div>
+        <div class="v"><span data-kv="${i}">${k.pct ? k.v.toFixed(1) + '%' : fmt(k.v)}</span>
+          <span class="d ${k.d > 0 ? 'sd-up' : 'sd-dn'}">${k.d > 0 ? '▲' : '▼'} ${Math.abs(k.d)}%</span></div>
+        <div class="sub">vs May 05 – May 11</div>
+        <svg class="sd-spark" viewBox="0 0 100 60" preserveAspectRatio="none">
+          <polyline data-sp="${i}" points="${spark(22, k.up)}" stroke="${k.c}"/></svg>
+      </div>`).join('');
+
+    const sent = [{ n: 'Positive', c: '#12B76A', p: 62.8 }, { n: 'Neutral', c: '#2E6BE6', p: 23.7 }, { n: 'Negative', c: '#E5372B', p: 13.5 }];
+    const risk = [{ n: 'High Risk', c: '#E5372B', p: 7.6, v: 186 }, { n: 'Medium Risk', c: '#F79009', p: 30.3, v: 743 }, { n: 'Low Risk', c: '#12B76A', p: 62.1, v: 1520 }];
+    const legend = (el, rows, tot) => el.innerHTML = rows.map(r => `
+      <div><i style="background:${r.c}"></i>${r.n}
+        <b class="n">${r.v !== undefined ? (r.v >= 1000 ? (r.v / 1000).toFixed(2) + 'K' : r.v) : r.p.toFixed(1) + '%'}</b>
+        <span class="pct">(${r.v !== undefined ? r.p.toFixed(1) + '%' : fmt(tot * r.p / 100)})</span></div>`).join('');
+    legend(document.getElementById('sdSentLeg'), sent, 2.45e6);
+    legend(document.getElementById('sdRiskLeg'), risk);
+
+    const C = 2 * Math.PI * 52;
+    const arcs = (sel, rows) => {
+      let off = 0;
+      document.querySelectorAll(sel).forEach((c, i) => {
+        const len = C * rows[i].p / 100;
+        c.setAttribute('stroke-dasharray', `${len} ${C - len}`);
+        c.setAttribute('stroke-dashoffset', -off);
+        off += len;
+      });
+    };
+    const drawArcs = () => { arcs('.sdSeg', sent); arcs('.sdRisk', risk); };
+    setTimeout(drawArcs, 260);
+
+    const trend = [
+      { t: '#Election2025', m: 245, c: 23.5 }, { t: '#CityProtests', m: 189, c: 18.7 },
+      { t: '#FuelPriceHike', m: 143, c: 12.1 }, { t: '#NewPolicy', m: 98, c: 9.3 }, { t: '#SportsFinal', m: 76, c: -2.1 }
+    ];
+    const drawTrend = () => document.getElementById('sdTrend').innerHTML = trend.map((t, i) => `
+      <div><span class="r">${i + 1}</span><span class="tag">${t.t}</span>
+        <span class="m">${t.m}K Mentions</span>
+        <span class="c ${t.c > 0 ? 'sd-up' : 'sd-dn'}">${t.c > 0 ? '▲' : '▼'} ${Math.abs(t.c).toFixed(1)}%</span>
+        <svg viewBox="0 0 100 60" preserveAspectRatio="none"><polyline points="${spark(16, t.c > 0)}"
+          fill="none" stroke="${t.c > 0 ? '#2E6BE6' : '#E5372B'}" stroke-width="3" stroke-linecap="round"/></svg></div>`).join('');
+    drawTrend();
+
+    const plats = [
+      { n: 'X (Twitter)', c: '#000', v: 1.25e6, p: 51.0, w: 100 }, { n: 'Facebook', c: '#1877F2', v: 620e3, p: 25.3, w: 50 },
+      { n: 'Instagram', c: '#DD2A7B', v: 320e3, p: 13.1, w: 26 }, { n: 'YouTube', c: '#FF0000', v: 180e3, p: 7.3, w: 15 },
+      { n: 'Telegram', c: '#229ED9', v: 85e3, p: 3.3, w: 7 }
+    ];
+    const drawPlat = () => document.getElementById('sdPlat').innerHTML = plats.map(p => `
+      <div class="sd-prow"><span class="nm">${p.n}</span>
+        <span class="tr"><i style="width:${p.w}%;background:${p.c}"></i></span>
+        <span class="vv">${fmt(p.v)} <span>(${p.p.toFixed(1)}%)</span></span></div>`).join('');
+    drawPlat();
+
+    const alerts = [
+      { n: 'Communal Violence', k: 'sd-hi', l: 'High Risk', t: '2 min ago' },
+      { n: 'Hate Speech', k: 'sd-hi', l: 'High Risk', t: '5 min ago' },
+      { n: 'Fake News', k: 'sd-md', l: 'Medium Risk', t: '15 min ago' },
+      { n: 'Protest Call', k: 'sd-md', l: 'Medium Risk', t: '30 min ago' }
+    ];
+    const drawAlerts = () => document.getElementById('sdAlerts').innerHTML = alerts.map(a => `
+      <div class="sd-lrow"><span style="color:#E5372B">⚠</span><span class="nm">${a.n}</span>
+        <span class="sd-chip ${a.k}">${a.l}</span><span class="ag">${a.t}</span></div>`).join('');
+    drawAlerts();
+
+    document.getElementById('sdGriev').innerHTML = [
+      { n: 'Pothole on Main Street', id: '#GRV-12543', k: 'sd-nw', l: 'New', t: '10 min ago' },
+      { n: 'Electricity Issue', id: '#GRV-12542', k: 'sd-ip', l: 'In Progress', t: '25 min ago' },
+      { n: 'Water Supply Problem', id: '#GRV-12541', k: 'sd-lo', l: 'Resolved', t: '1 h ago' }
+    ].map(g => `<div class="sd-lrow"><span style="color:#98A2B3">✉</span>
+        <span class="nm">${g.n} <span style="color:#98A2B3;font-size:10px">${g.id}</span></span>
+        <span class="sd-chip ${g.k}">${g.l}</span><span class="ag">${g.t}</span></div>`).join('');
+
+    /* ── live feed ──────────────────────────────────── */
+    const srcs = [
+      { p: '𝕏', c: '#000', u: '@NewsUpdate' }, { p: 'f', c: '#1877F2', u: '@CityWatch' },
+      { p: '◙', c: '#DD2A7B', u: '@ground_report' }, { p: '✈', c: '#229ED9', u: '@alert_channel' },
+      { p: '▶', c: '#FF0000', u: '@LiveNews24' }
+    ];
+    const bodies = [
+      ['Protest gathering at Connaught Place, New Delhi. Heavy police deployment in the area.', 'Protest', 'sd-hi', 'High Risk', 'Negative', '#E5372B'],
+      ['Coordinated posting pattern detected across 40+ accounts on the fuel price thread.', 'Bot Network', 'sd-hi', 'High Risk', 'Negative', '#E5372B'],
+      ['Municipal team resolved the water supply complaint in Ward 12 within 4 hours.', 'Grievance', 'sd-lo', 'Low Risk', 'Positive', '#12B76A'],
+      ['Unverified claim about the new policy spreading in regional-language groups.', 'Fake News', 'sd-md', 'Medium Risk', 'Neutral', '#F79009'],
+      ['Public appreciation trending for the new metro corridor announcement.', 'Sentiment', 'sd-lo', 'Low Risk', 'Positive', '#12B76A'],
+      ['Local escalation reported near the district collectorate. Monitoring in progress.', 'Incident', 'sd-md', 'Medium Risk', 'Negative', '#E5372B']
+    ];
+    const feed = document.getElementById('sdFeed');
+    let bi = 0;
+    const push = () => {
+      const s = srcs[Math.floor(Math.random() * srcs.length)], b = bodies[bi++ % bodies.length];
+      const el = document.createElement('div');
+      el.className = 'sd-fitem';
+      el.innerHTML = `<div class="pv" style="background:${s.c}">${s.p}</div>
+        <div class="bd"><div class="hd"><b>${s.u}</b><time>just now</time></div>
+          <p>${b[0]}</p><div class="mt"><span class="sd-chip sd-nw">${b[1]}</span>
+          <span class="sd-chip ${b[2]}">${b[3]}</span></div></div>
+        <div class="rr"><span class="k">Reach</span><span class="v">${(rnd(4, 60)).toFixed(1)}K</span>
+          <span class="k" style="margin-top:5px">Sentiment</span>
+          <span class="v" style="color:${b[5]};font-size:11px">${b[4]}</span></div>`;
+      feed.prepend(el);
+      feed.querySelectorAll('.sd-fitem').forEach((n, i) => { if (i > 0) n.querySelector('time').textContent = i * 2 + ' min ago'; });
+      while (feed.children.length > 2) feed.lastElementChild.remove();
+    };
+    push(); push();
+
+    /* ── keep it alive ──────────────────────────────── */
+    if (!RM) {
+      /* stats drift */
+      setInterval(() => {
+        kpis.forEach((k, i) => {
+          k.v *= 1 + rnd(-.004, .006);
+          const el = document.querySelector(`[data-kv="${i}"]`);
+          if (el) el.textContent = k.pct ? Math.min(99, k.v).toFixed(1) + '%' : fmt(k.v);
+        });
+        sent[0].p = Math.max(55, Math.min(70, sent[0].p + rnd(-.6, .6)));
+        sent[2].p = Math.max(9, Math.min(20, sent[2].p + rnd(-.4, .4)));
+        sent[1].p = 100 - sent[0].p - sent[2].p;
+        legend(document.getElementById('sdSentLeg'), sent, kpis[0].v);
+        document.getElementById('sdSentTotal').textContent = fmt(kpis[0].v);
+        document.getElementById('sdRiskTotal').textContent = fmt(kpis[0].v);
+        drawArcs();
+      }, 3200);
+
+      /* sparkline redraw */
+      setInterval(() => document.querySelectorAll('[data-sp]').forEach(p =>
+        p.setAttribute('points', spark(22, kpis[+p.dataset.sp].up))), 4600);
+
+      /* platform bars breathe */
+      setInterval(() => {
+        plats.forEach(p => { p.w = Math.max(5, Math.min(100, p.w + rnd(-4, 4))); });
+        drawPlat();
+      }, 5200);
+
+      /* new alert arrives */
+      setInterval(() => {
+        const pool = ['Coordinated Campaign', 'Deepfake Detected', 'Riot Instigation', 'Doxxing Attempt', 'Impersonation'];
+        alerts.unshift({ n: pool[Math.floor(Math.random() * pool.length)], k: 'sd-hi', l: 'High Risk', t: 'just now' });
+        alerts.length = 4;
+        drawAlerts();
+        const b = document.getElementById('sdAlertBadge'), c = document.getElementById('sdAlertCount'),
+          bell = document.getElementById('sdBell');
+        b.textContent = c.textContent = +b.textContent + 1;
+        bell.textContent = +bell.textContent + 1;
+      }, 7400);
+
+      /* trending reshuffles */
+      setInterval(() => {
+        trend.forEach(t => { t.m = Math.max(20, t.m + Math.round(rnd(-8, 12))); t.c += rnd(-1.4, 1.4); });
+        trend.sort((a, b) => b.m - a.m);
+        drawTrend();
+      }, 6100);
+
+      /* feed keeps streaming */
+      setInterval(push, 4200);
+    }
+  })();
+</script>
+<script>/* ═══════════════════════════════════════════════════════════
+SAGA scene engine — one canvas, many scenes.
+Hand-written projection so the mockup stays dependency-free.
+In production these narrative scenes become baked WebP
+sequences; only `hero` and `worlds` stay live.
+═══════════════════════════════════════════════════════════ */
+  (() => {
+    const cv = document.getElementById('stage'), ctx = cv.getContext('2d', { alpha: true });
+    const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ORANGE = [241, 91, 38], LIFT = [255, 122, 69], GREY = [120, 116, 112];
+
+    let W = 0, H = 0, DPR = 1;
+    function resize() {
+      DPR = Math.min(devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight;
+      cv.width = W * DPR; cv.height = H * DPR;
+      cv.style.width = W + 'px'; cv.style.height = H + 'px';
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    resize(); addEventListener('resize', resize);
+
+    /* ── point cloud ─────────────────────────────────────────── */
+    const N = 820;
+    const R = new Float32Array(N * 4);        // 4 stable randoms per point
+    /* seeded PRNG — bakes must be reproducible, so no Math.random anywhere */
+    let _s = 0x9E3779B9 >>> 0;
+    const srnd = () => { _s ^= _s << 13; _s >>>= 0; _s ^= _s >> 17; _s ^= _s << 5; _s >>>= 0; return _s / 4294967296; };
+    for (let i = 0; i < N; i++) { for (let k = 0; k < 4; k++) R[i * 4 + k] = srnd(); }
+
+    const rnd = (i, k) => R[i * 4 + k];
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+    const easeInOut = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    /* ── projection ──────────────────────────────────────────── */
+    let camRY = 0, camRX = 0, px = 0, py = 0;      // pointer parallax
+    const FOV = 520;
+    /* Where on screen the scene is anchored. Scenes set this so the 3D never
+       sits underneath the copy column — the single biggest legibility win. */
+    const O = { x: 0, y: 0 };
+    let GS = 1;                            // per-scene global scale, set at scene start
+    function anchorRight() { if (window.SAGA_BAKE) { O.x = W * 0.5; O.y = H * 0.5; return; } O.x = W > 1024 ? W * 0.705 : W * 0.5; O.y = H * 0.5; }
+    function fit(base) { GS = base * clamp(Math.min(W, H) / 820, 0.62, 1.55); }
+    function anchorCenter() { O.x = W * 0.5; O.y = H * 0.5; }
+    function anchorEl(sel, fallbackRight) {
+      const el = document.querySelector(sel);
+      if (!el) { fallbackRight ? anchorRight() : anchorCenter(); return null; }
+      const r = el.getBoundingClientRect();
+      if (r.width < 40) { fallbackRight ? anchorRight() : anchorCenter(); return null; }
+      O.x = r.left + r.width / 2; O.y = r.top + r.height / 2;
+      return r;
+    }
+    function project(x, y, z, scale) {
+      const cy = Math.cos(camRY), sy = Math.sin(camRY);
+      let X = x * cy - z * sy, Z = x * sy + z * cy;
+      const cx2 = Math.cos(camRX), sx2 = Math.sin(camRX);
+      let Y = y * cx2 - Z * sx2; Z = y * sx2 + Z * cx2;
+      const d = FOV / (FOV + Z + 340);
+      const sc = scale * GS;
+      return [O.x + X * d * sc + px, O.y + Y * d * sc + py, d];
+    }
+    function dot(x, y, z, scale, col, alpha, size) {
+      const [sx, sy, d] = project(x, y, z, scale);
+      if (d <= 0.05) return;
+      const r = size * d, a = alpha * clamp(d * 1.15, 0, 1);
+      if (a <= 0.01) return;
+      ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${a})`;
+      ctx.beginPath(); ctx.arc(sx, sy, Math.max(.4, r), 0, 6.283); ctx.fill();
+    }
+    function line(a, b, scale, col, alpha, w) {
+      const p1 = project(a[0], a[1], a[2], scale), p2 = project(b[0], b[1], b[2], scale);
+      ctx.strokeStyle = `rgba(${col[0]},${col[1]},${col[2]},${alpha})`;
+      ctx.lineWidth = w || 1;
+      ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.stroke();
+    }
+    function glow(x, y, rad, col, alpha) {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+      g.addColorStop(0, `rgba(${col[0]},${col[1]},${col[2]},${alpha})`);
+      g.addColorStop(1, `rgba(${col[0]},${col[1]},${col[2]},0)`);
+      ctx.fillStyle = g; ctx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+    }
+
+    /* ── world target clouds ─────────────────────────────────── */
+    function buildWorld(kind) {
+      const out = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) {
+        const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+        let x, y, z;
+        if (kind === 'police') {                                  // angular city grid
+          const g = 7, gx = Math.round(a * g - g / 2), gz = Math.round(b * g - g / 2);
+          const along = (c - .5) * 2;
+          if (d < .5) { x = gx * 46; z = along * 160; } else { x = along * 160; z = gz * 46; }
+          y = d < .14 ? -Math.abs(along) * 86 : (c - .5) * 10;
+        } else if (kind === 'political') {                        // territorial patches
+          const k = Math.floor(a * 6), ang = (k / 6) * 6.283;
+          const cxx = Math.cos(ang) * 105, czz = Math.sin(ang) * 105;
+          const rr = Math.sqrt(b) * 66, th = c * 6.283;
+          x = cxx + Math.cos(th) * rr; z = czz + Math.sin(th) * rr; y = (d - .5) * 14 + Math.sin(rr * .05) * 8;
+        } else if (kind === 'brand') {                            // radial spread
+          const ring = Math.floor(a * 5) + 1, th = b * 6.283, spir = c * .9;
+          const rr = ring * 34 + spir * 26;
+          x = Math.cos(th + spir) * rr; z = Math.sin(th + spir) * rr; y = (d - .5) * 20 - ring * 4;
+        } else {                                              // celebrity — organic clusters
+          const k = Math.floor(a * 5), ang = (k / 5) * 6.283 + .6;
+          const cxx = Math.cos(ang) * 96, cyy = (k % 2 ? -1 : 1) * 34, czz = Math.sin(ang) * 96;
+          const rr = Math.pow(b, .7) * 54, th = c * 6.283, ph = Math.acos(2 * d - 1);
+          x = cxx + Math.sin(ph) * Math.cos(th) * rr; y = cyy + Math.cos(ph) * rr * .7; z = czz + Math.sin(ph) * Math.sin(th) * rr;
+        }
+        out[i * 3] = x; out[i * 3 + 1] = y; out[i * 3 + 2] = z;
+      }
+      return out;
+    }
+    const CLOUD = {
+      police: buildWorld('police'), political: buildWorld('political'),
+      brand: buildWorld('brand'), celebrity: buildWorld('celebrity')
+    };
+
+    /* morph state */
+    let wFrom = 'police', wTo = 'police', wT = 1, wStart = 0;
+    const MORPH_MS = 900;
+
+    /* ── scenes ──────────────────────────────────────────────── */
+    const scenes = {
+
+      /* 01 — live: signals converge into the core, then branch four ways */
+      hero(p, t) {
+        anchorRight(); fit(1.45);
+        const fade = 1 - clamp((p - .55) / .45, 0, 1);
+        if (fade <= 0) return;
+        camRY = t * 0.00011; camRX = Math.sin(t * 0.00008) * 0.10;
+        const [ccx, ccy] = project(0, 0, 0, 1);
+        glow(ccx, ccy, Math.min(W, H) * 0.42, [122, 42, 14], 0.34 * fade);
+        glow(ccx, ccy, 74, ORANGE, 0.28 * fade);
+
+        for (let i = 0; i < N; i++) {
+          const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+          const ph = (t * 0.00013 + a) % 1;                     // travel 0→1 inward
+          const th = b * 6.283, el = Math.acos(2 * c - 1);
+          const far = 330 + d * 250, near = 16;
+          const rr = lerp(far, near, ph * ph);
+          const x = Math.sin(el) * Math.cos(th) * rr, y = Math.cos(el) * rr * .75, z = Math.sin(el) * Math.sin(th) * rr;
+          const hot = ph > .72;
+          const col = hot ? LIFT : (d > .55 ? ORANGE : GREY);
+          dot(x, y, z, 1, col, (hot ? .95 : .42) * fade, hot ? 1.9 : 1.25);
+        }
+        /* four branches out of the core */
+        for (let k = 0; k < 4; k++) {
+          const ang = (k / 4) * 6.283 + t * 0.00011;
+          const grow = clamp((Math.sin(t * 0.0006 - k * 1.2) + 1) / 2, 0, 1);
+          for (let s = 0; s < 26; s++) {
+            const f = s / 26, rr = 30 + f * 210 * grow;
+            dot(Math.cos(ang) * rr, -f * 40, Math.sin(ang) * rr, 1, ORANGE, (1 - f) * .62 * fade, 1.5);
+          }
+        }
+        ctx.fillStyle = `rgba(255,255,255,${.9 * fade})`;
+        ctx.beginPath(); ctx.arc(ccx, ccy, 4.5, 0, 6.283); ctx.fill();
+      },
+
+      /* 02 — noise: everything is loud, three things matter */
+      noise(p, t) {
+        anchorRight(); fit(1.5);
+        glow(O.x, O.y, Math.min(W, H) * 0.34, [122, 42, 14], 0.14);
+        camRY = t * 0.00006; camRX = 0.06;
+        const settle = easeInOut(clamp(p * 1.25, 0, 1));
+        for (let i = 0; i < N; i++) {
+          const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+          const signal = d > 0.9905;                       // ~3 of 820
+          const drift = Math.sin(t * 0.0004 + a * 9) * 8;
+          const x = (a - .5) * 620, y = (b - .5) * 400 + drift, z = (c - .5) * 420;
+          if (signal) {
+            const rise = settle * -70;
+            dot(x * .35, y * .4 + rise, z * .35, 1, LIFT, 1, lerp(1.6, 4.2, settle));
+            const [sx, sy] = project(x * .35, y * .4 + rise, z * .35, 1);
+            glow(sx, sy, lerp(0, 52, settle), ORANGE, .5 * settle);
+          } else {
+            dot(x, y, z, 1, GREY, lerp(.6, .08, settle), lerp(1.8, 1.1, settle));
+          }
+        }
+      },
+
+      /* 03 — observe: scattered sources organise into readable lanes */
+      observe(p, t) {
+        anchorRight(); fit(1.72);
+        glow(O.x, O.y, Math.min(W, H) * 0.30, [122, 42, 14], 0.20);
+        camRY = lerp(0.42, 0.10, easeInOut(p)) + t * 0.00004; camRX = lerp(0.05, 0.22, easeInOut(p));
+        const o = easeInOut(clamp(p * 1.2, 0, 1));
+        const LANES = 7;
+        for (let i = 0; i < N; i++) {
+          const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+          const lane = Math.floor(a * LANES);
+          const sx = (a - .5) * 640, sy = (b - .5) * 420, sz = (c - .5) * 440;
+          const flow = ((t * 0.00016) + d) % 1;
+          const tx = lerp(-250, 250, flow), ty = (lane - (LANES - 1) / 2) * 40, tz = (d - .5) * 36;
+          const x = lerp(sx, tx, o), y = lerp(sy, ty, o), z = lerp(sz, tz, o);
+          dot(x, y, z, 1, d > .72 ? ORANGE : GREY, lerp(.4, .95, o), lerp(1.5, 2.2, o));
+        }
+        /* lane rails appear as things organise */
+        if (o > .35) {
+          const al = (o - .35) / .65 * .16;
+          for (let l = 0; l < LANES; l++) {
+            const y = (l - (LANES - 1) / 2) * 40;
+            line([-262, y, 0], [262, y, 0], 1, ORANGE, al * 1.6, 1);
+          }
+        }
+      },
+
+      /* 04 — understand: lanes classify, then connect into a network */
+      understand(p, t) {
+        anchorRight(); fit(1.62);
+        glow(O.x, O.y, Math.min(W, H) * 0.30, [122, 42, 14], 0.22);
+        camRY = 0.14 + easeInOut(p) * 0.42 + t * 0.00005; camRX = lerp(0.22, 0.30, p);
+        const cls = easeInOut(clamp(p * 2, 0, 1));            // classify
+        const net = easeInOut(clamp((p - .42) / .58, 0, 1));    // connect
+        const LANES = 7;
+        const pos = [];
+        for (let i = 0; i < N; i++) {
+          const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+          const lane = Math.floor(a * LANES);
+          const flow = ((t * 0.00016) + d) % 1;
+          const lx = lerp(-250, 250, flow), ly = (lane - (LANES - 1) / 2) * 40, lz = (d - .5) * 36;
+          /* network target: clustered by class */
+          const grp = Math.floor(d * 4), ang = (grp / 4) * 6.283 + .4;
+          const nx = Math.cos(ang) * 98 + (b - .5) * 70, ny = (c - .5) * 86, nz = Math.sin(ang) * 98 + (a - .5) * 70;
+          const x = lerp(lx, nx, net), y = lerp(ly, ny, net), z = lerp(lz, nz, net);
+          const risk = d > .86;
+          const col = risk ? LIFT : (d > .55 ? ORANGE : GREY);
+          dot(x, y, z, 1, col, lerp(.6, risk ? 1 : .85, cls), risk ? 3.0 : 1.9);
+          if (i % 7 === 0) pos.push([x, y, z, d]);
+        }
+        if (net > .05) {
+          for (let i = 0; i < pos.length; i++) {
+            for (let j = i + 1; j < i + 3 && j < pos.length; j++) {
+              const A = pos[i], B = pos[j];
+              const dx = A[0] - B[0], dy = A[1] - B[1], dz = A[2] - B[2];
+              if (dx * dx + dy * dy + dz * dz < 15000) line(A, B, 1, ORANGE, net * .22, 1);
+            }
+          }
+        }
+      },
+
+      /* 05 — act: the network resolves into four owned stages */
+      act(p, t) {
+        anchorRight(); fit(1.7);
+        glow(O.x, O.y, Math.min(W, H) * 0.30, [122, 42, 14], 0.20);
+        camRY = lerp(0.95, 0.1, easeInOut(p)); camRX = lerp(0.3, 0.12, easeInOut(p));
+        const f = easeInOut(clamp(p * 1.15, 0, 1));
+        const STG = 4, ys = [-108, -36, 36, 108];
+        for (let i = 0; i < N; i++) {
+          const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+          const grp = Math.floor(d * 4), ang = (grp / 4) * 6.283 + .4;
+          const nx = Math.cos(ang) * 98 + (b - .5) * 70, ny = (c - .5) * 86, nz = Math.sin(ang) * 98 + (a - .5) * 70;
+          const stg = Math.floor(a * STG);
+          const bx = (b - .5) * 250, by = ys[stg] + (c - .5) * 13, bz = (d - .5) * 66;
+          const x = lerp(nx, bx, f), y = lerp(ny, by, f), z = lerp(nz, bz, f);
+          /* colour cools stage by stage — resolution reads as the orange draining out */
+          const heat = 1 - stg / (STG - 1);
+          const col = heat > .6 ? LIFT : heat > .3 ? ORANGE : [95, 208, 138];
+          dot(x, y, z, 1, f > .5 ? col : ORANGE, lerp(.6, .95, f), 2.1);
+        }
+        if (f > .3) {
+          const al = (f - .3) / .7;
+          for (let s = 0; s < STG; s++) {
+            const y = ys[s];
+            line([-150, y, 0], [150, y, 0], 1, s === STG - 1 ? [95, 208, 138] : ORANGE, al * .22, 1);
+          }
+        }
+      },
+
+      /* 06 — live: the four worlds morph into each other */
+      worlds(p, t) {
+        const r = anchorEl('#worldslot', false);
+        GS = clamp((r ? r.width : W) / 620, .55, 1.25);
+        if (r) { ctx.save(); ctx.beginPath(); ctx.rect(r.left, r.top, r.width, r.height); ctx.clip(); }
+        camRY = t * 0.00013; camRX = 0.30 + Math.sin(t * 0.0002) * 0.05;
+        if (wT < 1) { wT = clamp((t - wStart) / MORPH_MS, 0, 1); }
+        const m = easeInOut(wT);
+        const A = CLOUD[wFrom], B = CLOUD[wTo];
+        const SC = 1.0;
+        const [ccx, ccy] = project(0, 0, 0, SC);
+        glow(ccx, ccy, 210, [122, 42, 14], 0.42);
+        const kind = m > .5 ? wTo : wFrom;
+        for (let i = 0; i < N; i++) {
+          const j = i * 3;
+          const x = lerp(A[j], B[j], m), y = lerp(A[j + 1], B[j + 1], m), z = lerp(A[j + 2], B[j + 2], m);
+          const d = rnd(i, 3);
+          /* mid-morph everything cools to grey, then re-lights — reads as a system reconfiguring */
+          const heat = Math.abs(m - .5) * 2;
+          const col = d > .82 ? LIFT : d > .5 ? ORANGE : GREY;
+          const mixed = [lerp(GREY[0], col[0], heat), lerp(GREY[1], col[1], heat), lerp(GREY[2], col[2], heat)];
+          dot(x, y, z, SC, mixed, d > .82 ? 1 : .7, d > .82 ? 2.8 : 1.7);
+        }
+        /* per-world connective tissue */
+        ctx.lineWidth = 1;
+        if (kind === 'celebrity' || kind === 'brand') {
+          for (let i = 0; i < N; i += 17) {
+            const j = i * 3;
+            const x = lerp(A[j], B[j], m), y = lerp(A[j + 1], B[j + 1], m), z = lerp(A[j + 2], B[j + 2], m);
+            line([0, 0, 0], [x, y, z], SC, ORANGE, .10, 1);
+          }
+        }
+        if (r) ctx.restore();
+      },
+
+      /* 07 — capability nodes orbiting the core */
+      orbit(p, t) {
+        anchorRight(); fit(1.35);
+        camRY = t * 0.00009; camRX = 0.34;
+        const [ccx, ccy] = project(0, 0, 0, 1);
+        glow(ccx, ccy, Math.min(W, H) * 0.30, [122, 42, 14], 0.22);
+        for (let i = 0; i < N; i++) {
+          const a = rnd(i, 0), b = rnd(i, 1), c = rnd(i, 2), d = rnd(i, 3);
+          const ring = Math.floor(a * 3) + 1, th = b * 6.283 + t * (0.00007 + ring * 0.00002);
+          const rr = ring * 62 + (c - .5) * 22;
+          dot(Math.cos(th) * rr, (d - .5) * 30, Math.sin(th) * rr, 1, d > .8 ? ORANGE : GREY, d > .8 ? .75 : .3, d > .8 ? 1.9 : 1.15);
+        }
+        for (let k = 0; k < 7; k++) {
+          const th = (k / 7) * 6.283 + t * 0.00007;
+          const rr = 186;
+          dot(Math.cos(th) * rr, 0, Math.sin(th) * rr, 1, LIFT, .95, 3.4);
+          line([0, 0, 0], [Math.cos(th) * rr, 0, Math.sin(th) * rr], 1, ORANGE, .10, 1);
+        }
+        ctx.fillStyle = 'rgba(255,255,255,.85)';
+        ctx.beginPath(); ctx.arc(ccx, ccy, 4, 0, 6.283); ctx.fill();
+      }
+    };
+
+    /* ── scene selection from scroll ─────────────────────────── */
+    const hosts = [...document.querySelectorAll('[data-scene]')].map(el => ({ el, name: el.dataset.scene }));
+    function activeScene() {
+      const mid = H * 0.5; let best = null, bestD = Infinity;
+      for (const h of hosts) {
+        const r = h.el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > H) continue;
+        const range = r.height - H;
+        const p = range > 4 ? clamp(-r.top / range, 0, 1) : clamp((H * 0.75 - r.top) / (r.height || 1), 0, 1);
+        const d = Math.abs((r.top + r.height / 2) - mid);
+        if (d < bestD) { bestD = d; best = { name: h.name, p }; }
+      }
+      return best;
+    }
+
+    /* pointer parallax — hero only, and gently */
+    let mx = 0, my = 0;
+    if (!REDUCED) addEventListener('pointermove', e => { mx = (e.clientX / W - .5); my = (e.clientY / H - .5); }, { passive: true });
+
+    /* ── loop ────────────────────────────────────────────────── */
+    let last = 0, fps = 60, frames = 0, acc = 0, quality = 1;
+    function frame(t) {
+      const cur = activeScene();
+      ctx.clearRect(0, 0, W, H);
+      if (cur && scenes[cur.name]) {
+        const heroish = cur.name === 'hero';
+        px = lerp(px, mx * (heroish ? 34 : 10), .06);
+        py = lerp(py, my * (heroish ? 24 : 8), .06);
+        ctx.globalCompositeOperation = 'lighter';
+        scenes[cur.name](cur.p, REDUCED ? 0 : t);
+        ctx.globalCompositeOperation = 'source-over';
+      }
+      if (REDUCED) return;                       // one static frame, then stop
+      /* auto-degrade: drop DPR if we can't hold frame budget */
+      if (last) {
+        acc += t - last; frames++;
+        if (acc > 1200) {
+          fps = frames * 1000 / acc; frames = 0; acc = 0;
+          if (fps < 42 && quality === 1) { quality = .7; DPR = 1; resize(); }
+        }
+      }
+      last = t;
+      requestAnimationFrame(frame);
+    }
+    if (!window.SAGA_NO_LOOP) requestAnimationFrame(frame);
+
+    /* ── public API for the tab system ───────────────────────── */
+    window.SAGA_RENDER = function (name, p, t) {
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      px = 0; py = 0;
+      scenes[name](p, t);
+      ctx.globalCompositeOperation = 'source-over';
+    };
+    window.SAGA_SETWORLD = function (k) { wFrom = k; wTo = k; wT = 1; };
+    window.SCENE = {
+      morph(k) {
+        if (k === wTo) return;
+        wFrom = wT < 1 ? wFrom : wTo;   // if mid-morph, keep origin so it never snaps
+        wTo = k; wT = REDUCED ? 1 : 0; wStart = performance.now();
+      }
+    };
+  })();
+</script>
+
+<!-- Native Smooth Anchor Scroll -->
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId && targetId !== '#') {
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+</script>

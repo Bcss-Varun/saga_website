@@ -1,0 +1,42 @@
+{
+  "observe": {
+    "frames": 96,
+    "width": 1600,
+    "height": 900,
+    "pattern": "/frames/observe/{n:0>4}.webp",
+    "bytes": 1166852,
+    "mb": 1.11
+  },
+  "act": {
+    "frames": 96,
+    "width": 1600,
+    "height": 900,
+    "pattern": "/frames/act/{n:0>4}.webp",
+    "bytes": 1213344,
+    "mb": 1.16
+  },
+  "noise": {
+    "frames": 25,
+    "width": 1600,
+    "height": 900,
+    "pattern": "/frames/noise/{n:0>4}.webp",
+    "bytes": 246088,
+    "mb": 0.23
+  },
+  "understand": {
+    "frames": 96,
+    "width": 1600,
+    "height": 900,
+    "pattern": "/frames/understand/{n:0>4}.webp",
+    "bytes": 1070292,
+    "mb": 1.02
+  },
+  "orbit": {
+    "frames": 96,
+    "width": 1600,
+    "height": 900,
+    "pattern": "/frames/orbit/{n:0>4}.webp",
+    "bytes": 692296,
+    "mb": 0.66
+  }
+}
