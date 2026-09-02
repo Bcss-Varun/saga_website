@@ -537,8 +537,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-items: stretch;
+    text-align: left;
     padding-top: calc(56px + var(--p) * 64px);
     padding-bottom: 70px;
     margin: calc((1 - var(--p)) * var(--hero-top)) calc((1 - var(--p)) * var(--hero-side)) calc((1 - var(--p)) * var(--hero-bottom))
@@ -571,19 +571,91 @@
     }
   }
 
+  /* width:100% is load-bearing — .inner carries `margin:0 auto`, and an auto
+     cross-axis margin on a flex item beats align-items:stretch, which would
+     shrink-wrap the column and centre it instead of pinning it to the left edge */
   #hero .inner {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center
+    align-items: flex-start
   }
 
   #hero .lead {
-    margin-left: auto;
-    margin-right: auto
+    margin-left: 0;
+    margin-right: 0
+  }
+
+  /* the rotating question carries the display size now, so the SAGA line
+     answers it one step down rather than shouting over it */
+  #hero h1 {
+    font-size: clamp(1.5rem, 3.1vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -.022em;
+    margin: 0 0 clamp(20px, 2.6vh, 28px)
+  }
+
+  #hero .lead {
+    font-size: 1rem
+  }
+
+  /* short rule leading the eyebrow */
+  #hero .eyebrow {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px
+  }
+
+  /* margin pins the rule to the middle of the FIRST line, so it stays put
+     when the eyebrow wraps to two lines on narrow screens */
+  #hero .eyebrow::before {
+    content: '';
+    flex: none;
+    width: 36px;
+    height: 1px;
+    margin-top: .8em;
+    background: var(--orange)
   }
 
   #hero h1 span {
     display: block
+  }
+
+  /* ── hero: the opening questions, cross-faded in place ──
+     all four sit in one grid cell, so the block is as tall as the longest
+     of them and nothing below it shifts as they cycle. */
+  .qroll {
+    display: grid;
+    justify-items: start;
+    font-family: var(--fd);
+    font-weight: 600;
+    font-size: clamp(1.45rem, 3vw, 2.4rem);
+    line-height: 1.16;
+    letter-spacing: -.03em;
+    max-width: 35ch;
+    margin: 0 0 clamp(26px, 3.4vh, 36px)
+  }
+
+  .qroll .q {
+    grid-area: 1 / 1;
+    color: var(--strong);
+    text-wrap: balance;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .55s var(--ease), transform .55s var(--ease)
+  }
+
+  .qroll .q.on {
+    opacity: 1;
+    transform: none
+  }
+
+  @media(prefers-reduced-motion:reduce) {
+    .qroll .q {
+      transform: none;
+      transition: opacity .3s linear
+    }
   }
 
   .herorow {
@@ -591,8 +663,8 @@
     gap: 18px;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    margin-top: 68px;
+    justify-content: flex-start;
+    margin-top: 44px;
   }
 
   @keyframes sweep {
@@ -3413,13 +3485,18 @@
   <!-- 01 HERO -->
   <section class="sec" id="hero" data-scene="hero">
     <div class="inner">
-      <p class="eyebrow rv">Blura SAGA</p>
-      <h1 class="rv d1"><span>Observe.</span><span>Understand. Act.</span></h1>
-      <p class="lead rv d2" style="max-width:44ch">Turn digital conversations and signals into
-        actionable intelligence.</p>
+      <p class="eyebrow rv">Dealing with something you can’t fully see?</p>
 
-      <!-- <p class="rv d2" style="max-width:44ch">SAGA helps teams see what is happening, understand what matters, and move -->
-      <!-- from awareness to action.</p> -->
+      <div class="qroll rv d1" id="heroQ">
+        <span class="q on">Trying to understand what people are saying about a policy or scheme?</span>
+        <span class="q">Something changing around you that you need to understand?</span>
+        <span class="q">Trying to see what people are saying about your brand?</span>
+        <span class="q">Trying to understand how people really see you?</span>
+      </div>
+
+      <h1 class="rv d2" style="max-width:30ch">SAGA helps you understand what’s really happening.</h1>
+      <p class="lead rv d3" style="max-width:56ch">Bring together conversations, sentiment, narratives, threats and
+        relationships to understand what is happening and why.</p>
 
       <div class="herorow rv d3">
         <a class="cta" href="#final">Request a Demo</a>
@@ -4565,6 +4642,24 @@
   }, { passive: true });
   addEventListener('resize', frameTick, { passive: true });
   frameTick();
+
+  /* ── hero: cycle the opening questions ── */
+  (() => {
+    const qs = [...document.querySelectorAll('#heroQ .q')];
+    if (qs.length < 2) return;
+    const HOLD = 3400;                       /* ms each question holds before the next fades in */
+    let i = 0, timer = null;
+    const stop = () => { clearInterval(timer); timer = null; };
+    const tick = () => {
+      qs[i].classList.remove('on');
+      i = (i + 1) % qs.length;
+      qs[i].classList.add('on');
+    };
+    const start = () => { stop(); timer = setInterval(tick, HOLD); };
+    /* no point burning a timer on a tab nobody is looking at */
+    document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+    start();
+  })();
 
   /* ── mobile menu ── */
   (() => {
