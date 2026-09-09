@@ -1,0 +1,66 @@
+/* Section jump bar for the vertical pages. New component, so new CSS; the
+   ported global sheet is untouched. Reuses the nav link language. */
+
+/* The ported stylesheet styles the bare `nav` element selector — fixed to the
+   top of the viewport at z-index 50, 80px tall, flex. That is the site header,
+   and any semantic <nav> inherits it. Everything it sets is reset here rather
+   than giving up the correct element. Class beats element on specificity. */
+.bar {
+  position: static;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: auto;
+  max-width: none;
+  height: auto;
+  z-index: auto;
+  display: block;
+  padding: 0;
+  margin: 0;
+  will-change: auto;
+  transition: none;
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(8, 8, 10, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bar ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+  list-style: none;
+  margin: 0 auto;
+  padding: 8px max(20px, calc((100% - var(--inner, 1180px)) / 2));
+  max-width: 100%;
+}
+
+.bar a {
+  display: block;
+  font-family: var(--fb);
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+  transition: color 0.16s, background 0.16s;
+}
+
+.bar a:hover {
+  color: var(--ink);
+  background: var(--glass);
+}
+
+.bar a:focus-visible {
+  color: var(--ink);
+  background: var(--glass);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar a {
+    transition: none;
+  }
+}

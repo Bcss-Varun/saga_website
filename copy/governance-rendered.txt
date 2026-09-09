@@ -1,0 +1,151 @@
+Platform
+Solutions
+Investigation
+Trust
+Request a Demo
+
+PUBLIC POLICY & GOVERNANCE
+
+Which areas moved, how fast, and on what issue.
+
+SAGA resolves sentiment to constituency and district rather than a national average, scores each area for unrest on a 0–100 scale across five levels driven by issue velocity, routes citizen grievances to the department that owns them, and separates organic reaction from coordinated activity — so an administration and a party office are working from the same evidence rather than two sets of anecdotes.
+
+Request a Demo
+How the platform works
+
+[draft — needs review] — copy on this page is drafted and not yet signed off.
+
+How it works
+Capabilities
+Signal to action
+Scenarios
+Deployment
+FAQ
+
+HOW TEAMS USE IT
+
+Monitor, investigate, manage.
+Monitor
+
+Sentiment is mapped by constituency and district, not reported as a national figure. Each area carries a 0–100 unrest score across five levels [pending sign-off: band labels], driven by issue velocity — how fast a topic is accelerating in that area rather than how loud it is nationally.
+
+Investigate
+
+Separate organic reaction from coordinated activity using account age, posting cadence, repeated phrasing and burst timing [pending sign-off: attribution thresholds]. Measure what an announcement, rally or policy change altered by comparing the same areas against their own readings from before it.
+
+Manage
+
+Citizen grievances are categorised by subject and routed to the department that owns them, then tracked through New, In Progress and Resolved with time-in-state recorded. A scheduled briefing assembles the areas that moved, the issues driving them and the grievances still open.
+
+CAPABILITIES
+
+What Governance teams get.
+Constituency and district sentiment
+
+Sentiment is resolved to the constituency and the district rather than reported as one national figure. An administration can see which areas moved on a scheme; a party office can see where its position is being tested. Each area reading opens back to the posts it was built from.
+
+Unrest score, five levels
+
+Every area carries a 0–100 score across five levels [pending sign-off: band labels]. The score is driven by issue velocity — the rate at which a topic is accelerating in that area — so a small district moving quickly outranks a large one that is merely loud. The issue driving the score is named alongside it.
+
+Grievance routing and resolution
+
+Complaints are categorised by subject and routed to the department that owns them, then tracked through New, In Progress and Resolved. Time in each state, the department holding it and who closed it are recorded, so resolution can be reported by department and by district instead of as one total.
+
+Coordinated activity attribution
+
+Activity is attributed as organic or coordinated from account age, posting cadence, repeated phrasing and burst timing [pending sign-off: attribution thresholds]. A set of accounts posting one line within a short window reads differently from the same volume of people reacting, and the two are reported separately rather than summed.
+
+Event and announcement impact
+
+Compare the same constituencies before and after an announcement, rally, budget or policy change. Impact is measured against each area’s own prior reading, so a district that started negative and improved is not hidden inside a national average that fell.
+
+Daily briefing
+
+A scheduled briefing assembles the areas that moved, the issue driving each, activity flagged as coordinated, and grievances still open past their expected resolution. It is built from the same records as the rest of the platform, so any line in it opens back to the posts and complaints beneath it.
+
+One issue, followed from the post to the district to the department.
+
+A sentiment shift in one constituency, the issue velocity behind it, the grievances filed against that issue and the department holding them are one record read at different depths. An administration uses it to see where delivery is failing; a party office uses it to see where a position is not landing. Neither has to take the other’s word for the underlying data.
+
+SIGNAL TO ACTION
+
+Every signal has somewhere to go.
+01
+Detected
+02
+Scored
+03
+Verified
+04
+Escalated
+05
+Resolved
+
+SCENARIOS
+
+What this looks like in practice.
+
+Illustrative. Anonymised, with no real names or places.
+
+A scheme lands differently in two districts
+
+A newly announced scheme reads positively across the state as a whole. Resolved to district level, two adjacent districts move the other way, both on the same eligibility question. The unrest score rises in both on issue velocity rather than volume, and the grievances filed name the same criterion. The department responsible sees the pattern before it reaches a national outlet.
+
+A hundred accounts, one sentence
+
+A policy hashtag accelerates sharply overnight. Attribution separates the burst into two populations: accounts created within a short window posting near-identical phrasing, and a much smaller set of long-standing accounts writing in their own words. The coordinated portion is reported separately, so the genuine objection underneath it is neither dismissed nor inflated.
+
+A backlog that shows up before the complaint does
+
+Grievances on one subject in one district stay in In Progress well past the time they normally take to close. No individual complaint is unusual; the time-in-state pattern is. The briefing surfaces the department holding them and the district affected, while the issue is still administrative rather than public.
+
+DEPLOYMENT
+
+How it is deployed.
+
+SAGA is deployed as [pending sign-off: deployment model]. Hosting location, data residency and retention periods are set per deployment [pending sign-off].
+
+Access is bounded by role — Super Admin, Level-2 and Level-1 [pending sign-off: role names] — with each role scoped to its own geography or subject. A district officer sees their district; a state-level user sees the areas assigned to them. The same boundary applies whether the deployment sits with a department or with a political operation.
+
+Every search, export and case action is written to an immutable audit trail carrying the user, the timestamp and the record touched. Captured material is stored with its original metadata and its capture time, supporting evidence-grade workflows under the lawful basis the operating body already holds.
+
+Security, data handling and lawful basis →
+
+FAQ
+
+Governance questions.
+What does SAGA measure at constituency level?
+How do you tell coordinated activity from genuine anger?
+What is in the daily briefing?
+What drives the unrest score?
+Where does a grievance go?
+Can a department and a political operation use the same deployment?
+
+REQUEST A DEMONSTRATION
+
+See it running on your own region.
+Request a Demo
+How the platform works
+
+Or write directly to smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+
+Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
+
+A PRODUCT BY
+SOLUTIONS
+Public Safety
+Governance
+Brands
+Celebrity
+PLATFORM
+How it works
+Investigation
+Trust
+GET IN TOUCH
+smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+Request a Demo →
+© 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+Blura SAGA — Sentiment And Goodwill Analysis

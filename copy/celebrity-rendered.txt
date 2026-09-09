@@ -1,0 +1,133 @@
+Platform
+Solutions
+Investigation
+Trust
+Request a Demo
+
+CELEBRITY & PUBLIC FIGURES
+
+Which audience is saying it, and whether they are people.
+
+SAGA separates sentiment by context rather than reporting one figure, scores attack activity for bot and troll characteristics, identifies the communities and individual advocates carrying support, and tracks endorsement risk across a rolling window — so a team can tell a bad week from a real shift.
+
+Request a Demo
+How the platform works
+
+[draft — needs review] — copy on this page is drafted and not yet signed off.
+
+How it works
+Capabilities
+Signal to action
+Scenarios
+Deployment
+FAQ
+
+HOW TEAMS USE IT
+
+Monitor, investigate, manage.
+Monitor
+
+Sentiment is reported by context — a role, a release, an appearance, a controversy — rather than as one blended figure, because the same person can be praised in one context and criticised in another on the same day.
+
+Investigate
+
+Attack activity is scored for bot and troll characteristics: account age, posting cadence, repeated phrasing and burst timing [pending sign-off: scoring thresholds]. The score separates a coordinated push from a broad negative reaction.
+
+Manage
+
+Communities carrying support are identified along with the individual advocates inside them. Endorsement risk is tracked across a rolling window [pending sign-off: window length] so a commercial decision can be made against a trend rather than a snapshot.
+
+CAPABILITIES
+
+What Celebrity teams get.
+Sentiment separated by context
+
+Sentiment is reported per context — a specific role, release, appearance or controversy — instead of as a single number. A public figure can be strongly positive on one and negative on another at the same moment, and a blended figure hides exactly the movement worth acting on.
+
+Bot and troll attack scoring
+
+Attack activity is scored on account age, posting cadence, repeated phrasing and burst timing [pending sign-off: scoring thresholds]. The output separates coordinated activity from organic criticism and reports them apart, so a manufactured pile-on is not read as public opinion.
+
+Fan communities and advocates
+
+Communities carrying sustained positive conversation are identified, along with the individual accounts inside them whose posts are repeatedly amplified by others. Support is described as specific communities and named-by-handle advocates, not as a follower total.
+
+Endorsement risk
+
+Sentiment relevant to a commercial association is tracked across a rolling window [pending sign-off: window length], so a brand decision is made against a trend line with its driving events named, rather than against the state of one week.
+
+A bad week and a real shift do not look the same.
+
+Context-separated sentiment, an attack score and a rolling endorsement window answer three different questions: what is being criticised, whether the criticism is people, and whether the direction has actually changed. Reported as one number, all three are invisible.
+
+SIGNAL TO ACTION
+
+Every signal has somewhere to go.
+01
+Detected
+02
+Scored
+03
+Verified
+04
+Escalated
+05
+Resolved
+
+SCENARIOS
+
+What this looks like in practice.
+
+Illustrative. Anonymised, with no real names or places.
+
+A pile-on that was not an audience
+
+Negative posts about a public figure rise sharply within a few hours. Attack scoring finds most of the volume in accounts created within a short window, posting near-identical phrasing on a tight cadence. A separate and much smaller organic group raises one specific criticism. The team answers the real point and does not dignify the rest.
+
+One role, not one person
+
+Blended sentiment for a public figure falls over a fortnight. Separated by context, the decline sits almost entirely in reaction to a single project, while sentiment on their other work and public appearances is unchanged. The endorsement window shows no movement in the commercially relevant conversation.
+
+DEPLOYMENT
+
+How it is deployed.
+
+SAGA is deployed as [pending sign-off: deployment model], with hosting location and retention periods set per deployment [pending sign-off]. Access is bounded by role and scoped to the individuals or subjects a user is responsible for [pending sign-off: role names], and every search, export and case action is written to an immutable audit trail.
+
+Security, data handling and lawful basis →
+
+FAQ
+
+Celebrity questions.
+Why separate sentiment by context?
+What counts as an advocate?
+How do you score an attack?
+What does endorsement risk actually track?
+
+REQUEST A DEMONSTRATION
+
+See it running on your own region.
+Request a Demo
+How the platform works
+
+Or write directly to smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+
+Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
+
+A PRODUCT BY
+SOLUTIONS
+Public Safety
+Governance
+Brands
+Celebrity
+PLATFORM
+How it works
+Investigation
+Trust
+GET IN TOUCH
+smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+Request a Demo →
+© 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+Blura SAGA — Sentiment And Goodwill Analysis

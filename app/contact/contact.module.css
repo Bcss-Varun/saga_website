@@ -1,0 +1,195 @@
+/* /contact — a form for someone doing due diligence. Plain, legible, no
+   persuasion furniture. */
+
+.draftBanner {
+  margin: 0;
+  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
+     this its background and borders stop at ~492px inside a 1440px page and
+     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
+  max-width: none;
+  padding: 10px 20px;
+  text-align: center;
+  font-family: var(--fm);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--warn);
+  background: rgba(245, 165, 36, 0.08);
+  border-top: 1px solid rgba(245, 165, 36, 0.28);
+  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.form {
+  display: grid;
+  gap: 22px;
+  max-width: 640px;
+}
+
+.field label {
+  display: block;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.hint {
+  margin: 0 0 8px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--faint);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font-family: var(--fb);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--s2);
+  border: 1px solid var(--line2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 0.16s;
+}
+
+.field textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  border-color: var(--orange);
+}
+
+.field [aria-invalid='true'] {
+  border-color: var(--crit);
+}
+
+/* Error state pairs colour with a text label — colour alone fails for
+   colour-blind users and in print, and these pages get printed. */
+.error {
+  margin: 8px 0 0;
+  font-size: 0.84rem;
+  color: var(--crit);
+}
+
+.error::before {
+  content: 'Error: ';
+  font-weight: 600;
+}
+
+.consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--s2);
+}
+
+.consent input {
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  accent-color: var(--orange);
+}
+
+.consent label {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.consent .hint {
+  margin-bottom: 0;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.outcome {
+  max-width: 60ch;
+  padding: 28px;
+  border: 1px solid var(--line2);
+  border-left: 2px solid var(--ok);
+  border-radius: 12px;
+  background: var(--s2);
+}
+
+.outcomeBad {
+  border-left-color: var(--warn);
+}
+
+.outcome h2 {
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+  color: var(--strong);
+}
+
+.outcome p {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.aside {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  background: var(--s2);
+}
+
+.aside h2 {
+  margin: 0 0 12px;
+  font-family: var(--fd);
+  font-size: 1.05rem;
+  color: var(--strong);
+}
+
+.aside p {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.mail a {
+  color: var(--orange);
+  word-break: break-all;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field input,
+  .field select,
+  .field textarea {
+    transition: none;
+  }
+}

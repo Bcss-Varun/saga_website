@@ -1,0 +1,56 @@
+/* The hero's framed-card treatment: a light gutter with the black hero card
+   sitting inside it, rounded and shadowed.
+
+   Rebuilt per decision 3. The original ran two `position: fixed` divs whose
+   top/left/width/height were rewritten from `getBoundingClientRect()` on every
+   scroll frame. There is no measurement here and no scroll listener: the
+   wrapper shrink-wraps the hero's margin box, and the card is inset by exactly
+   the same `--hero-*` calc expressions that set the hero's margins, so the two
+   cannot drift.
+
+   Both layers sit at z-index -1, below #stage (z-index 0, inside .wrap), so the
+   canvas still draws its particles over the black card exactly as before. The
+   hero's own content is unpositioned and paints above the canvas. */
+
+.frame {
+  position: relative;
+  /* contains the hero's margins so the wrapper's box IS the hero's outer box */
+  display: flow-root;
+}
+
+.frame::before,
+.frame::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* the light gutter — the hero's full outer (margin) box */
+.frame::before {
+  inset: 0;
+  background: var(--frame);
+}
+
+/* the black card — the hero's own box, inset by the same margins */
+.frame::after {
+  top: calc((1 - var(--p)) * var(--hero-top));
+  left: calc((1 - var(--p)) * var(--hero-side));
+  right: calc((1 - var(--p)) * var(--hero-side));
+  bottom: calc((1 - var(--p)) * var(--hero-bottom));
+  background: var(--black);
+  /* Scales out with the margins. At --p: 1 the card is full-bleed, and a
+     fixed radius would leave light notches at the corners. */
+  border-radius: calc((1 - var(--p)) * var(--hero-radius));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.14);
+}
+
+/* At 1024px and below the framed treatment is dropped entirely — the light
+   gutter reads as a stray white band on a phone. The --hero-* values already
+   collapse to 0 there; this also drops the light layer so no sub-pixel seam
+   can show at the edges. */
+@media (max-width: 1024px) {
+  .frame::before {
+    display: none;
+  }
+}

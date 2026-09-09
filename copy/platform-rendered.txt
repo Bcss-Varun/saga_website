@@ -1,0 +1,122 @@
+Platform
+Solutions
+Investigation
+Trust
+Request a Demo
+
+PLATFORM
+
+What enters, what happens to it, and in what order.
+
+SAGA runs a four-stage pipeline: collection, processing, scoring, action. Each stage hands the next a record that keeps its origin, so a score at the end can be opened back to the post it came from. This page describes the stages, the architecture around them, and the access boundaries that constrain both.
+
+[draft — needs review] — copy on this page is drafted and not yet signed off.
+
+Pipeline
+Architecture
+RSS engine
+Languages
+Access control
+FAQ
+
+THE PIPELINE
+
+Four stages, and what each one adds.
+
+Every record carries its source and its capture time from the first stage onward. Nothing downstream discards that, which is what makes a figure at the end auditable rather than merely reported.
+
+01
+Collection
+
+Public sources and RSS feeds are polled on a schedule; watchlist terms and tracked entities determine what is retained. Each retained item is stored with its source URL, its author account, its capture timestamp and the term or entity that caused it to be kept. Items that match nothing are not retained.
+
+The list of sources covered is [pending] and confirmed per deployment.
+
+02
+Processing
+
+Retained items are language-identified, normalised and deduplicated. Near-identical reposts are collapsed to one record with a count of occurrences and the accounts behind them, so repetition is measured rather than mistaken for reach. Entities — accounts, names, locations, organisations — are extracted and linked to existing records where they match.
+
+03
+Scoring
+
+Records are scored for sentiment, risk and velocity, and attributed as organic or coordinated from account age, posting cadence, repeated phrasing and burst timing [pending sign-off: attribution thresholds]. Scores are attached to the record rather than replacing it: the inputs stay available, so a score can be disagreed with by looking underneath it.
+
+04
+Action
+
+A scored record raises an alert on its tier, opens or joins a case, or routes a grievance to a department. Ownership, acknowledgement, state changes and closure are recorded against the record. This is the stage where the platform stops describing and starts assigning.
+
+ARCHITECTURE
+
+Records, not dashboards.
+
+The unit is the record, not the chart. A dashboard figure is a query over records that still exist individually, which is why any number on any screen can be opened back to the items that produced it. A system that stores aggregates cannot do this, and the difference only becomes visible when someone asks where a figure came from.
+
+Entities — accounts, people, locations, organisations — are resolved across sources and held once, with the records that mention them attached. That is what allows a username seen in one place, an image posted in another and a complaint filed in a third to arrive at the same entity rather than three unconnected rows.
+
+Retention is set per deployment [pending sign-off: retention periods]. Records are removed on the retention schedule, not on storage pressure, so the window a deployment operates on is a policy decision rather than an operational side effect.
+
+RSS ENGINE
+
+News feeds, weighted by source, correlated with social.
+
+RSS and news feeds are polled alongside social sources and carried through the same pipeline. Each source carries a credibility weight, so an item from an established outlet and an item from an anonymous aggregator do not contribute equally to a score, and the weight applied is visible on the record rather than folded silently into a number.
+
+Source credibility weights are configurable per deployment and can be adjusted by an administrator [pending sign-off: default weighting scheme]. A weight is a stated position about a source, so it is treated as a setting a department owns rather than a fact the platform asserts.
+
+News items and social conversation about the same subject are correlated, which allows the ordering question to be answered: whether coverage followed the conversation or the conversation followed coverage. That ordering is frequently the difference between an organic story and a placed one.
+
+LANGUAGES
+
+English, Telugu, Hindi and Urdu.
+
+Language identification, sentiment scoring and watchlist matching run in English, Telugu, Hindi and Urdu. Matching covers native script, romanised transliteration and mixed-script text, so a term written in Devanagari, written in Latin script and written half in each returns one match rather than three.
+
+Additional languages are added per deployment [pending sign-off: which languages beyond these four are supported]. Where a language is not supported, items in it are collected and stored but not scored — they are not silently dropped, and they are not scored as though the model understood them.
+
+ACCESS CONTROL
+
+Three roles, scoped, with permissions below them.
+
+Access is bounded by role — Super Admin, Level-2 and Level-1 [pending sign-off: role names] — and each role is scoped to a geography or subject. Scope is the primary boundary: a user sees the districts, watchlists or subjects assigned to them and not the rest, including records belonging to peers at the same level.
+
+Beneath the role sits a per-page and per-feature permission layer, so a role can be granted a page while being denied a specific action on it, such as export or a verdict request. Two users holding the same role can therefore have different reach, set deliberately.
+
+Access can be revoked in a single action, taking effect for sessions already open rather than at next sign-in. Every search, export, permission change and revocation is written to an immutable audit trail carrying the user, the timestamp and the record touched.
+
+Deployment, audit trail and lawful basis →
+
+FAQ
+
+Platform questions.
+What happens to an item that matches nothing?
+How are duplicate posts handled?
+What happens in an unsupported language?
+Can a score be disagreed with?
+What does source credibility weighting actually change?
+
+REQUEST A DEMONSTRATION
+
+See the pipeline running on your own sources.
+Request a Demo
+Investigation tools
+
+Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
+
+A PRODUCT BY
+SOLUTIONS
+Public Safety
+Governance
+Brands
+Celebrity
+PLATFORM
+How it works
+Investigation
+Trust
+GET IN TOUCH
+smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+Request a Demo →
+© 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+Blura SAGA — Sentiment And Goodwill Analysis

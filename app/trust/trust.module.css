@@ -1,0 +1,135 @@
+/* /trust — a text-dense page for security reviewers. Reuses the global type
+   and card classes; only the few blocks the ported sheet has no class for
+   are defined here. */
+
+.draftBanner {
+  margin: 0;
+  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
+     this its background and borders stop at ~492px inside a 1440px page and
+     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
+  max-width: none;
+  padding: 10px 20px;
+  text-align: center;
+  font-family: var(--fm);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--warn);
+  background: rgba(245, 165, 36, 0.08);
+  border-top: 1px solid rgba(245, 165, 36, 0.28);
+  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
+}
+
+.anchor {
+  scroll-margin-top: 96px;
+}
+
+.prose {
+  max-width: 68ch;
+  margin-top: 22px;
+}
+
+.prose p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.extras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.extra {
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--lineo);
+  border-radius: 12px;
+  padding: 22px;
+}
+
+.extra h3 {
+  margin: 0 0 10px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--strong);
+}
+
+.extra p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+.note {
+  margin: 18px 0 0;
+  font-size: 0.86rem;
+  color: var(--faint);
+}
+
+.descriptors {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  max-width: 1000px;
+}
+
+.descriptors li {
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 22px;
+  font-family: var(--fd);
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+/* ── density pass ─────────────────────────────────────────────────────────
+   The shared system (type scale, grounds, pills, lead-in card) lives in
+   globals.css under `.dense`. What follows is specific to this page. */
+
+.sectionLead {
+  margin-top: 4px;
+}
+
+.roles {
+  margin-top: clamp(34px, 4.5vh, 56px);
+}
+
+/* Specificity has to clear the global `.cab p`, hence the :global(.dense .cab)
+   prefix rather than a bare class. */
+:global(.dense .cab) .answer {
+  margin: 16px 0 0;
+  max-width: 34ch;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--strong);
+}
+
+:global(.dense .cab) .detail {
+  margin: 10px 0 0;
+  max-width: 34ch;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+:global(.dense) .extras {
+  margin-top: clamp(28px, 4vh, 44px);
+}
+
+:global(.dense) .extra {
+  background: var(--s3);
+}
+
+:global(.dense) .descriptors {
+  max-width: none;
+}

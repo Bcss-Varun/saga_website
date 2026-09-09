@@ -1,0 +1,151 @@
+/* Solutions dropdown. New component, so new CSS — the ported global
+   stylesheet is untouched. Values reuse the existing nav language:
+   the same 14px/8px-radius link treatment and the same panel treatment
+   the mobile drawer already uses. */
+
+.solutions {
+  position: relative;
+}
+
+/* Matches `.navlinks a` in the global sheet so the trigger sits level
+   with the real links either side of it. */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: inherit;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 8px 13px;
+  border-radius: 8px;
+  transition: 0.16s, color 0.4s var(--ease);
+}
+
+.trigger:hover {
+  color: var(--ink);
+  background: var(--glass);
+}
+
+:global(nav:not(.floating)) .trigger {
+  color: #3d3d45;
+}
+
+:global(nav:not(.floating)) .trigger:hover {
+  color: #000;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.chev {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.22s var(--ease);
+}
+
+.trigger[aria-expanded='true'] .chev {
+  transform: translateY(1px) rotate(-135deg);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 290px;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(12, 12, 14, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--line2);
+  box-shadow: 0 22px 52px rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+.menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Overrides the global `.navlinks a` rule, which this menu sits inside. */
+.menu a {
+  display: block;
+  padding: 11px 13px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.16s, color 0.16s;
+}
+
+.menu a:hover,
+.menu a:focus-visible {
+  background: var(--glass);
+}
+
+.itemName {
+  display: block;
+  font-family: var(--fd);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.menu a:hover .itemName,
+.menu a:focus-visible .itemName {
+  color: var(--orange);
+}
+
+.menu a[aria-current='page'] .itemName {
+  color: var(--orange);
+}
+
+.itemDesc {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--faint);
+  margin-top: 1px;
+}
+
+/* On the mobile drawer the links stack, so the dropdown becomes an
+   inline block rather than a floating panel. */
+@media (max-width: 940px) {
+  .trigger {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 15px;
+    color: var(--ink);
+    padding: 13px 14px;
+    border-radius: 10px;
+  }
+
+  :global(nav:not(.floating)) .trigger {
+    color: var(--ink);
+  }
+
+  .menu {
+    position: static;
+    min-width: 0;
+    margin: 2px 0 4px;
+    padding: 4px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .chev,
+  .menu a {
+    transition: none;
+  }
+}

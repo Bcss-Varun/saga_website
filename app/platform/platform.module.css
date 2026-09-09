@@ -1,0 +1,100 @@
+/* /platform — text-dense, for a technical evaluator. */
+
+.draftBanner {
+  margin: 0;
+  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
+     this its background and borders stop at ~492px inside a 1440px page and
+     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
+  max-width: none;
+  padding: 10px 20px;
+  text-align: center;
+  font-family: var(--fm);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--warn);
+  background: rgba(245, 165, 36, 0.08);
+  border-top: 1px solid rgba(245, 165, 36, 0.28);
+  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
+}
+
+.anchor {
+  scroll-margin-top: 96px;
+}
+
+.lead {
+  max-width: 62ch;
+  margin: 20px 0 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.prose {
+  max-width: 68ch;
+  margin-top: 22px;
+}
+
+.prose p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+/* The pipeline is a genuine sequence, so it keeps its numbering. */
+.stages {
+  list-style: none;
+  counter-reset: none;
+  margin: 34px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.stages li {
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--lineo);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.stageN {
+  display: block;
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+
+.stages h3 {
+  margin: 0 0 12px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--strong);
+}
+
+.stages p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+.stageNote {
+  margin-top: 12px !important;
+  color: var(--faint) !important;
+  font-size: 0.84rem !important;
+}
+
+.onward {
+  margin-top: 8px;
+  font-size: 0.92rem;
+}
+
+.onward a {
+  color: var(--orange);
+}

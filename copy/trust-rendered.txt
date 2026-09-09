@@ -1,0 +1,105 @@
+Platform
+Solutions
+Investigation
+Trust
+Request a Demo
+
+TRUST
+
+Where it runs, who can see it, and what gets recorded.
+
+SAGA is bought by departments that have to answer for it afterwards. This page states the deployment model, the access boundaries, what the audit trail captures and the basis on which data is handled — so a security review can be done from the page rather than from a call.
+
+[draft — needs review] — copy on this page is drafted and not yet signed off.
+
+DEPLOYMENT
+
+Where the system runs.
+
+SAGA is deployed as [pending sign-off: deployment model — on-premise, private cloud, or department-hosted]. Hosting location, data residency and retention periods are set per deployment and recorded in the deployment agreement rather than fixed by the product [pending sign-off].
+
+Where a department requires the system to run inside its own network boundary, it does [pending sign-off: confirm supported topologies]. Update and support arrangements for an isolated deployment are agreed at contract [pending sign-off].
+
+ACCESS CONTROL
+
+Three roles, and a boundary around each one.
+
+Access is bounded by role. Super Admin, Level-2 and Level-1 [pending sign-off: role names] each carry a different span, and a role's visibility is scoped to its own geography or subject — an officer sees the districts, watchlists and cases they are responsible for, and not the rest.
+
+Super Admin
+
+Creates and removes accounts, assigns roles, defines the geography or subject each role is scoped to, and sets which pages and features a role may reach. Holds the only view of the full deployment [pending sign-off: exact span].
+
+Level-2
+
+Works across the scope assigned to it — multiple districts, watchlists or subjects — and can assign work to Level-1 users inside that scope. Cannot widen its own scope [pending sign-off: exact span].
+
+Level-1
+
+Works within a single assigned scope: the alerts, cases and grievances routed to it. Cannot see records outside that scope, including those belonging to peers [pending sign-off: exact span].
+
+Page and feature-level permissions
+
+Permissions are set per page and per feature, not only per role — so a role can be granted a page while being denied a specific action on it, such as export or a verdict request. Two users holding the same role can therefore have different reach, set deliberately rather than by exception.
+
+One-click revoke
+
+A user’s access can be revoked in a single action, taking effect for sessions already open rather than at next sign-in. Revocation is itself an audited event: who revoked, when, and which account.
+
+AUDIT TRAIL
+
+What is recorded, and what cannot be edited.
+
+Every search, export, verdict request, case action, permission change and revocation is written to an immutable audit trail carrying the user, the timestamp and the record touched. The trail records reads as well as writes: looking at a person-of-interest record is an event, not a silent action.
+
+Captured material is stored with its original metadata and its capture time — timestamped capture with metadata, retained alongside the original file. This supports evidence-grade workflows: an investigator can show what was collected, when, by whom, and what state it was in at collection.
+
+Audit records are retained for the period set in the deployment agreement [pending sign-off: retention period] and can be exported for internal review or inspection.
+
+LAWFUL BASIS
+
+The department’s authority, not the platform’s.
+
+SAGA processes material from public sources. It does not confer authority: a department operates the system under the lawful basis it already holds, and the platform’s job is to make what was done under that basis legible afterwards.
+
+Scoping is the practical control. Watchlists, geographies and subjects are defined by the department, roles are bounded to them, and the audit trail records who looked at what. That combination is what allows a department to answer a question about its own use of the system months later.
+
+Data protection terms, processor and controller responsibilities, and any sector-specific obligations are set in the deployment agreement [pending sign-off: contractual terms].
+
+DEPLOYMENTS
+
+Who runs it.
+
+Described by descriptor only. No client is named on this site.
+
+A state police force [pending sign-off]
+A state Home Ministry [pending sign-off]
+A national government in West Africa [pending sign-off]
+
+SECURITY REVIEW
+
+Bring your security questions to the demonstration.
+
+A product specialist can walk a security reviewer through the deployment model, the role boundaries and the audit trail against your own requirements.
+
+Request a Demo
+How the platform works
+
+Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
+
+A PRODUCT BY
+SOLUTIONS
+Public Safety
+Governance
+Brands
+Celebrity
+PLATFORM
+How it works
+Investigation
+Trust
+GET IN TOUCH
+smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+Request a Demo →
+© 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+Blura SAGA — Sentiment And Goodwill Analysis

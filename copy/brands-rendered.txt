@@ -1,0 +1,133 @@
+Platform
+Solutions
+Investigation
+Trust
+Request a Demo
+
+BRAND & ENTERPRISES
+
+A complaint cluster, a velocity score, and someone to answer it.
+
+SAGA scores a conversation for viral risk while it is still small, clusters complaints by location and subject so a pattern is visible before it is a trend, separates organic criticism from coordinated activity, and opens a response workflow against the cluster rather than against a single post.
+
+Request a Demo
+How the platform works
+
+[draft — needs review] — copy on this page is drafted and not yet signed off.
+
+How it works
+Capabilities
+Signal to action
+Scenarios
+Deployment
+FAQ
+
+HOW TEAMS USE IT
+
+Monitor, investigate, manage.
+Monitor
+
+Conversations are scored for viral risk on their rate of acceleration rather than their current size, so a thread is flagged while a response is still proportionate. Share of voice against named competitors is tracked on the same conversations.
+
+Investigate
+
+Complaints are clustered by location and subject, so a fault appearing in one region reads as a pattern rather than as scattered posts. Activity is attributed as organic or coordinated from account age, posting cadence and repeated phrasing [pending sign-off: attribution thresholds].
+
+Manage
+
+A cluster becomes a response case with an owner, a state and a record of what was said publicly and when. Time from detection to first response is recorded against each case.
+
+CAPABILITIES
+
+What Brands teams get.
+Viral risk scoring
+
+A conversation is scored on how fast it is accelerating, not how large it currently is — so a thread can be flagged before it is widely visible. The score names the accounts and posts carrying it, so a team can see whether the growth is coming from many people or a few large ones.
+
+Location clustering of complaints
+
+Complaints are grouped by location and subject rather than listed chronologically. A fault reported by unrelated people in one region resolves into a single cluster with a location, a subject and a count of distinct accounts, which is the form a product or operations team can act on.
+
+Organic versus coordinated attribution
+
+Criticism is attributed as organic or coordinated using account age, posting cadence, repeated phrasing and burst timing [pending sign-off: attribution thresholds]. The two are reported separately, so a coordinated push is not mistaken for consumer sentiment and genuine complaints inside it are not dismissed as bots.
+
+Crisis response workflow
+
+A cluster or scored conversation opens a case with an owner and a state. Public statements made in response are attached to the case with their timestamps, and time from detection to first response is recorded — so a post-incident review reads from the record rather than from memory.
+
+From scattered posts to one cluster with an owner.
+
+A complaint cluster carries its location, its subject, the accounts behind it and whether the activity is organic or coordinated. That is enough for a communications team to decide whether to answer, and enough for a product team to decide whether there is something to fix.
+
+SIGNAL TO ACTION
+
+Every signal has somewhere to go.
+01
+Detected
+02
+Scored
+03
+Verified
+04
+Escalated
+05
+Resolved
+
+SCENARIOS
+
+What this looks like in practice.
+
+Illustrative. Anonymised, with no real names or places.
+
+A fault with a postcode
+
+Individually unremarkable complaints about the same product behaviour arrive over two days from unrelated accounts. Clustered by location and subject, they resolve into one region and one fault description. The cluster reaches the operations team as a pattern with a location, rather than as a rising count of tickets.
+
+A push that was not a public
+
+Criticism of a campaign accelerates sharply. Attribution splits it: a majority of the volume comes from accounts created within a short window repeating near-identical phrasing, while a smaller organic group raises one specific and different objection. The coordinated volume is reported separately, and the response addresses the real objection instead of the noise.
+
+DEPLOYMENT
+
+How it is deployed.
+
+SAGA is deployed as [pending sign-off: deployment model], with hosting location and retention periods set per deployment [pending sign-off]. Access is bounded by role and scoped to the brands, markets or subjects a user is responsible for [pending sign-off: role names], and every search, export and case action is written to an immutable audit trail.
+
+Security, data handling and lawful basis →
+
+FAQ
+
+Brands questions.
+How early is "pre-viral"?
+Can you tell a coordinated attack from real criticism?
+How is a complaint cluster different from a mention count?
+What is recorded during a crisis response?
+
+REQUEST A DEMONSTRATION
+
+See it running on your own region.
+Request a Demo
+How the platform works
+
+Or write directly to smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+
+Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
+
+A PRODUCT BY
+SOLUTIONS
+Public Safety
+Governance
+Brands
+Celebrity
+PLATFORM
+How it works
+Investigation
+Trust
+GET IN TOUCH
+smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+Request a Demo →
+© 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+Blura SAGA — Sentiment And Goodwill Analysis

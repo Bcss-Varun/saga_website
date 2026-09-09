@@ -1,0 +1,105 @@
+/* /investigation — for an investigating officer. The tool cards state what each
+   tool takes, returns and cannot do; the limits are styled as content, not as a
+   disclaimer, because they are the most useful part for this reader. */
+
+.draftBanner {
+  margin: 0;
+  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
+     this its background and borders stop at ~492px inside a 1440px page and
+     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
+  max-width: none;
+  padding: 10px 20px;
+  text-align: center;
+  font-family: var(--fm);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--warn);
+  background: rgba(245, 165, 36, 0.08);
+  border-top: 1px solid rgba(245, 165, 36, 0.28);
+  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
+}
+
+.anchor {
+  scroll-margin-top: 96px;
+}
+
+.lead {
+  max-width: 62ch;
+  margin: 20px 0 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.prose {
+  max-width: 68ch;
+  margin-top: 22px;
+}
+
+.prose p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 32px;
+}
+
+.tool {
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--lineo);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.tool h3 {
+  margin: 0 0 16px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--strong);
+}
+
+.tool dl {
+  margin: 0;
+}
+
+.tool dt {
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-top: 14px;
+}
+
+.tool dt:first-of-type {
+  margin-top: 0;
+}
+
+.tool dd {
+  margin: 6px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* Stated as content, not as small print. */
+.limit {
+  color: var(--faint) !important;
+}
+
+.onward {
+  margin-top: 8px;
+  font-size: 0.92rem;
+}
+
+.onward a {
+  color: var(--orange);
+}

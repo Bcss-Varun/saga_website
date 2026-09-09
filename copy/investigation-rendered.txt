@@ -1,0 +1,115 @@
+Platform
+Solutions
+Investigation
+Trust
+Request a Demo
+
+INVESTIGATION
+
+You have a handle, an image or a number. What comes back.
+
+SAGA’s investigation tools resolve identifiers into records: a username into accounts across sources, an image into coordinates and a capture time, a clip into a verdict with a frame-level breakdown. Each returns what it found, what it did not, and the time it looked — because an investigator needs the gaps as much as the hits.
+
+[draft — needs review] — copy on this page is drafted and not yet signed off.
+
+SOC-EYE
+Tools
+Working the record
+FAQ
+
+SOC-EYE
+
+Ask the collected material a question.
+
+SOC-EYE queries what the deployment has already collected. It is not a search of the open internet and it does not reach beyond the records the platform holds — which is precisely why its answers can be traced.
+
+A question is asked in plain language — an account, a term, a location, a date range, or a combination — and the answer returns as the matching records with their sources, capture times and the accounts behind them. The answer cites the records it was built from, so an investigator reads evidence rather than a summary they would have to take on trust.
+
+Because it runs over collected records rather than a live crawl, SOC-EYE inherits the boundaries of the deployment: it can only answer from what collection retained, within the retention window, and within the scope the asking user’s role permits. A question outside that scope returns nothing rather than reaching for it.
+
+Queries are audited like any other access: the user, the question, the time and the records returned [pending sign-off: read-logging]. A question asked is an event in the audit trail, not a silent lookup.
+
+TOOLS
+
+What each one takes, and what it gives back.
+Deepfake detection
+TAKES
+A video or image
+RETURNS
+One of four verdicts — Real, Fake, Suspicious or Needs Review — with a confidence figure and a frame-level breakdown showing which frames drove the result.
+LIMITS
+Needs Review is a real outcome, not an error. It is returned when the evidence does not support a verdict, and it routes to a person rather than reporting a decision the model cannot stand behind.
+OSINT username enumeration
+TAKES
+A username or handle
+RETURNS
+The accounts carrying that handle across sources, with the profile details visible at the time of the check and the time the check was run.
+LIMITS
+A match on a handle is a match on a string, not proof of a shared owner. The result is a set of candidates for an investigator to weigh, and the sources searched are [pending].
+EXIF and location extraction
+TAKES
+An image file
+RETURNS
+GPS coordinates, capture timestamp, and device make and model where the metadata is present, alongside the original file preserved unmodified.
+LIMITS
+Most platforms strip EXIF on upload. An image saved from a social platform will usually carry nothing; one received as a file often still does. The tool reports metadata absent rather than inferring a location.
+Email and phone intelligence
+TAKES
+An email address or phone number
+RETURNS
+The accounts and public records associated with the identifier where such an association is visible, with the time of the check recorded.
+LIMITS
+Returns are uneven by identifier type and by region, and an empty result is a statement about visibility rather than about existence [pending sign-off: sources and coverage for this tool].
+Cross-platform search
+TAKES
+A term, an entity or a date range
+RETURNS
+Matching records from every source the deployment collects, in one result set, with each item carrying its source, its capture time and the account that posted it.
+LIMITS
+Search covers what collection retained, not the open internet. The window is the deployment’s retention period, and the sources are [pending].
+
+WORKING THE RECORD
+
+One identifier, one file.
+
+Results from every tool attach to the same person-of-interest record. An enumerated username, a set of EXIF coordinates, a deepfake verdict and a cross-platform result are held against one entity and, where a case exists, one FIR number — so an investigator reads a file rather than reconciling five exports.
+
+Every check is recorded with the identifier submitted, the tool used, the user who ran it and the time. That record exists whether or not the check returned anything, which is what makes a negative result usable later: it shows that the question was asked, and when.
+
+Captured material is stored with its original metadata and its capture time. Timestamped capture with metadata alongside an immutable audit trail is what supports evidence-grade workflows — the platform records what was collected and when, and the department’s own process determines what is done with it.
+
+Deployment, audit trail and lawful basis →
+
+FAQ
+
+Investigation questions.
+Does SOC-EYE search the internet?
+Why did EXIF extraction return nothing?
+Is a search recorded even when it finds nothing?
+What does a Needs Review verdict mean?
+Is a username match proof of the same person?
+
+REQUEST A DEMONSTRATION
+
+Bring an identifier and see what comes back.
+Request a Demo
+How the platform works
+
+Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
+
+A PRODUCT BY
+SOLUTIONS
+Public Safety
+Governance
+Brands
+Celebrity
+PLATFORM
+How it works
+Investigation
+Trust
+GET IN TOUCH
+smartapps@bluecloudsoftech.com
+A product specialist replies within one working day.
+Request a Demo →
+© 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+Blura SAGA — Sentiment And Goodwill Analysis

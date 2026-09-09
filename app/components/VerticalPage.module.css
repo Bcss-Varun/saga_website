@@ -1,0 +1,263 @@
+/* Blocks the ported stylesheet has no class for: scenario narratives, the
+   deployment note, the signature-visual split, and the placeholder marker.
+   Everything else on these pages reuses the global classes. */
+
+/* Where the `worlds` scene draws. Purely an anchor/clip target for the canvas
+   renderer — it holds no content, and the page reads identically without it. */
+.heroSlot {
+  position: absolute;
+  top: 12%;
+  right: 4%;
+  width: 42%;
+  height: 76%;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .heroSlot {
+    display: none;
+  }
+}
+
+/* The site header is fixed (80px, 64px once floating), so an anchor jump
+   would otherwise land the section heading underneath it. */
+.anchor {
+  scroll-margin-top: 96px;
+}
+
+/* Sitewide marker while copy is in review. Deliberately loud — a draft that
+   looks finished is how unreviewed copy reaches production. */
+.draftBanner {
+  margin: 0;
+  /* The banner is a <p>, and the ported sheet caps every p at 60ch for
+     readability. That measure is right for body copy and wrong for a
+     full-bleed strip: without this the background and both borders stopped at
+     ~494px and the banner read as a broken box floating at the left. Same trap
+     as the bare `nav` selector and the footer track count — a global rule
+     written for prose, inherited by something that is not prose. */
+  max-width: none;
+  padding: 10px 20px;
+  text-align: center;
+  font-family: var(--fm);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--warn);
+  background: rgba(245, 165, 36, 0.08);
+  border-top: 1px solid rgba(245, 165, 36, 0.28);
+  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
+}
+
+.pending {
+  color: var(--warn);
+  font-family: var(--fm);
+  font-size: 0.86em;
+  letter-spacing: 0.02em;
+}
+
+.signature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+}
+
+.signatureCopy h2 {
+  margin-top: 0;
+}
+
+.scenarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.scenario {
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.scenario h3 {
+  color: var(--orange);
+  margin: 0 0 10px;
+}
+
+.scenario p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.deployment {
+  max-width: 62ch;
+  margin-top: 20px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--lineo);
+  border-radius: 12px;
+  background: var(--s2);
+}
+
+.deployment p {
+  margin: 0 0 10px;
+}
+
+.deploymentMeta {
+  font-size: 0.86rem;
+  color: var(--faint);
+  margin-bottom: 0 !important;
+}
+
+.deploymentMeta a {
+  color: var(--orange);
+}
+
+/* Was an inline style. Same colour, so the three verticals that have not been
+   through the density pass render identically. */
+.illustrative {
+  color: var(--faint);
+}
+
+@media (max-width: 900px) {
+  .signature {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DENSITY LAYOUT
+   Applied only under .dense, i.e. only to a vertical whose content opts in.
+   The shared part of the system — type scale, alternating grounds, eyebrow
+   pills and the lead-in card — lives in globals.css under `.dense`, because
+   eleven routes need the same one. What stays here is specific to the vertical
+   template: the triad list, the module answer/detail, the scenario card and the
+   deployment grid.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── the triad, as a large-type list ────────────────────────────────────── */
+
+.triadList {
+  list-style: none;
+  margin: clamp(40px, 5vh, 64px) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.triadList li {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.3fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: baseline;
+  padding: clamp(24px, 3.4vh, 38px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.triadList h3 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3.2vw, 2.7rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--orange);
+}
+
+.triadList p {
+  margin: 0;
+  max-width: 48ch;
+  font-size: 1.12rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+@media (max-width: 720px) {
+  .triadList li {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* ── capability modules: title · answer · detail ────────────────────────── */
+
+/* The one line a scanning reader is expected to take. Specificity has to clear
+   the global `.cab p`, hence the :global(.dense) .cab prefix rather than a bare class. */
+:global(.dense .cab) .answer {
+  margin: 16px 0 0;
+  max-width: 34ch;
+  font-size: 1.02rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--strong);
+}
+
+:global(.dense .cab) .detail {
+  margin: 10px 0 0;
+  max-width: 34ch;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ── scenarios: setup, then the outcome the card exists for ─────────────── */
+
+:global(.dense) .scenario {
+  padding: 26px 24px 24px;
+  border-radius: 14px;
+  background: var(--s3);
+  /* the outcome is pushed to the foot of the card, so the three bold lines sit
+     on one line across the row however long each setup runs */
+  display: flex;
+  flex-direction: column;
+}
+
+:global(.dense) .scenario h3 {
+  margin: 0 0 14px;
+  font-size: 1.06rem;
+  color: var(--strong);
+}
+
+/* --muted, not --faint. On the --s3 card ground --faint measures 4.93:1 —
+   compliant, but the thinnest margin on the site, and these pages get printed.
+   The setup is still clearly subordinate to the outcome; size and weight do
+   that work rather than colour alone, which is what the brief asks for
+   everywhere else. */
+:global(.dense) .scenario .setup {
+  margin: 0 0 16px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+:global(.dense) .scenario .outcome {
+  margin: auto 0 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--line2);
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+:global(.dense) .illustrative {
+  margin-top: -6px;
+  font-size: 0.87rem;
+}
+
+/* ── deployment: bold lead-in, then one statement ───────────────────────── */
+
+:global(.dense) .deployment {
+  max-width: none;
+  margin-top: clamp(28px, 4vh, 44px);
+  padding: 0;
+  border: 0;
+  background: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+:global(.dense) .deploymentMeta {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+}
