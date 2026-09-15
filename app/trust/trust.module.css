@@ -1,135 +1,768 @@
-/* /trust — a text-dense page for security reviewers. Reuses the global type
-   and card classes; only the few blocks the ported sheet has no class for
-   are defined here. */
+/* /trust — blocks that exist only on this page. The shared vocabulary is in
+   Bento.module.css. */
 
-.draftBanner {
-  margin: 0;
-  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
-     this its background and borders stop at ~492px inside a 1440px page and
-     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
-  max-width: none;
-  padding: 10px 20px;
-  text-align: center;
-  font-family: var(--fm);
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  color: var(--warn);
-  background: rgba(245, 165, 36, 0.08);
-  border-top: 1px solid rgba(245, 165, 36, 0.28);
-  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
-}
-
-.anchor {
-  scroll-margin-top: 96px;
-}
-
-.prose {
-  max-width: 68ch;
-  margin-top: 22px;
-}
-
-.prose p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--muted);
-  margin: 0 0 16px;
-}
-
-.extras {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-  margin-top: 34px;
-}
-
-.extra {
-  background: var(--s2);
-  border: 1px solid var(--line);
-  border-left: 2px solid var(--lineo);
-  border-radius: 12px;
-  padding: 22px;
-}
-
-.extra h3 {
+.cardTitle {
   margin: 0 0 10px;
   font-family: var(--fd);
-  font-weight: 600;
-  font-size: 1.05rem;
+  font-weight: 500;
+  font-size: 1.06rem;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
   color: var(--strong);
 }
 
-.extra p {
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.62;
-  color: var(--muted);
+/* ── who runs it ────────────────────────────────────────────────────────── */
+.mark {
+  max-width: none;
+  margin: 0 0 18px;
 }
 
-.note {
-  margin: 18px 0 0;
-  font-size: 0.86rem;
+.markBar {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--orange);
+}
+
+.markBar[data-w='0'] { width: 100%; }
+.markBar[data-w='1'] { width: 62%; background: rgba(241, 91, 38, 0.62); }
+.markBar[data-w='2'] { width: 32%; background: rgba(241, 91, 38, 0.38); }
+
+.pending {
+  max-width: none;
+  margin: 0;
+  font-family: var(--fm);
+  font-size: 0.78rem;
+  line-height: 1.5;
   color: var(--faint);
 }
 
-.descriptors {
-  list-style: none;
-  margin: 18px 0 0;
-  padding: 0;
+/* ── deployment models ────────────────────────────────────────────────────
+   Three cards, one per model, every card the same object in the same order:
+   the mark and the index on one row, the name, the one-line answer, the
+   detail, and the reader it is for on the card foot.
+
+   `.model` is passed to the shared cell through its `className` prop, so the
+   ground, border and radius still come from Bento and only the padding and
+   the rhythm are set here. A model card carries five things where a bento
+   card usually carries two, and 24px of padding around five is cramped. */
+.model {
+  padding: clamp(26px, 2.2vw, 34px);
+}
+
+/* The mark on the left, the index on the right. `space-between` rather than a
+   gap: the two are unrelated and the row reads better with the full width
+   between them than with the index trailing the tile. */
+.modelTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(22px, 2vw, 28px);
+}
+
+/* The tile the glyph sits in. A flat accent ground rather than a gradient or a
+   glow: a soft-edged layer is the expensive thing to composite on a scroll
+   frame, which is what CLAUDE.md's open performance item is about, and at
+   46px nobody can tell the difference. The glyph strokes `currentColor`, so
+   this rule's own `color` is the only place the accent is set. */
+.modelMark {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
-  max-width: 1000px;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: rgba(241, 91, 38, 0.1);
+  border: 1px solid rgba(241, 91, 38, 0.24);
+  color: var(--orange);
 }
 
-.descriptors li {
-  background: var(--s2);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 20px 22px;
-  font-family: var(--fd);
-  font-size: 1rem;
-  color: var(--ink);
-}
-
-/* ── density pass ─────────────────────────────────────────────────────────
-   The shared system (type scale, grounds, pills, lead-in card) lives in
-   globals.css under `.dense`. What follows is specific to this page. */
-
-.sectionLead {
-  margin-top: 4px;
-}
-
-.roles {
-  margin-top: clamp(34px, 4.5vh, 56px);
-}
-
-/* Specificity has to clear the global `.cab p`, hence the :global(.dense .cab)
-   prefix rather than a bare class. */
-:global(.dense .cab) .answer {
-  margin: 16px 0 0;
-  max-width: 34ch;
-  font-size: 1.02rem;
+/* The client's index. Held at the top right in a faint tone, where it marks
+   position without competing with the model's name — the thing a reader is
+   actually looking for. It is decorative in the markup for the same reason. */
+.modelN {
+  font-family: var(--fm);
   font-weight: 500;
-  line-height: 1.45;
-  color: var(--strong);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  color: var(--faint);
 }
 
-:global(.dense .cab) .detail {
-  margin: 10px 0 0;
-  max-width: 34ch;
+.modelLabel {
+  max-width: none;
+  margin: 0 0 10px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.modelTitle {
+  margin: 0 0 12px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 1.12rem;
+  line-height: 1.34;
+  letter-spacing: -0.014em;
+  color: var(--strong);
+  text-wrap: balance;
+}
+
+.modelBody {
+  max-width: none;
+  margin: 0 0 26px;
   font-size: 0.875rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--muted);
 }
 
-:global(.dense) .extras {
-  margin-top: clamp(28px, 4vh, 44px);
+/* The foot is pushed down with `margin-top: auto` rather than the card being
+   given a height. The grid already stretches the three to a common height, so
+   auto puts the three "best for" blocks on one baseline whatever the bodies
+   run to — and it does it without a number that a copy edit would invalidate.
+   `.card` in Bento.module.css is already a flex column, which is what makes
+   that work. */
+.bestFor {
+  margin: auto 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
 }
 
-:global(.dense) .extra {
-  background: var(--s3);
+.bestForLabel {
+  margin: 0 0 7px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
 }
 
-:global(.dense) .descriptors {
+.bestForValue {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* ── access control ───────────────────────────────────────────────────────
+   Three principle cards to a supplied reference: the index over its own rule,
+   then the copy with a schematic beside it, and an accent line along the top
+   edge of every card.
+
+   That line is drawn with `::after`. Bento's `.card` already uses `::before`
+   for its top sheen, and its `::after` belongs to `.cardLit` — which is free
+   here, because none of these three is lit. If one ever is, this rule and that
+   one collide and this needs a child element instead. */
+.pillar {
+  padding: clamp(24px, 2vw, 30px);
+}
+
+.pillar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--orange) 46%, var(--lift) 58%, transparent);
+}
+
+.pillarN {
   max-width: none;
+  margin: 0 0 10px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.16);
+}
+
+.pillarRule {
+  display: block;
+  width: 54px;
+  height: 1px;
+  margin-bottom: 18px;
+  background: var(--line2);
+}
+
+/* Copy and schematic side by side. The art has a fixed basis and is allowed to
+   shrink but not grow, so the copy takes every pixel the card gains and the
+   drawing stays the same object across the three cards. */
+.pillarRow {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(10px, 1.4vw, 18px);
+}
+
+.pillarCopy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pillarArt {
+  flex: 0 1 122px;
+  min-width: 88px;
+  align-self: center;
+  color: var(--orange);
+}
+
+.pillarArt svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The two strokes the schematics are built from. The subject of the card in
+   the accent, everything it sits among in a flat neutral — no glow, because a
+   soft-edged layer is the expensive thing to composite and at this size it
+   buys nothing. */
+.artLit {
+  stroke: var(--orange);
+}
+
+.artDim {
+  stroke: rgba(255, 255, 255, 0.17);
+}
+
+.pillarLabel {
+  max-width: none;
+  margin: 0 0 10px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.pillarTitle {
+  margin: 0 0 12px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 1.12rem;
+  line-height: 1.32;
+  letter-spacing: -0.014em;
+  color: var(--strong);
+  text-wrap: balance;
+}
+
+.pillarBody {
+  max-width: none;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* A phone column has no room for a drawing beside a paragraph — the art would
+   be about 70px and the measure would drop to a dozen characters. It goes
+   above the copy instead, at a size worth looking at. */
+@media (max-width: 560px) {
+  .pillarRow {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .pillarArt {
+    flex: 0 0 auto;
+    align-self: flex-start;
+    width: 92px;
+  }
+}
+
+/* ── the capability strip ────────────────────────────────────────────────
+   Four controls under one label, closing the section. The label is centred
+   with a hairline running out to each edge, drawn as two background gradients
+   on the paragraph rather than as two extra elements. */
+.layer {
+  margin-top: clamp(22px, 2.4vw, 32px);
+  padding: clamp(22px, 2.2vw, 30px) clamp(18px, 2vw, 30px);
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.layerLabel {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  max-width: none;
+  margin: 0 0 clamp(20px, 2vw, 26px);
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.layerLabel::before,
+.layerLabel::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--line);
+}
+
+.layerList {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The divider is a left border on every item but the first, so it never draws
+   a trailing rule and it disappears on its own when the row wraps to one
+   column below. */
+.layerItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 2px clamp(14px, 1.6vw, 26px);
+  border-left: 1px solid var(--line);
+}
+
+.layerItem:first-child {
+  border-left: 0;
+}
+
+.layerIcon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--orange);
+}
+
+.layerName {
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+@media (max-width: 1080px) {
+  .layerList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .layerItem:nth-child(odd) {
+    border-left: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .layerList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .layerItem {
+    border-left: 0;
+    padding-inline: 0;
+  }
+}
+
+/* The marker under a capability name. Out of the tracked capitals and into a
+   faint lower case on its own line: a caps-and-brackets marker reads louder
+   than the control it qualifies, and a marker's job is to be honest, not
+   loud. */
+.layerPending {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--faint);
+}
+
+/* ── audit trail ──────────────────────────────────────────────────────────
+   The heading with a slogan beside it, a record panel, three cards and a
+   closing strip, to a supplied reference. */
+
+/* The head keeps its centred column and the slogan is laid over the right of
+   the block, so nothing about the centring changes to make room for it. */
+.auditHead {
+  position: relative;
+}
+
+.aside {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  max-width: none;
+  margin: 0;
+  padding-left: 18px;
+  border-left: 2px solid var(--orange);
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.aside span {
+  display: block;
+}
+
+.aside span + span {
+  margin-top: 12px;
+}
+
+/* Below this there is no column beside the heading to put it in, and a slogan
+   stacked above the headline reads as a second eyebrow. It is decoration and
+   it goes. */
+@media (max-width: 1200px) {
+  .aside {
+    display: none;
+  }
+}
+
+/* ── the record panel ───────────────────────────────────────────────────── */
+.record {
+  margin-bottom: clamp(22px, 2.4vw, 32px);
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.recordBar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px clamp(16px, 1.8vw, 26px);
+  border-bottom: 1px solid var(--line);
+}
+
+.recordLabel {
+  font-family: var(--fm);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--strong);
+}
+
+/* The panel's own "these rows are invented" mark. It is text on the header,
+   where the copy sweep reads it. Removing it means removing the rows. */
+.recordTag {
+  padding: 5px 10px;
+  border: 1px solid var(--line2);
+  border-radius: 6px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 9.5px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.recordState {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.recordDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+}
+
+/* Five columns cannot be made to fit a phone and stay a table, so the table
+   scrolls on its own axis. The page never does. */
+.recordScroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.recordTable {
+  width: 100%;
+  min-width: 720px;
+  /* `separate`, not `collapse`, so the highlighted row can carry a rounded
+     outline — a collapsed table ignores `border-radius` on its cells. Every
+     border here is a single bottom edge, so nothing doubles up. */
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.85rem;
+}
+
+.recordTable th {
+  padding: 14px clamp(12px, 1.2vw, 20px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.recordTable td {
+  padding: 15px clamp(12px, 1.2vw, 20px);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  vertical-align: middle;
+}
+
+.recordTable tr:last-child td {
+  border-bottom: 0;
+}
+
+.cellTime,
+.cellRef {
+  font-family: var(--fm);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.cellEvent {
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.event {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eventIcon {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+.eventIcon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.cellMore {
+  width: 1%;
+  text-align: right;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+}
+
+/* The one highlighted row. The accent is the emphasis and the row's own words
+   are the meaning — colour is never the only thing carrying a state here.
+   Drawn as a closed outline rather than two rules.
+   The top edge is a box-shadow so it does not add a row of height that the
+   other four do not have. */
+.rowLit td {
+  background: rgba(241, 91, 38, 0.07);
+  border-bottom-color: rgba(241, 91, 38, 0.42);
+  box-shadow: inset 0 1px 0 rgba(241, 91, 38, 0.42);
+  color: var(--ink);
+}
+
+.rowLit td:first-child {
+  border-left: 1px solid rgba(241, 91, 38, 0.42);
+  border-top-left-radius: 9px;
+  border-bottom-left-radius: 9px;
+}
+
+.rowLit td:last-child {
+  border-right: 1px solid rgba(241, 91, 38, 0.42);
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+}
+
+.rowLit .cellTime,
+.rowLit .cellEvent,
+.rowLit .cellMore {
+  color: var(--orange);
+}
+
+.rowLit .eventIcon {
+  color: var(--orange);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── the three audit cards ───────────────────────────────────────────────
+   Same parts as the access-control cards and the opposite arrangement: the
+   mark leads the copy from the left rather than sitting beside it on the
+   right, which is what the reference draws. */
+.auditCard {
+  padding: clamp(24px, 2vw, 30px);
+}
+
+.auditN {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: none;
+  margin: 0 0 clamp(18px, 1.8vw, 24px);
+  font-family: var(--fm);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  color: var(--orange);
+}
+
+.auditNRule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--line2);
+}
+
+.auditRow {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(14px, 1.4vw, 20px);
+}
+
+.auditMark {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: rgba(241, 91, 38, 0.1);
+  border: 1px solid rgba(241, 91, 38, 0.24);
+  color: var(--orange);
+}
+
+.auditMark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.auditCopy {
+  min-width: 0;
+}
+
+/* ── the qualities strip ─────────────────────────────────────────────────
+   Four names with a line under each. A list, not four divs: four items of one
+   kind, and that should survive being read aloud. */
+.qualities {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 0;
+  margin: clamp(22px, 2.4vw, 32px) 0 0;
+  padding: clamp(20px, 2vw, 26px) clamp(16px, 1.8vw, 26px);
+  list-style: none;
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.quality {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 2px clamp(12px, 1.4vw, 24px);
+  border-left: 1px solid var(--line);
+}
+
+.quality:first-child {
+  border-left: 0;
+}
+
+.qualityIcon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: var(--orange);
+}
+
+.qualityIcon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.qualityName {
+  display: block;
+  margin-bottom: 5px;
+  font-family: var(--fm);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--strong);
+}
+
+.qualitySub {
+  display: block;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+@media (max-width: 1080px) {
+  .qualities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .quality:nth-child(odd) {
+    border-left: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .qualities {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .quality {
+    border-left: 0;
+    padding-inline: 0;
+  }
+
+  .auditRow {
+    flex-direction: column;
+    gap: 16px;
+  }
 }

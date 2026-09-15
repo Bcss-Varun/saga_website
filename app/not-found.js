@@ -1,6 +1,8 @@
 import Link from 'next/link';
-import HeroFrame from './components/HeroFrame';
+import PageHero from './components/PageHero';
+import { BentoLayer, Card, Grid, Section } from './components/Bento';
 import { VERTICALS } from './lib/nav';
+import styles from './not-found.module.css';
 
 /* Custom 404 in the site's own language. Next's default is a white page with
    "404: This page could not be found." — wrong on a dark site, and no help to
@@ -16,38 +18,31 @@ export const metadata = {
 
 export default function NotFound() {
   return (
-    <HeroFrame>
-      <section className="sec" id="hero" data-scene="none">
-        <div className="inner">
-          <p className="eyebrow rv">Page not found</p>
-          <h1 className="rv d1" style={{ maxWidth: '20ch' }}>
-            That page is not here.
-          </h1>
-          <p className="lead rv d2" style={{ maxWidth: '56ch' }}>
-            The address may have changed, or the link may have been shortened in
-            transit. The pages below cover everything on this site.
-          </p>
+    <BentoLayer>
+      <PageHero
+        pill="Page not found"
+        title="That page is"
+        lit="not here."
+        lead="The address may have changed, or the link may have been shortened in transit. The pages below cover everything on this site."
+        actions={[
+          { href: '/contact', label: 'Request a Demo', primary: true },
+          { href: '/platform', label: 'How the platform works' },
+        ]}
+      />
 
-          <div className="routes" style={{ marginTop: 34 }}>
-            {VERTICALS.map((v) => (
-              <Link className="route rv" key={v.key} href={v.href}>
-                <h2>{v.name}</h2>
-                <p>{v.descriptor}</p>
-                <span className="go">Open {v.name} &rarr;</span>
-              </Link>
-            ))}
-          </div>
-
-          <p className="rv d3" style={{ marginTop: 30 }}>
-            <Link className="cta2" href="/platform">
-              How the platform works
-            </Link>{' '}
-            <Link className="cta" href="/contact">
-              Request a Demo
-            </Link>
-          </p>
-        </div>
-      </section>
-    </HeroFrame>
+      <Section id="routes" wash="warm">
+        <Grid>
+          {VERTICALS.map((v, i) => (
+            <Card key={v.key} span={3} lit={i === 0}>
+              <h2 className={styles.name}>{v.name}</h2>
+              <p className={styles.descriptor}>{v.descriptor}</p>
+              <p className={styles.go}>
+                <Link href={v.href}>Open {v.name} &rarr;</Link>
+              </p>
+            </Card>
+          ))}
+        </Grid>
+      </Section>
+    </BentoLayer>
   );
 }

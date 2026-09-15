@@ -1,100 +1,1896 @@
-/* /platform — text-dense, for a technical evaluator. */
+/* /platform — page-specific blocks.
 
-.draftBanner {
-  margin: 0;
-  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
-     this its background and borders stop at ~492px inside a 1440px page and
-     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
-  max-width: none;
-  padding: 10px 20px;
-  text-align: center;
-  font-family: var(--fm);
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  color: var(--warn);
-  background: rgba(245, 165, 36, 0.08);
-  border-top: 1px solid rgba(245, 165, 36, 0.28);
-  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
-}
+   The shared bento vocabulary is in Bento.module.css; everything here belongs
+   to this route alone. Rebuilt 2026-09-10 with the page.
 
-.anchor {
-  scroll-margin-top: 96px;
-}
+   Two constraints run through the whole file:
 
-.lead {
-  max-width: 62ch;
-  margin: 20px 0 0;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--ink);
-}
+   · Headings are `--strong`. The ported h1/h2 rule paints orange, and the
+     restraint in this layer comes from white type with the accent held back,
+     so every heading sets its colour.
 
-.prose {
-  max-width: 68ch;
-  margin-top: 22px;
-}
+   · Nothing animates and nothing blurs. A soft-edged animated layer is the
+     compositing cost the open performance item in CLAUDE.md is about, and the
+     static-frame criterion asks every block to read complete standing still. */
 
-.prose p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--muted);
-  margin: 0 0 16px;
-}
-
-/* The pipeline is a genuine sequence, so it keeps its numbering. */
-.stages {
-  list-style: none;
-  counter-reset: none;
-  margin: 34px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.stages li {
-  background: var(--s2);
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--lineo);
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.stageN {
-  display: block;
+/* ── shared bits ─────────────────────────────────────────────────────────── */
+/* The ported sheet caps every `p` at 60ch, so a centred note has to lift the
+   cap or it centres inside a 60ch box pinned to the left of the section. */
+.figNote {
+  margin: 18px auto 0;
+  max-width: 72ch;
   font-family: var(--fm);
   font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--orange);
-  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  text-align: center;
 }
 
-.stages h3 {
-  margin: 0 0 12px;
+.onward {
+  margin: 28px auto 0;
+  max-width: none;
+  text-align: center;
+  font-size: 0.94rem;
+}
+
+.onward a {
+  color: var(--lift);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 122, 69, 0.35);
+  padding-bottom: 2px;
+}
+
+.onward a:hover {
+  color: var(--soft);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.panelLabel {
+  margin: 0 0 10px;
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.panelNote {
+  margin: 14px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--faint);
+}
+
+.panel {
+  width: 100%;
+}
+
+/* ── hero ────────────────────────────────────────────────────────────────
+   The photograph, in the second column of the split hero. Its own corner
+   radius and ring rather than a glow behind it: a glow on an object this size
+   is a large soft-edged layer composited on every scroll frame. */
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+
+/* ── 2. the signal flow ──────────────────────────────────────────────────
+   Four stage cards with an arrow between each pair.
+
+   They were four columns divided only by whitespace, which read as one dense
+   block of twenty small labels: nothing told the eye where a stage ended. Each
+   stage is its own card now, on a raised ground with its own border, and the
+   whole block is given more room — the four items inside a card are what a
+   reader is scanning, and they need space to be scannable.
+
+   The arrows are absolute so they sit in the gutter without taking a grid
+   track. A track for them would collapse to nothing at the width where the
+   row wraps, and the arrows are hidden there anyway. */
+.flow {
+  margin-top: clamp(40px, 6vh, 64px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+}
+
+.flowTrack {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 2.4vw, 34px);
+  margin: 0;
+  padding: clamp(24px, 3vw, 40px);
+  list-style: none;
+}
+
+.flowStage {
+  position: relative;
+  min-width: 0;
+  padding: clamp(20px, 1.8vw, 26px);
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+
+.flowArrow {
+  position: absolute;
+  top: 52px;
+  right: calc(-1 * clamp(20px, 2.4vw, 34px) / 2);
+  transform: translateX(50%);
+  color: var(--faint);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.flowHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* The stage mark. A ring and a radial fill rather than a flat disc, so the
+   four heads read as the loudest thing in the block without any of them
+   needing a solid orange fill behind white type. */
+.flowIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--orange);
+  background: radial-gradient(circle at 50% 45%, rgba(241, 91, 38, 0.28), rgba(241, 91, 38, 0.06) 70%);
+  border: 1px solid rgba(241, 91, 38, 0.34);
+}
+
+.flowIconSvg {
+  width: 27px;
+  height: 27px;
+}
+
+.flowN {
+  margin: 0 0 5px;
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+}
+
+.flowName {
+  margin: 0 0 5px;
   font-family: var(--fd);
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
+  letter-spacing: -0.015em;
   color: var(--strong);
 }
 
-.stages p {
+.flowSub {
   margin: 0;
-  font-size: 0.9rem;
+  max-width: none;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  color: var(--faint);
+}
+
+.flowList {
+  display: grid;
+  gap: 20px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flowItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.flowItemIcon {
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  margin-top: 2px;
+  color: var(--faint);
+}
+
+.flowItemName {
+  display: block;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.flowItemBody {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: var(--faint);
+}
+
+/* ── the footer bar ────────────────────────────────────────────────────
+   Says in words what the stage lists deliberately do not say in a list: which
+   platforms, languages and sources a deployment covers is a configuration,
+   not a published set. */
+.flowFoot {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 22px clamp(24px, 3vw, 40px);
+  border-top: 1px solid var(--line);
+}
+
+.flowFootIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--muted);
+  border: 1px solid var(--line2);
+}
+
+.flowFootName {
+  margin: 0;
+  padding-right: 20px;
+  border-right: 1px solid var(--line2);
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 0.96rem;
+  color: var(--strong);
+  white-space: nowrap;
+}
+
+.flowFootBody {
+  margin: 0;
+  max-width: none;
+  font-size: 0.89rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.flowFootLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 0.89rem;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.flowFootLink:hover {
+  color: var(--strong);
+  border-color: rgba(241, 91, 38, 0.5);
+}
+
+/* ── 4. intelligence layers ──────────────────────────────────────────────
+   Five cards down the page, the art alternating side to side.
+
+   ── Why the height is fixed ───────────────────────────────────────────────
+   The five paragraphs are not the same length, and cards sized to their own
+   copy step up and down the page in five different heights. `grid-auto-rows`
+   on the list gives every card the same one, so the set reads as five views of
+   one thing. The copy column centres inside it; the art fills it. The floor is
+   a clamp rather than a pixel value so the card grows with the viewport
+   instead of scrolling its own content on a small screen.
+
+   ── The animation ─────────────────────────────────────────────────────────
+   Hover and keyboard focus only: the card lifts a little, its border takes the
+   accent, the art scales a touch and the arrow slides. That is interaction
+   feedback, which is a different thing from the per-section fade-up CLAUDE.md
+   rules out — nothing here plays on scroll, and every card is complete before
+   anyone touches it. All of it is transform and colour, so it composites
+   without laying anything out again, and all of it stops under
+   `prefers-reduced-motion`. */
+/* ── the sticky stack ────────────────────────────────────────────────────
+   The five cards pin on top of each other as the reader scrolls, the way the
+   pillars do on Home: each one sticks a little lower than the last, so the
+   ones already read stay as a stack of edges behind the current card.
+
+   Done with `position: sticky` alone. Home's stack also writes a 0-1 progress
+   to `--p` from a scroll handler because its cards drive their own visuals
+   from it; nothing here needs that, so there is no JavaScript, no scroll
+   listener and no per-frame style write on this page.
+
+   Worth knowing: CLAUDE.md's open performance item found sticky-layer
+   compositing to be the single largest cost on Home. This adds a second stack
+   to the site. It is the cheaper kind — layout only, no per-frame work — but
+   it belongs in the same re-measurement on real hardware. */
+.layers {
+  /* The section runs wide for the signal-path board above it. These cards do
+     not want that width: a paragraph set across 700px reads as a wall, and the
+     art half ends up mostly empty. They take their own, narrower measure and
+     centre inside the section. */
+  --stack-top: 104px;
+  --stack-strip: 15px;
+  --stack-runway: 46vh;
+
+  display: block;
+  max-width: 1080px;
+  /* One shorthand, not `margin-inline: auto` followed by `margin: 0` — the
+     shorthand resets what the longhand set, which pinned the whole list to the
+     left of a section it was meant to centre in. */
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.layer {
+  /* `--i` is the card's index, set on the element in page.js. Each card pins
+     one strip lower than the one before it, which is what makes the pile read
+     as a pile rather than as one card swapping for another. */
+  position: sticky;
+  top: calc(var(--stack-top) + var(--i) * var(--stack-strip));
+  height: clamp(330px, 28vw, 400px);
+  isolation: isolate;
+  /* Driven per frame from `--cover`. The origin is the card's own top edge, so
+     a covered card shrinks back towards where it is pinned rather than towards
+     its middle — it recedes into the pile instead of just getting smaller. */
+  transform-origin: 50% 0;
+  transform: scale(calc(1 - 0.055 * var(--cover, 0)));
+  margin-bottom: var(--stack-runway);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  /* Stretch, not centre. The row height is definite, so a stretched art column
+     gives the image a real height to fill; with `align-items: center` the
+     column is auto-height, `height: 100%` on the image resolves against
+     nothing and the image collapses to zero. The copy centres itself instead. */
+  align-items: stretch;
+  gap: clamp(20px, 3vw, 44px);
+  padding: clamp(24px, 2.4vw, 40px);
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+/* The art changes sides down the list. `order` rather than a second rule per
+   card, so the reading order stays copy-then-art at every width. */
+/* Card five is covered by nothing, so it used to pin and then have the section
+   end immediately underneath it — on screen for a moment and gone.
+
+   Its runway is `padding-bottom` on the list, not `margin-bottom` on the card.
+   A last child's bottom margin collapses out of a parent that has no padding
+   or border, so it did not extend the list at all: the card unpinned at the
+   old boundary and the runway became empty space below it. Padding cannot
+   collapse, and a sticky element is held by its parent's padding box, so this
+   is what actually keeps card five on screen. */
+/* 18vh, not more: the runway is scroll distance the card holds for, and
+   whatever is left of it after the card releases is empty ground before the
+   next section. This is enough for card five to settle and be read, and short
+   enough that the space it leaves reads as section spacing. */
+.layers {
+  padding-bottom: 18vh;
+}
+
+.layer:last-child {
+  margin-bottom: 0;
+}
+
+/* How far the card above has been covered, 0-1, written by LayerStack. It
+   drives a scrim over the covered card and nothing else: a pinned card that
+   stays at full strength under the next one reads as a bug, and the pile needs
+   depth to read as a pile.
+
+   A flat overlay rather than a `filter` or a blur — a filter puts the card on
+   its own composited layer for the whole scroll, which is the cost CLAUDE.md's
+   open performance item is about. */
+.layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: rgba(6, 6, 8, calc(var(--cover, 0) * 0.8));
+}
+
+.layer > * {
+  position: relative;
+  z-index: 1;
+}
+
+.layer:nth-child(even) .layerCopy {
+  order: 2;
+}
+
+/* No lift on hover. A transform does not stop a sticky card sticking — that
+   was checked — but a card that is pinned to the top of the window and then
+   jumps 3px under the pointer reads as a glitch. The border and the shadow
+   carry the hover state, and the art still scales inside the card. */
+.layer:hover,
+.layer:focus-within {
+  border-color: rgba(241, 91, 38, 0.42);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.45);
+}
+
+.layerCopy {
+  min-width: 0;
+  align-self: center;
+}
+
+.layerN {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 12px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--orange);
+}
+
+.layerRule {
+  width: 34px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--orange);
+}
+
+.layerKicker {
+  margin: 0 0 10px;
+  max-width: none;
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.layerTitle {
+  margin: 0 0 12px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: clamp(1.24rem, 1.9vw, 1.62rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--strong);
+  text-wrap: balance;
+}
+
+.layerBody {
+  margin: 0 0 20px;
+  max-width: 48ch;
+  font-size: 0.92rem;
   line-height: 1.62;
   color: var(--muted);
 }
 
-.stageNote {
-  margin-top: 12px !important;
-  color: var(--faint) !important;
-  font-size: 0.84rem !important;
+.layerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--ink);
+  text-decoration: none;
 }
 
-.onward {
-  margin-top: 8px;
-  font-size: 0.92rem;
-}
-
-.onward a {
+.layerArrow {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   color: var(--orange);
+  border: 1px solid rgba(241, 91, 38, 0.45);
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.layerArrow svg {
+  width: 17px;
+  height: 17px;
+}
+
+.layer:hover .layerArrow,
+.layerLink:focus-visible .layerArrow {
+  background: rgba(241, 91, 38, 0.16);
+  transform: translateX(3px);
+}
+
+.layerLink:hover {
+  color: var(--strong);
+}
+
+/* The art half. It holds either a supplied illustration or the built-in
+   schematic, and either one is centred and capped so a tall graphic cannot
+   push the fixed card height. */
+.layerArt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
+  padding: 4px;
+  transition: transform 0.5s var(--ease);
+}
+
+.layer:hover .layerArt {
+  transform: scale(1.015);
+}
+
+/* The supplied art is a rendered scene on a near-black ground, the same ground
+   the card is on, so it needs no frame — a border here would draw a box around
+   an image that already fades into the card. Contained rather than cropped:
+   each one is a composition, and `cover` would cut the labelled panels off the
+   side of it. */
+.layerArtImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The schematics were drawn for a full-width row and are too tall for a fixed
+   card, so inside one they run compact: tighter gaps, a shorter trend line and
+   a smaller area grid. Nothing is hidden — a graphic that only half fits reads
+   as a rendering fault, and these are the section's only illustration until
+   the supplied art lands. */
+.layerArt > * {
+  max-width: 460px;
+  max-height: 100%;
+}
+
+.layerArt .bands {
+  gap: 7px;
+  margin-bottom: 12px;
+}
+
+.layerArt .spark {
+  height: 34px;
+  margin-bottom: 12px;
+}
+
+.layerArt .clusters {
+  gap: 5px;
+}
+
+.layerArt .cluster {
+  padding: 4px 9px;
+  font-size: 0.72rem;
+}
+
+.layerArt .rungs {
+  gap: 8px;
+}
+
+.layerArt .graph {
+  max-width: 206px;
+  margin-bottom: 10px;
+}
+
+.layerArt .geo {
+  max-width: 196px;
+  gap: 4px;
+  margin: 0 auto 12px;
+}
+
+.layerArt .legend {
+  gap: 6px 14px;
+  font-size: 0.76rem;
+}
+
+.layerArt .panelNote {
+  margin-top: 8px;
+  font-size: 0.72rem;
+}
+
+.layerArt .dossier {
+  padding: 14px;
+}
+
+.layerArt .dossierHead {
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+}
+
+.layerArt .dossierFields {
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.layerArt .dossierParts {
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.layerArt .dossierParts li {
+  padding: 4px 8px;
+  font-size: 0.72rem;
+}
+
+.layerArt .dossierAction {
+  padding: 8px 12px;
+  font-size: 0.78rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer,
+  .layerArt,
+  .layerArrow {
+    transition: none;
+  }
+
+  .layer:hover,
+  .layer:focus-within,
+  .layer:hover .layerArt,
+  .layer:hover .layerArrow {
+    transform: none;
+  }
+}
+
+/* 01 — sentiment */
+.bands {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.band {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 10px;
+}
+
+.bandFill {
+  grid-column: 1 / -1;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.bandName {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.pos { background: var(--ok); width: 46%; }
+.neu { background: var(--faint); width: 34%; }
+.neg { background: var(--crit); width: 20%; }
+
+.spark {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 22px;
+}
+
+.clusters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cluster {
+  padding: 6px 11px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+}
+
+/* 02 — escalation */
+.rungs {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rung {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rungBar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--ember);
+}
+
+.rung[data-tier='0'] .rungBar { width: 22%; background: var(--faint); }
+.rung[data-tier='1'] .rungBar { width: 44%; background: var(--warn); }
+.rung[data-tier='2'] .rungBar { width: 68%; background: var(--orange); }
+.rung[data-tier='3'] .rungBar { width: 92%; background: var(--crit); }
+
+.rungName {
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* 03 — network, 04 — geo */
+.graph {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 0 auto 18px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.key {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.keyOn { background: var(--orange); }
+.keyMid { background: var(--soft); }
+.keyLow { background: var(--ember); border: 1px solid var(--lift); }
+
+.geo {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+}
+
+.cellWarm { background: rgba(241, 91, 38, 0.28); }
+.cellHot { background: var(--orange); }
+
+/* 05 — the dossier */
+.dossier {
+  width: 100%;
+  padding: 20px;
+  background: var(--s3);
+  border: 1px solid var(--line2);
+  border-radius: 16px;
+}
+
+.dossierHead {
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lift);
+}
+
+.dossierFields {
+  display: grid;
+  gap: 9px;
+  margin: 0 0 18px;
+}
+
+.dossierField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.84rem;
+}
+
+.dossierField dt {
+  color: var(--faint);
+}
+
+.dossierField dd {
+  margin: 0;
+}
+
+.dossierParts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.dossierParts li {
+  padding: 5px 10px;
+  font-size: 0.76rem;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+.dossierAction {
+  margin: 0;
+  padding: 11px 14px;
+  text-align: center;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 0.84rem;
+  color: var(--ink);
+  border: 1px solid var(--lineo, rgba(241, 91, 38, 0.4));
+  border-radius: 9px;
+}
+
+/* ── 5. the sequence ─────────────────────────────────────────────────────── */
+.seq {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  margin: clamp(36px, 5vh, 56px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.seqStep {
+  padding: 22px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.seqN {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--lift);
+}
+
+.seqRule {
+  width: 18px;
+  height: 1px;
+  background: var(--orange);
+}
+
+.seqName {
+  margin: 0 0 10px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+  color: var(--strong);
+  text-transform: none;
+}
+
+.seqBody {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+/* ── 6. the record ───────────────────────────────────────────────────────
+   The globe in the middle, two columns of typed cards flanking it, wave
+   artwork running the full width of the viewport behind them.
+
+   Only the globe and the waves are image; every label is a text node. That is
+   why this is a grid rather than one big picture. */
+
+/* Full-bleed. The block breaks out of the section's measure so the artwork
+   reaches both edges of the window — held to the container it ended on a
+   straight vertical edge, which read as a picture pasted into the page. The
+   cards are pulled back to a readable measure by `.recGrid` inside it.
+
+   `100%` of the parent rather than `100vw`: vw includes the scrollbar and
+   would push a horizontal one onto the page. */
+.record {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-top: clamp(32px, 5vh, 52px);
+  padding: clamp(24px, 4vh, 56px) clamp(20px, 4vw, 44px);
+  overflow: clip;
+}
+
+.recGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 44px);
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* The waves sit against the window edges, masked on both axes so they fade
+   into the ground instead of ending on a straight line. */
+.recWave {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(200px, 30vw, 520px);
+  height: 108%;
+  background: center / cover no-repeat;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.recWaveL {
+  left: 0;
+  background-image: url('/images/record/wave-left.webp');
+  -webkit-mask-image:
+    linear-gradient(90deg, #000 0 34%, transparent 96%),
+    linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, #000 0 34%, transparent 96%),
+    linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.recWaveR {
+  right: 0;
+  background-image: url('/images/record/wave-right.webp');
+  -webkit-mask-image:
+    linear-gradient(270deg, #000 0 34%, transparent 96%),
+    linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(270deg, #000 0 34%, transparent 96%),
+    linear-gradient(180deg, transparent 0, #000 14%, #000 86%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.recCol {
+  position: relative;
+  display: grid;
+  gap: clamp(10px, 1.3vw, 15px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── the cards ──────────────────────────────────────────────────────────
+   A flat pill with a hairline border read as a placeholder at this size, so
+   each one now has a ground of its own: a top-lit gradient, a hairline
+   highlight along the upper edge, and a shadow to lift it off the artwork. The
+   tie is the small dot on the edge facing the globe — it is what says these
+   ten things are attached to the signal rather than listed beside it. */
+.recNode {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012)),
+    rgba(10, 10, 13, 0.86);
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+  transition: transform 0.32s var(--ease), border-color 0.32s var(--ease),
+    box-shadow 0.32s var(--ease);
+}
+
+.recNode::before {
+  content: '';
+  position: absolute;
+  inset: 0 18px auto;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+}
+
+.recNode:hover {
+  transform: translateY(-2px);
+  border-color: rgba(241, 91, 38, 0.45);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5);
+}
+
+/* The dot that faces the globe. It sits on the inner edge of each column, so
+   the left column carries it on the right and vice versa. */
+.recTie {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 4px rgba(241, 91, 38, 0.16);
+}
+
+.recColL .recTie {
+  right: -5px;
+}
+
+.recColR .recTie {
+  left: -5px;
+}
+
+.recIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: var(--lift);
+  background: linear-gradient(160deg, rgba(241, 91, 38, 0.26), rgba(241, 91, 38, 0.06));
+  border: 1px solid rgba(241, 91, 38, 0.32);
+  transition: color 0.32s var(--ease), border-color 0.32s var(--ease);
+}
+
+.recNode:hover .recIcon {
+  color: var(--soft);
+  border-color: rgba(241, 91, 38, 0.55);
+}
+
+.recIconSvg {
+  width: 21px;
+  height: 21px;
+}
+
+.recText {
+  min-width: 0;
+}
+
+.recName {
+  display: block;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 0.97rem;
+  letter-spacing: -0.012em;
+  color: var(--strong);
+}
+
+.recBody {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.81rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* ── the centre ─────────────────────────────────────────────────────────
+   The label sits over the globe rather than under it, which is what says the
+   globe *is* the signal instead of illustrating it.
+
+   The site has one typeface, so "a different font" here is a different
+   treatment: a tracked-out accent line over a heavy display line, which reads
+   as a readout rather than as another card title. */
+.recCentre {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(220px, 26vw, 340px);
+}
+
+.recGlobe {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.recCentreLabel {
+  position: absolute;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  margin: 0;
+  max-width: none;
+  text-align: center;
+}
+
+.recCentreTop {
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: clamp(9px, 0.8vw, 11px);
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  text-transform: uppercase;
+  color: var(--soft);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.recCentreMain {
+  font-family: var(--fd);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.9vw, 1.7rem);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--strong);
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.95);
+}
+
+@media (max-width: 900px) {
+  /* Globe first, then the ten types as one two-column list. The flanking
+     arrangement is a layout fact, not a fact about the record, so nothing is
+     lost by dropping it. */
+  .recGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+  }
+
+  .recCentre {
+    grid-column: 1 / -1;
+    order: -1;
+    margin-bottom: 10px;
+  }
+
+  .recCol {
+    width: 100%;
+  }
+
+  .recWave,
+  .recTie {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .recGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .recNode {
+    border-radius: 18px;
+  }
+}
+
+/* ── 7. the alert ────────────────────────────────────────────────────────
+   The card on the left with the signal thread running into it, the five parts
+   of an alert down a thread on the right, and a rule under both.
+
+   Only the thread is image. The card is HTML because every counted value on it
+   is a redaction bar — see the note in blocks.js. */
+/* Stretch, not centre: the card and the list beside it are two halves of one
+   statement, so they run to the same height and their edges line up. */
+.alertWrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 72px);
+  align-items: stretch;
+  margin-top: clamp(36px, 5vh, 60px);
+}
+
+.alertSide {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.alert {
+  position: relative;
+  width: min(100%, 520px);
+  margin: 0;
+}
+
+.alertSide {
+  align-items: stretch;
+}
+
+/* The card, matched to the supplied render: a near-black ground under a warm
+   ring, its own outer glow, and a divider between each band. Drawn rather than
+   shipped as a picture so the type stays sharp and the bands reflow. */
+.alertCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 26px;
+  background: linear-gradient(180deg, #141416 0%, #0c0c0e 55%, #08080a 100%);
+  border: 1px solid rgba(241, 91, 38, 0.38);
+  border-radius: 22px;
+  box-shadow:
+    0 0 0 1px rgba(241, 91, 38, 0.08),
+    0 0 60px rgba(241, 91, 38, 0.2),
+    0 30px 70px rgba(0, 0, 0, 0.65);
+}
+
+.alertDots {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  gap: 5px;
+}
+
+.alertDots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--faint);
+}
+
+.alertHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.alertMark {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  color: var(--crit);
+  background: rgba(255, 77, 31, 0.16);
+  border: 1px solid rgba(255, 77, 31, 0.34);
+}
+
+.alertMarkSvg {
+  width: 26px;
+  height: 26px;
+}
+
+.alertTier {
+  margin: 0 0 6px;
+  max-width: none;
+  font-family: var(--fm);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lift);
+}
+
+.alertTitle {
+  margin: 0 0 5px;
+  max-width: none;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.18rem;
+  letter-spacing: -0.018em;
+  color: var(--strong);
+}
+
+.alertSub {
+  margin: 0;
+  max-width: none;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* Three across, a value over its label, divided. */
+.alertStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.alertStat {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0 6px;
+  border-left: 1px solid var(--line);
+  text-align: center;
+}
+
+.alertStat:first-child {
+  border-left: 0;
+}
+
+.alertValue {
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--strong);
+}
+
+.alertCrit {
+  color: var(--crit);
+}
+
+.alertStat dd {
+  margin: 0;
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.alertCounts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 20px 0 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.alertCount {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.alertCountIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--orange);
+  background: rgba(241, 91, 38, 0.13);
+  border: 1px solid rgba(241, 91, 38, 0.22);
+}
+
+.alertCountSvg {
+  width: 18px;
+  height: 18px;
+}
+
+.alertCount dt {
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.06rem;
+  line-height: 1;
+  color: var(--strong);
+}
+
+.alertCount dd {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: var(--muted);
+}
+
+.alertAction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  /* Pinned to the foot of the card, so the button lines up with the last row
+     of the list whatever height the card is stretched to. */
+  margin: auto 0 0;
+  max-width: none;
+  padding: 15px 18px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: #1a0a04;
+  background: linear-gradient(180deg, #ff7e4d, var(--orange));
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(241, 91, 38, 0.28);
+}
+
+/* ── what the alert contains ───────────────────────────────────────────
+   One thread down the left with a node per part, which is the same shape as
+   the alert arriving on a wire — deliberately, because it is the same idea
+   twice: the alert comes in on a thread and opens into these five. */
+.contains {
+  min-width: 0;
+}
+
+.containsLabel {
+  margin: 0 0 22px;
+  max-width: none;
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.containsList {
+  position: relative;
+  display: grid;
+  gap: clamp(16px, 2vh, 26px);
+  margin: 0;
+  padding: 0 0 0 34px;
+  list-style: none;
+}
+
+.containsList::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 22px;
+  bottom: 22px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(241, 91, 38, 0.55) 12%, rgba(241, 91, 38, 0.55) 88%, transparent);
+}
+
+.containsRow {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.containsDot {
+  position: absolute;
+  left: -34px;
+  top: 18px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 4px rgba(241, 91, 38, 0.14);
+}
+
+.containsIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: var(--lift);
+  background: linear-gradient(160deg, rgba(241, 91, 38, 0.2), rgba(241, 91, 38, 0.05));
+  border: 1px solid rgba(241, 91, 38, 0.26);
+}
+
+.containsIconSvg {
+  width: 21px;
+  height: 21px;
+}
+
+.containsName {
+  display: block;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: -0.012em;
+  color: var(--strong);
+}
+
+.containsBody {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.87rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* ── the rule under both ───────────────────────────────────────────────── */
+.alertFoot {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+  margin: clamp(40px, 6vh, 72px) 0 0;
+  max-width: none;
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.alertFootRule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line2), rgba(241, 91, 38, 0.5));
+}
+
+@media (max-width: 900px) {
+  .alertWrap {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+  }
+
+  .alertSide {
+    justify-content: flex-start;
+  }
+
+  .alertFoot {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .alertStats,
+  .alertCounts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .alertStat {
+    justify-items: start;
+    border-left: 0;
+    padding: 0;
+    text-align: left;
+  }
+}
+
+/* ── 10. in operation ────────────────────────────────────────────────────
+   Seven stations on one line. Each is a ringed icon over its name and what
+   happens there; the connector between two stations is drawn on the left one,
+   with a node at its midpoint.
+
+   The connector is a pseudo-element rather than an element, so the reading
+   order is seven steps and nothing else. It is hidden on the last station and
+   whenever the row wraps, because a line that points at a station on the row
+   below is worse than no line. */
+.ops {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0;
+  margin: clamp(36px, 6vh, 64px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.opStep {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding: 0 clamp(6px, 0.9vw, 14px);
+  text-align: center;
+}
+
+.opNode {
+  display: grid;
+  place-items: center;
+  width: clamp(52px, 4.4vw, 68px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--strong);
+  border: 1px solid rgba(241, 91, 38, 0.6);
+  background: radial-gradient(circle at 50% 40%, rgba(241, 91, 38, 0.16), transparent 70%);
+}
+
+.opIcon {
+  width: clamp(22px, 1.8vw, 27px);
+  height: auto;
+}
+
+/* The connector, and its node. Anchored to the circle's vertical centre. */
+.opStep::before,
+.opStep::after {
+  content: '';
+  position: absolute;
+  top: clamp(26px, 2.2vw, 34px);
+  pointer-events: none;
+}
+
+.opStep::before {
+  left: calc(50% + clamp(26px, 2.2vw, 34px) + 8px);
+  right: calc(-50% + clamp(26px, 2.2vw, 34px) + 8px);
+  height: 1px;
+  background: rgba(241, 91, 38, 0.42);
+}
+
+.opStep::after {
+  left: 100%;
+  transform: translate(-50%, -3.5px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.opStep:last-child::before,
+.opStep:last-child::after {
+  display: none;
+}
+
+.opName {
+  margin: 20px 0 8px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: clamp(0.94rem, 1.1vw, 1.06rem);
+  letter-spacing: -0.012em;
+  color: var(--strong);
+}
+
+.opBody {
+  margin: 0;
+  max-width: 22ch;
+  font-size: clamp(0.8rem, 0.92vw, 0.88rem);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* The sentence the section exists for, on its own rule. */
+.opsNote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2vw, 30px);
+  margin: clamp(40px, 6vh, 72px) auto 0;
+  max-width: none;
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+
+.opsNoteRule {
+  flex: 0 1 clamp(60px, 14vw, 220px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line2), transparent);
+}
+
+@media (max-width: 1080px) {
+  .ops {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 34px 0;
+  }
+
+  /* Wrapped, a connector points at whatever happens to sit to its right on the
+     next row — so none of them is drawn. */
+  .opStep::before,
+  .opStep::after {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .ops {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px 0;
+  }
+
+  .opsNote {
+    flex-wrap: wrap;
+    letter-spacing: 0.14em;
+  }
+}
+
+/* ── 11. security ────────────────────────────────────────────────────────
+   Six controls, three across. Each is an icon tile beside its own sentence,
+   on a card that is a step up from the ground rather than a ring around it —
+   the reference keeps the borders very quiet here, so the tile carries the
+   colour and the card carries almost none. */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  margin: clamp(36px, 5vh, 60px) 0 0;
+}
+
+.control {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: clamp(20px, 1.8vw, 26px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  transition: border-color 0.32s var(--ease), background 0.32s var(--ease);
+}
+
+.control:hover {
+  border-color: rgba(241, 91, 38, 0.34);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+}
+
+.controlIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  color: var(--orange);
+  background: linear-gradient(160deg, rgba(241, 91, 38, 0.2), rgba(241, 91, 38, 0.05));
+  border: 1px solid rgba(241, 91, 38, 0.24);
+}
+
+.controlIconSvg {
+  width: 23px;
+  height: 23px;
+}
+
+.control dt {
+  margin-bottom: 7px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.04rem;
+  letter-spacing: -0.014em;
+  color: var(--strong);
+}
+
+.control dd {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+@media (max-width: 1080px) {
+  .controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── narrower ────────────────────────────────────────────────────────────── */
+/* Stacked, the fixed row height has nothing to equalise — the cards are no
+   longer side by side — so it is released and each card takes its own height.
+   The art follows the copy on every card, including the flipped ones. */
+@media (max-width: 960px) {
+  /* Below this the card is already a column of its own and there is no room
+     to stack anything, so the cards go back into normal flow. */
+  .layer::after {
+    display: none;
+  }
+
+  .layer {
+    position: static;
+    height: auto;
+    transform: none;
+    margin-bottom: clamp(16px, 2vw, 24px);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .layer:nth-child(even) .layerCopy {
+    order: 0;
+  }
+
+  .layerArt {
+    height: auto;
+    justify-content: flex-start;
+  }
+
+  .layerArt > * {
+    max-height: none;
+  }
+
+  .layerBody {
+    max-width: none;
+  }
+}
+
+@media (max-width: 1080px) {
+  .flowTrack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Only the arrow between columns 1-2 and 3-4 still points at anything once
+     the row wraps, and neither is worth the confusion. */
+  .flowArrow {
+    display: none;
+  }
+
+  .flowFoot {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .flowFootName {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .flowFootBody {
+    grid-column: 1 / -1;
+  }
+
+  .flowFootLink {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .alertWrap,
+  .controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .seq {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .web {
+    width: min(100%, 520px);
+  }
+
+  .webNode {
+    font-size: 0.76rem;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .flowTrack,
+  .controlList,
+  .seq {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The ring collapses to a list. A ten-node web at a phone width is ten
+     overlapping labels, which is worse than no diagram. */
+  .web {
+    aspect-ratio: auto;
+    padding: 0;
+  }
+
+  .webLines {
+    display: none;
+  }
+
+  .webCentre {
+    position: static;
+    transform: none;
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  .webNodes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .webNode {
+    position: static;
+    transform: none;
+  }
+
+  .chainName {
+    white-space: normal;
+  }
+}
+
+@media print {
+  .alert,
+  .heroImage {
+    box-shadow: none;
+  }
 }

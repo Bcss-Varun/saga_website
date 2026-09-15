@@ -1,14 +1,8 @@
 import VerticalPage from '../components/VerticalPage';
-import { NAMES } from '../lib/verticalContent';
+import { governance } from '../lib/content/governance';
 import { pageMetadata } from '../lib/meta';
 
-
-export const metadata = pageMetadata({
-  title: `SAGA — ${NAMES.governance}`,
-  description:
-    'SAGA — social media intelligence for ' + NAMES.governance + '. [draft — needs review]',
-  path: '/governance',
-});
+export const metadata = pageMetadata({ ...governance.meta, path: governance.path });
 
 export default function Page() {
   return <VerticalPage vertical="governance" />;

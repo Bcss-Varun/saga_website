@@ -1,185 +1,231 @@
-/* /governance — authored content.
-
-   [draft — needs review] applies to every string in this file.
-
-   Dual audience by design. This vertical serves administrations and departments
-   AND political operations, and the two do not read the same page differently —
-   they read it looking for themselves. Every sentence here is written to work
-   for a Home Ministry official and a party office at once: the unit is the
-   constituency or district, the actor is "an administration or a party office",
-   and no capability is framed as electoral or as administrative alone. A
-   sentence that only works for one of them is too narrow and has been rewritten.
-
-   ── Density pass, 2026-09-08 ──────────────────────────────────────────────
-   Restructured, not simplified — same pass as /public-safety. The 0–100 scale,
-   the five levels, issue velocity, the attribution signals, the grievance
-   states and the dual-audience framing are all unchanged. What changed is
-   packaging: modules are title / answer / at most two details, the triad is one
-   line per verb, scenarios split into setup and a bolded outcome, and the
-   deployment note is three bold lead-ins. Detail that came out of the body is
-   in the FAQ rather than deleted.
-
-   Claims discipline: no counts, no client names, no deployment specifics, no
-   platform coverage list. */
-
-const PS = 'pending sign-off';
-
+/* Standalone vertical content. Revised 2026-09-14.
+   Illustrations and scenarios describe concepts, not deployed product results.
+   Exact deployment specifications remain subject to product confirmation. */
 export const governance = {
-  dense: true,
-
-  hero: {
-    title: 'Which areas moved, how fast, on what issue.',
-    body:
-      'Sentiment resolved to constituency and district rather than a national average. A 0–100 unrest score per area driven by issue velocity, and grievances routed to the department that owns them.',
+  "name": "Governance",
+  "path": "/governance",
+  "meta": {
+    "title": "Governance Intelligence and Public Sentiment | Blura SAGA",
+    "description": "Understand local concerns with Blura SAGA: district-level sentiment, emerging issues, policy impact, grievance routing and intelligence briefings."
   },
-
-  triad: [
-    {
-      key: 'monitor',
-      name: 'Monitor',
-      line: 'Sentiment by constituency and district, each area scored 0–100 on issue velocity.',
-    },
-    {
-      key: 'investigate',
-      name: 'Investigate',
-      line: 'Organic reaction separated from coordinated activity; events measured against each area’s own prior reading.',
-    },
-    {
-      key: 'manage',
-      name: 'Manage',
-      line: 'Grievances routed to the owning department, tracked to resolution, assembled into a scheduled briefing.',
-    },
-  ],
-
-  modules: [
-    {
-      name: 'Constituency-level sentiment',
-      answer:
-        'Sentiment is resolved to the constituency and the district, not reported as one national figure.',
-      detail: [
-        'An administration sees which areas moved on a scheme; a party office sees where its position is being tested.',
-      ],
-    },
-    {
-      name: 'Unrest score, five levels',
-      answer: `0–100 per area across five levels [${PS}: band labels], driven by issue velocity rather than volume.`,
-      detail: [
-        'A small district accelerating fast outranks a large one that is merely loud.',
-        'The issue driving the score is named alongside it.',
-      ],
-    },
-    {
-      name: 'Grievance routing',
-      answer:
-        'Complaints are categorised by subject and routed to the department that owns them.',
-      detail: [
-        'Tracked through New, In Progress and Resolved, with time in each state recorded.',
-        'Resolution reports by department and district, not as one total.',
-      ],
-    },
-    {
-      name: 'Coordinated activity',
-      answer: `Activity is attributed as organic or coordinated from account age, posting cadence, repeated phrasing and burst timing [${PS}: attribution thresholds].`,
-      detail: [
-        'The two are reported separately rather than summed — both can be present in one conversation.',
-      ],
-    },
-    {
-      name: 'Event impact',
-      answer:
-        'The same constituencies compared before and after an announcement, rally, budget or policy change.',
-      detail: [
-        'Measured against each area’s own prior reading, so a district that improved is not hidden inside a national average that fell.',
-      ],
-    },
-    {
-      name: 'Daily briefing',
-      answer:
-        'A scheduled briefing of the areas that moved, the issue driving each, and grievances open past their expected resolution.',
-      detail: [
-        'Any line opens back to the posts and complaints beneath it.',
-      ],
-    },
-  ],
-
-  signature: {
-    line: 'One issue, from the post to the district to the department.',
-    body:
-      'A sentiment shift, the issue velocity behind it, the grievances filed against that issue and the department holding them are one record read at different depths.',
+  "hero": {
+    "title": "Understand public concerns.",
+    "lit": "Coordinate your response.",
+    "body": "Blura SAGA is a social media intelligence platform for governance teams. Understand public conversations by district or constituency, examine the issues behind a change and follow grievances through the department responsible for response.",
+    "image": "/images/verticals/governance-hero.webp",
+    "caption": "Governance intelligence",
+    "tags": [
+      "Local sentiment",
+      "Policy & event impact",
+      "Grievance management"
+    ],
+    "secondary": "Explore governance intelligence"
   },
-
-  scenarios: [
+  "overview": {
+    "eyebrow": "A clearer local picture",
+    "title": "Understand the issue behind the conversation.",
+    "body": "A state-wide average can hide a local concern. Blura SAGA connects public conversations and configured grievance inputs with issue and geographic context, helping administrations see where attention is needed and examine the material behind a finding.",
+    "note": "Digital conversation reflects the sources being monitored. It is not a census of public opinion.",
+    "steps": [
+      {
+        "title": "Listen to local signals",
+        "body": "Bring relevant public discussions and configured grievance inputs into view."
+      },
+      {
+        "title": "Understand the issue",
+        "body": "Connect sentiment shifts with themes, areas and supporting source records."
+      },
+      {
+        "title": "Coordinate follow-up",
+        "body": "Track departmental responsibility and bring unresolved issues into the briefing."
+      }
+    ],
+    "link": {
+      "href": "/platform#idea",
+      "label": "How public signals become structured intelligence"
+    }
+  },
+  "features": [
     {
-      name: 'A scheme lands two ways',
-      setup:
-        'A scheme reads positively across the state. Resolved to district level, two adjacent districts move the other way, both on the same eligibility question.',
-      outcome:
-        'The department responsible saw the pattern before it reached a national outlet.',
+      "id": "local-intelligence",
+      "eyebrow": "District & constituency intelligence",
+      "title": "See where concerns are emerging.",
+      "body": "Examine sentiment at constituency and district level, with the issue driving the movement beside it. Teams can compare areas and investigate an accelerating concern without losing it inside an overall average.",
+      "visual": "geography",
+      "visualTitle": "Read an area through its issues",
+      "items": [
+        {
+          "title": "Sentiment with a local context",
+          "body": "Review how people are responding within the available geographic context. Open the posts and complaints behind a reading to understand what is being discussed."
+        },
+        {
+          "title": "Issue acceleration",
+          "body": "Examine how quickly a subject is developing within an area. Geographic risk scoring connects that movement to its underlying issue for review."
+        },
+        {
+          "title": "Comparable area views",
+          "body": "Read each area alongside its own prior period, so an improving district and a deteriorating one remain visible as separate changes."
+        }
+      ],
+      "note": "Geographic interpretation depends on the information available in the source. A precise location cannot be inferred for every post."
     },
     {
-      name: 'A hundred accounts, one sentence',
-      setup:
-        'A policy hashtag accelerates overnight. Attribution splits the burst: accounts created within a short window posting near-identical phrasing, and long-standing accounts writing in their own words.',
-      outcome:
-        'Reported separately, so the genuine objection underneath was neither dismissed nor inflated.',
+      "id": "impact",
+      "eyebrow": "Policy, event & narrative analysis",
+      "title": "Understand what changed. Examine why.",
+      "body": "Follow the response to an announcement, scheme or event by comparing the same areas before and after it. Examine the discussion behind a movement and how that discussion is being amplified.",
+      "visual": "comparison",
+      "visualTitle": "Compare the same area over time",
+      "flip": true,
+      "items": [
+        {
+          "title": "Before-and-after context",
+          "body": "Compare reactions around a policy change, budget or public event against each area's own preceding reading. Examine the eligibility questions, service concerns or other themes associated with the change."
+        },
+        {
+          "title": "Coordinated activity indicators",
+          "body": "Review account age, posting cadence, repeated phrasing and burst timing. Examine repeated amplification separately from the substantive concerns people are raising."
+        },
+        {
+          "title": "Findings with their sources",
+          "body": "Return from the area or issue view to the underlying posts. The relationship between an event and a shift can be examined rather than assumed from a headline score."
+        }
+      ],
+      "note": "Activity patterns support analyst review. They do not establish an account's identity or prove why a person posted."
     },
     {
-      name: 'A backlog, before the complaint',
-      setup:
-        'Grievances on one subject in one district stay In Progress well past their usual close time. No individual complaint is unusual; the pattern is.',
-      outcome:
-        'The briefing surfaced the department and the district while the issue was still administrative rather than public.',
-    },
+      "id": "grievances",
+      "eyebrow": "Grievance management",
+      "title": "Give every complaint a path forward.",
+      "body": "Turn recurring public complaints into issues with a responsible department and a visible status. Teams can examine where cases are waiting and which subjects are appearing repeatedly.",
+      "visual": "grievance",
+      "visualTitle": "A grievance lifecycle with ownership",
+      "layout": "wide",
+      "items": [
+        {
+          "title": "Categorise and route",
+          "body": "Group complaints by subject and send them to the department responsible for that service or issue."
+        },
+        {
+          "title": "Track progress",
+          "body": "Follow New, In Progress and Resolved states, including the time spent in each state and the person who records closure."
+        },
+        {
+          "title": "Review recurring issues",
+          "body": "Examine resolution reports by department and district. A backlog on one subject stays visible rather than disappearing into an overall total."
+        }
+      ],
+      "note": "The platform records progress. The responsible department carries out the service response."
+    }
   ],
-
-  deployment: [
+  "workflow": {
+    "id": "briefings",
+    "eyebrow": "Intelligence briefings",
+    "title": "Bring the local picture into the daily briefing.",
+    "body": "A scheduled briefing brings together the areas that moved, the issues driving each change and grievances awaiting attention. Each finding retains a path to the posts and complaints behind it.",
+    "visual": "briefing",
+    "steps": [
+      {
+        "title": "Areas to review",
+        "body": "Which districts or constituencies changed, with the issue behind each movement."
+      },
+      {
+        "title": "Discussion to examine",
+        "body": "Relevant narratives and activity flagged for possible coordination."
+      },
+      {
+        "title": "Follow-up to track",
+        "body": "Open grievances, the department holding them and their recorded progress."
+      }
+    ]
+  },
+  "scenarios": {
+    "title": "Local context changes the next step.",
+    "intro": "Illustrative governance situations. Examples describe possible workflows rather than results from a customer deployment.",
+    "items": [
+      {
+        "icon": "location",
+        "title": "One scheme, different concerns",
+        "setup": "Overall discussion around a scheme appears favourable, while nearby districts raise the same eligibility question.",
+        "action": "Compare the district-level themes and inspect the underlying posts before deciding what clarification is needed.",
+        "outcome": "The specific question and affected areas are visible."
+      },
+      {
+        "icon": "record",
+        "title": "A recurring service complaint",
+        "setup": "Complaints about the same service remain In Progress in one district.",
+        "action": "Review the subject cluster, department ownership and recorded time in state, then bring the pattern into the briefing.",
+        "outcome": "A follow-up grounded in departmental responsibility."
+      },
+      {
+        "icon": "network",
+        "title": "Amplification and real concern",
+        "setup": "A policy discussion accelerates with repeated wording alongside individual accounts describing their experiences.",
+        "action": "Examine coordination indicators and the substantive issue separately before interpreting the change.",
+        "outcome": "A clearer view of the concerns beneath the activity."
+      }
+    ]
+  },
+  "access": {
+    "eyebrow": "Responsibilities & data handling",
+    "title": "The right context for each responsibility.",
+    "body": "Governance teams need to know which areas they can review and who owns the response. Access and operating boundaries are part of the deployment discussion.",
+    "items": [
+      {
+        "title": "Geographic scope",
+        "body": "Users see the geographies or subjects assigned to their role, supporting district and wider-area responsibilities."
+      },
+      {
+        "title": "Separate operating contexts",
+        "body": "Administrations and political operations use separate deployments and data. Their responsibilities and access boundaries must remain distinct."
+      },
+      {
+        "title": "Deployment requirements",
+        "body": "Review hosting, retention, source coverage, permissions and the audit trail against the operating body's requirements."
+      }
+    ],
+    "link": {
+      "href": "/trust",
+      "label": "Explore access, audit and data handling"
+    }
+  },
+  "faqs": [
     {
-      lead: 'Deployment model',
-      body: `SAGA is deployed as [${PS}: deployment model]. Hosting location, data residency and retention are set per deployment [${PS}].`,
+      "q": "What does Blura SAGA do for governance teams?",
+      "a": "It helps teams understand relevant public conversations, examine local sentiment and emerging issues, assess discussion around policies or events, and follow grievances through the responsible department. Findings can be brought into a briefing with their supporting source records."
     },
     {
-      lead: 'Access',
-      body: `Bounded by role — Super Admin, Level-2 and Level-1 [${PS}: role names] — each scoped to a geography or subject, whether the deployment sits with a department or a political operation.`,
+      "q": "Does sentiment represent everyone in an area?",
+      "a": "No. It reflects the material available from the sources the deployment monitors. Differences in source coverage, language and who participates affect the picture. Teams should interpret digital sentiment alongside other administrative and public-feedback evidence."
     },
     {
-      lead: 'Audit',
-      body:
-        'Every search, export and case action is written to an immutable audit trail carrying the user, the time and the record touched.',
+      "q": "How is geographic information interpreted?",
+      "a": "Readings use the geographic context available to the deployment. An area view brings together relevant signals and the issues behind them, but a precise location is not available for every item. Review the sources behind a finding before drawing a geographic conclusion."
     },
+    {
+      "q": "What drives an emerging-issue score?",
+      "a": "Issue velocity describes how quickly a subject is accelerating within an area. The driving issue and its source material accompany the reading. Review the score scale, band definitions and the deployment's geographic coverage during the demonstration."
+    },
+    {
+      "q": "Can a policy's impact be compared across districts?",
+      "a": "The same areas can be compared before and after an announcement or event against their own preceding readings. The associated conversation helps explain the movement, but a change after an event does not by itself establish that the event caused it."
+    },
+    {
+      "q": "Where does a grievance go?",
+      "a": "It is categorised by subject and routed to the department that owns it. New, In Progress and Resolved states record its progress, along with time in state and closure activity. Reports can be examined by department and district."
+    },
+    {
+      "q": "What does the daily briefing include?",
+      "a": "Areas that changed, the issues driving those changes, activity flagged for possible coordination and grievances still awaiting attention. The briefing is connected to the underlying records so a reader can examine the material behind a finding."
+    },
+    {
+      "q": "Can departments and political operations see one another's data?",
+      "a": "They use separate deployments and separate data. Within a deployment, users' access is scoped to their assigned geographies or subjects. Detailed permissions, hosting and retention requirements must be established for the operating body."
+    }
   ],
-
-  faqs: [
-    {
-      q: 'What does SAGA measure at constituency level?',
-      a: 'Sentiment, the issues driving it, grievance volume and resolution state, and an unrest score — each resolved to the constituency and district rather than aggregated nationally. Every area reading opens back to the posts and complaints behind it.',
-    },
-    {
-      q: 'What drives the unrest score?',
-      a: `Issue velocity — how fast a topic is accelerating within that area — rather than raw volume. The score runs 0–100 across five levels [${PS}: band labels], and the issue driving it is named alongside the number so the score is never the only thing reported.`,
-    },
-    {
-      q: 'How do you tell coordinated activity from genuine anger?',
-      a: `Account age, posting cadence, repeated phrasing and burst timing are used to attribute activity as organic or coordinated [${PS}: attribution thresholds]. The two are reported separately rather than summed, because a coordinated burst and a real objection can be present in the same conversation at the same time.`,
-    },
-    {
-      q: 'Where does a grievance go?',
-      a: 'It is categorised by subject and routed to the department that owns that subject, then tracked through New, In Progress and Resolved. The department holding it, the time spent in each state and who closed it are recorded.',
-    },
-    {
-      q: 'What is in the daily briefing?',
-      a: 'The areas that moved and the issue driving each, activity flagged as coordinated, and grievances open past their expected resolution. It is assembled from the platform’s own records, so any line can be opened back to its sources.',
-    },
-    {
-      q: 'Can a department and a political operation use the same deployment?',
-      a: `They are separate deployments with separate data. Within either, access is bounded by role and scoped to a geography or subject [${PS}: role names], and the audit trail records who looked at what. The capabilities are the same; the boundary around them is set per deployment.`,
-    },
-    {
-      q: 'Who sees which areas?',
-      a: `Each role’s visibility is scoped to its own geography or subject: a district officer sees their district, a state-level user sees the areas assigned to them. Role names and the exact span of each are [${PS}].`,
-    },
-    {
-      q: 'How is captured material held?',
-      a: 'With its original metadata and its capture time, alongside the values extracted from it. That supports evidence-grade workflows under the lawful basis the operating body already holds.',
-    },
-  ],
+  "cta": {
+    "title": "Explore Blura SAGA",
+    "lit": "for your governance needs.",
+    "body": "Walk through the areas, issues, grievance responsibilities and briefing requirements your team works with."
+  }
 };

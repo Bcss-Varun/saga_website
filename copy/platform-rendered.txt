@@ -1,122 +1,430 @@
 Platform
+
 Solutions
+
+Public SafetyLaw Enforcement & Public Safety
+
+GovernancePublic Policy & Governance
+
+BrandsBrand & Enterprises
+
+CelebrityCelebrity & Public Figures
+
 Investigation
+
 Trust
+
 Request a Demo
 
-PLATFORM
+BLURA SAGA PLATFORM
 
-What enters, what happens to it, and in what order.
+From millions of digital signals to
+intelligence you can act on.
 
-SAGA runs a four-stage pipeline: collection, processing, scoring, action. Each stage hands the next a record that keeps its origin, so a score at the end can be opened back to the post it came from. This page describes the stages, the architecture around them, and the access boundaries that constrain both.
+SAGA continuously monitors public digital signals, understands what is being said, detects emerging threats and narratives, and turns them into structured intelligence for faster, more informed decisions.
 
-[draft — needs review] — copy on this page is drafted and not yet signed off.
+Explore SAGA
 
-Pipeline
-Architecture
-RSS engine
-Languages
-Access control
-FAQ
+Request a Demo
 
-THE PIPELINE
+HOW SAGA THINKS
 
-Four stages, and what each one adds.
+The internet is full of signals. SAGA finds the ones that matter.
 
-Every record carries its source and its capture time from the first stage onward. Nothing downstream discards that, which is what makes a figure at the end auditable rather than merely reported.
+Conversations, news, narratives, grievances, emerging threats and coordinated activity appear across digital channels every day. SAGA brings these signals together, understands their context and transforms them into intelligence that can be investigated, monitored and acted upon.
 
 01
-Collection
 
-Public sources and RSS feeds are polled on a schedule; watchlist terms and tracked entities determine what is retained. Each retained item is stored with its source URL, its author account, its capture timestamp and the term or entity that caused it to be kept. Items that match nothing are not retained.
+Digital signals
 
-The list of sources covered is [pending] and confirmed per deployment.
+What enters SAGA
+
+Social media
+Public posts, accounts, replies
+News and media
+News, RSS, articles
+Online communities
+Forums, groups, discussions
+Grievances
+Citizen inputs and open sources
+→
 
 02
-Processing
 
-Retained items are language-identified, normalised and deduplicated. Near-identical reposts are collapsed to one record with a count of occurrences and the accounts behind them, so repetition is measured rather than mistaken for reach. Entities — accounts, names, locations, organisations — are extracted and linked to existing records where they match.
+AI understanding
+
+How SAGA makes sense of it
+
+Language identification
+Multi-lingual NLP
+Sentiment analysis
+Tone, emotion and intent
+Entity detection
+People, organisations, places
+Media analysis
+Images, video, deepfake detection
+→
 
 03
-Scoring
 
-Records are scored for sentiment, risk and velocity, and attributed as organic or coordinated from account age, posting cadence, repeated phrasing and burst timing [pending sign-off: attribution thresholds]. Scores are attached to the record rather than replacing it: the inputs stay available, so a score can be disagreed with by looking underneath it.
+Intelligence
+
+What SAGA discovers
+
+Threats
+Risks, incitement, harmful content
+Narratives
+Emerging themes and stories
+Networks
+Connected accounts and influence
+Trends
+Shifts over time and by location
+→
 
 04
+
 Action
 
-A scored record raises an alert on its tier, opens or joins a case, or routes a grievance to a department. Ownership, acknowledgement, state changes and closure are recorded against the record. This is the stage where the platform stops describing and starts assigning.
+What teams receive
 
-ARCHITECTURE
+Real-time alerts
+Issues requiring attention
+Intelligence reports
+Analytical and executive summaries
+Evidence
+Timestamped, auditable records
+Response
+For investigation, monitoring or action
 
-Records, not dashboards.
+Coverage is configurable
 
-The unit is the record, not the chart. A dashboard figure is a query over records that still exist individually, which is why any number on any screen can be opened back to the items that produced it. A system that stores aggregates cannot do this, and the difference only becomes visible when someone asks where a figure came from.
+Platforms, languages and sources are configured to the operational requirement of each deployment.
 
-Entities — accounts, people, locations, organisations — are resolved across sources and held once, with the records that mention them attached. That is what allows a username seen in one place, an image posted in another and a complaint filed in a third to arrive at the same entity rather than three unconnected rows.
+Learn more
+→
 
-Retention is set per deployment [pending sign-off: retention periods]. Records are removed on the retention schedule, not on storage pressure, so the window a deployment operates on is a policy decision rather than an operational side effect.
+INTELLIGENCE LAYERS
 
-RSS ENGINE
+See beyond the signal.
 
-News feeds, weighted by source, correlated with social.
+Five layers read the same record. Each one answers a different question about it, and each keeps the inputs that produced its answer.
 
-RSS and news feeds are polled alongside social sources and carried through the same pipeline. Each source carries a credibility weight, so an item from an established outlet and an item from an anonymous aggregator do not contribute equally to a score, and the weight applied is visible on the record rather than folded silently into a number.
+01
 
-Source credibility weights are configurable per deployment and can be adjusted by an administrator [pending sign-off: default weighting scheme]. A weight is a stated position about a source, so it is treated as a setting a department owns rather than a fact the platform asserts.
+SENTIMENT AND NARRATIVE INTELLIGENCE
 
-News items and social conversation about the same subject are correlated, which allows the ordering question to be answered: whether coverage followed the conversation or the conversation followed coverage. That ordering is frequently the difference between an organic story and a placed one.
+Understand what people are saying.
 
-LANGUAGES
+Tone, sentiment and narrative shift are scored per record rather than per account, and themes are clustered by shared phrasing rather than by keyword alone. Change is measured against the preceding window, so a shift is visible as a shift.
 
-English, Telugu, Hindi and Urdu.
+Learn more
+about sentiment and narrative intelligence
 
-Language identification, sentiment scoring and watchlist matching run in English, Telugu, Hindi and Urdu. Matching covers native script, romanised transliteration and mixed-script text, so a term written in Devanagari, written in Latin script and written half in each returns one match rather than three.
+02
 
-Additional languages are added per deployment [pending sign-off: which languages beyond these four are supported]. Where a language is not supported, items in it are collected and stored but not scored — they are not silently dropped, and they are not scored as though the model understood them.
+THREAT AND ESCALATION INTELLIGENCE
 
-ACCESS CONTROL
+Detect and prioritise emerging risks.
 
-Three roles, scoped, with permissions below them.
+Threat language, incitement and suspicious activity are flagged with the matching text kept, and escalation runs four tiers on velocity and reach [pending sign-off: tier labels]. A tier change is an event on the record, not a silent overwrite.
 
-Access is bounded by role — Super Admin, Level-2 and Level-1 [pending sign-off: role names] — and each role is scoped to a geography or subject. Scope is the primary boundary: a user sees the districts, watchlists or subjects assigned to them and not the rest, including records belonging to peers at the same level.
+Learn more
+about threat and escalation intelligence
 
-Beneath the role sits a per-page and per-feature permission layer, so a role can be granted a page while being denied a specific action on it, such as export or a verdict request. Two users holding the same role can therefore have different reach, set deliberately.
+03
 
-Access can be revoked in a single action, taking effect for sessions already open rather than at next sign-in. Every search, export, permission change and revocation is written to an immutable audit trail carrying the user, the timestamp and the record touched.
+COORDINATED CAMPAIGN AND NETWORK INTELLIGENCE
+
+See the connections behind the narrative.
+
+Relationships between accounts, content and narratives are mapped to expose coordinated amplification and influence. Attribution comes from account age, posting cadence, repeated phrasing and burst timing [pending sign-off: attribution thresholds].
+
+Learn more
+about coordinated campaign and network intelligence
+
+04
+
+GEO-SPATIAL INTELLIGENCE
+
+Know where activity is emerging.
+
+Digital signals become geographic intelligence: each area scored on a 0–100 scale across five levels, driven by issue velocity. Spread reads as a sequence of areas over time rather than one heat picture, and every level carries its name beside the colour.
+
+Learn more
+about geo-spatial intelligence
+
+05
+
+EVIDENCE AND INTELLIGENCE OUTPUTS
+
+Turn analysis into actionable intelligence.
+
+Structured alerts, analytical reports and evidence packages carry their original sources: timestamped capture with metadata, an immutable audit trail and the context around the record. A brief carries its records, so the reader can check the finding.
+
+Learn more
+about evidence and intelligence outputs
+
+THE SEQUENCE
+
+From signal to intelligence.
+
+A genuine sequence, which is why these carry numbers. Every record keeps its origin from the first step onward, so a score at the end can be opened back to the post it came from.
+
+01
+
+Detect
+
+Public signals enter continuously. Watchlist terms and tracked entities decide what is retained; an item that matches nothing is not kept.
+
+02
+
+Understand
+
+Language identification, sentiment, entity extraction and media analysis determine context and meaning. Near-identical reposts collapse to one record.
+
+03
+
+Connect
+
+Narratives, accounts, locations and events are linked to expose patterns. An entity is held once and resolved across sources, not stored three times.
+
+04
+
+Predict
+
+Escalation, virality and emerging risk are scored from velocity, reach and attribution. The inputs stay attached, so a score can be argued with.
+
+05
+
+Act
+
+Alerts, reports and evidence packages reach the people responsible for response. Ownership, acknowledgement and closure are recorded against the record.
+
+THE RECORD
+
+SAGA does not just monitor content. It connects the context around it.
+
+A post on its own is an opinion. The same post with its account history, its location, its narrative, its timing and the entities it names is intelligence. SAGA holds the second thing.
+
+Time
+When it happened, what else was happening
+
+Media
+Images, video, other content
+
+Organisation
+Linked entities, networks
+
+Threat
+Relevant risks, past incidents
+
+Sentiment
+Tone, emotion, how it changed
+
+DIGITAL
+Signal
+
+Account
+Account history, associated accounts
+
+Person
+Author, affiliations, past behaviour
+
+Location
+Where it originated, where it spread
+
+Narrative
+Key themes, related conversations
+
+Event
+Related events, broader situation
+
+Illustrative. The entity-resolution graphic is [pending sign-off].
+
+DELIVERY
+
+Intelligence arrives as an alert — not another dashboard to check.
+
+The unit is the record, not the chart. An alert is a query over records that still exist individually, which is why any figure on it opens back to the items that produced it.
+
+PRIORITY TIER
+
+Coordinated narrative detected
+
+Multiple signals indicate a connected pattern.
+
+High Risk
+
+RISK LEVEL
+
+87%
+
+CONFIDENCE
+
+248
+
+SIGNALS
+
+18
+Accounts
+
+6
+Locations
+
+3
+Narratives
+
+View intelligence
+→
+
+WHAT THE ALERT CONTAINS
+
+What happened
+The detected activity, with the records that raised it.
+
+Why it matters
+Risk and context, and the inputs the score was built from.
+
+Where
+Geographic spread, as a sequence of areas rather than one picture.
+
+Who
+The entities and accounts involved, resolved across sources.
+
+What next
+The recommended investigation or action, and who owns it.
+
+FROM ALERT TO ACTION
+WITH FULL TRACEABILITY
+
+IN OPERATION
+
+When a signal becomes intelligence.
+
+From a digital signal to a decision-ready intelligence alert, every step is traceable, contextual, and connected.
+
+Digital signal
+
+A public conversation, event or activity enters the system.
+
+Detect
+
+Unusual activity is identified in real time.
+
+Analyse
+
+Narrative, sentiment and key entities are analysed.
+
+Correlate
+
+Related accounts, locations and events are connected.
+
+Score
+
+Risk is assessed with full context and evidence.
+
+Raise intelligence
+
+An alert or intelligence brief is generated and routed.
+
+Human decision
+
+An analyst reviews and decides the next course of action.
+
+SAGA SUPPORTS THE DECISION — IT DOES NOT MAKE IT.
+
+SECURITY
+
+Built for sensitive intelligence environments.
+
+Access is bounded by role and scoped to a geography or subject. A user sees what is assigned to them and not the rest, including records belonging to peers at the same level.
+
+Data at rest
+
+Encrypted in storage with enterprise-grade encryption standards.
+
+Data in transit
+
+Encrypted between every component using secure protocols.
+
+Role-based access
+
+Three scoped roles with a per-feature permission layer beneath them.
+
+Authentication
+
+Multi-factor sign-in, with access revocable mid-session rather than at next sign-in.
+
+Audit trail
+
+Every search, export and permission change written to an immutable trail.
+
+Deployment
+
+Sited to keep data inside the department's own boundary.
 
 Deployment, audit trail and lawful basis →
 
-FAQ
+QUESTIONS
 
 Platform questions.
+
+Anything not answered here, a product specialist can take in the demonstration.
+
+Ask a question
+
 What happens to an item that matches nothing?
-How are duplicate posts handled?
-What happens in an unsupported language?
+
 Can a score be disagreed with?
+
+How are duplicate posts handled?
+
 What does source credibility weighting actually change?
 
-REQUEST A DEMONSTRATION
+Can SAGA tell whether coverage followed the conversation, or the other way round?
 
-See the pipeline running on your own sources.
+What happens in an unsupported language?
+
+SEE SAGA IN ACTION
+
+See what your digital environment is telling you.
+
+Explore how SAGA turns fragmented digital signals into structured, actionable intelligence.
+
 Request a Demo
-Investigation tools
+
+Explore Solutions
 
 Sentiment And Goodwill Analysis. One platform to read public sentiment, follow emerging narratives, and act on the signals that matter.
 
 A PRODUCT BY
+
 SOLUTIONS
+
 Public Safety
+
 Governance
+
 Brands
+
 Celebrity
+
 PLATFORM
+
 How it works
+
 Investigation
+
 Trust
+
 GET IN TOUCH
+
 smartapps@bluecloudsoftech.com
+
 A product specialist replies within one working day.
+
 Request a Demo →
+
 © 2026 Blue Cloud Softech Solutions Ltd. All rights reserved.
+
 Blura SAGA — Sentiment And Goodwill Analysis

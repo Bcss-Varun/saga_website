@@ -1,10 +1,18 @@
 import Link from 'next/link';
 
-/* Ported from Saga.html. [copy: needs specificity rewrite] */
+/* Ported from Saga.html. [copy: needs specificity rewrite]
+
+   The photographic backdrop was added 2026-09-10 so the closing call to action
+   is the same object on Home as on every other route. Two decorative layers,
+   the same pair `PageCta` uses: the picture, then a scrim opaque top and
+   bottom and thinnest across the middle, where the headline sits. The headline
+   is read against near-black, which is what the contrast figures assume. */
 
 export default function FinalCta() {
   return (
-      <section className="sec" id="final">
+      <section className="sec ctaShot" id="final">
+        <div className="ctaPhoto" aria-hidden="true" />
+        <div className="ctaScrim" aria-hidden="true" />
         <div className="inner">
           <p className="eyebrow rv">Request a demonstration</p>
           <h2 className="rv d1" style={{"maxWidth": "17ch", "marginLeft": "auto", "marginRight": "auto"}}>See it running on your own region.

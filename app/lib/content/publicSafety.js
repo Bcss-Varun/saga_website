@@ -1,202 +1,240 @@
-/* /public-safety — authored content.
-
-   [draft — needs review] applies to every string in this file.
-
-   Written at mechanism level: verdict states, alert tiers, workflow stages and
-   extraction types are named rather than described as outcomes. The test for
-   each sentence is whether it could equally describe a competitor.
-
-   ── Density pass, 2026-09-08 ──────────────────────────────────────────────
-   Restructured, not simplified. The mechanism language is unchanged — the same
-   tiers, verdict states, extraction types and workflow stages are named. What
-   changed is packaging:
-
-     · every module is now a 2–4 word title, one answer sentence carrying the
-       mechanism, and at most two short detail sentences. No module is a
-       paragraph.
-     · the triad is one line per verb, for a large-type list rather than three
-       card paragraphs.
-     · scenarios split into a short setup and a bolded outcome.
-     · the deployment note is three bold lead-ins, not three paragraphs.
-     · what came out of the body is in the FAQ, which is closed by default and
-       so costs nothing until a reader asks for it. Nothing was buried in a
-       longer paragraph and nothing was diluted.
-
-   Claims discipline unchanged: no counts, no client names, no deployment
-   specifics and no platform coverage list. `[pending sign-off]` marks a value
-   that is required but unconfirmed; `[pending]` marks the unresolved platform
-   coverage list. */
-
-const PS = 'pending sign-off';
-
+/* Standalone vertical content. Revised 2026-09-14.
+   Illustrations and scenarios describe concepts, not deployed product results.
+   Exact deployment specifications remain subject to product confirmation. */
 export const publicSafety = {
-  /* Opt in to the density layout. The other three verticals still render the
-     original template until the same pass is applied to them. */
-  dense: true,
-
-  hero: {
-    title: 'From a keyword hit to a case file.',
-    body:
-      'Watchlists in four languages. Four alert tiers. Person-of-interest records linked to FIR numbers, and every action written to an immutable audit trail.',
+  "name": "Public Safety",
+  "path": "/public-safety",
+  "meta": {
+    "title": "Social Media Intelligence for Law Enforcement | Blura SAGA",
+    "description": "Explore Blura SAGA for public safety: multilingual monitoring, prioritised alerts, digital investigation and case workflows with source context."
   },
-
-  /* One line each — this renders as a large-type list, not three cards. */
-  triad: [
-    {
-      key: 'monitor',
-      name: 'Monitor',
-      line: 'Watchlists in English, Telugu, Hindi and Urdu, matched across script and transliteration.',
-    },
-    {
-      key: 'investigate',
-      name: 'Investigate',
-      line: 'Username enumeration, EXIF extraction and deepfake verdicts on one record.',
-    },
-    {
-      key: 'manage',
-      name: 'Manage',
-      line: 'Cases linked to FIR numbers, grievances tracked to resolution, every action logged.',
-    },
-  ],
-
-  /* title · answer · at most two detail sentences */
-  modules: [
-    {
-      name: 'Multilingual watchlists',
-      answer: 'Watchlists you define, running in English, Telugu, Hindi and Urdu.',
-      detail: [
-        'Matching covers native script, romanised transliteration and mixed-script posts.',
-        'Each hit records the post, the account, the capture time and the term that fired.',
-      ],
-    },
-    {
-      name: 'Four-tier alerting',
-      answer:
-        'Every match is raised on one of four tiers and routed to the officer who owns that geography or subject.',
-      detail: [
-        `Unacknowledged alerts escalate to the next level of command on a timer [${PS}: escalation intervals].`,
-      ],
-    },
-    {
-      name: 'POI records, FIR linkage',
-      answer: 'A person-of-interest record can be linked to an FIR number.',
-      detail: [
-        'It holds known accounts, aliases, captured media and observed locations, so the digital trail and the registered case reference each other.',
-      ],
-    },
-    {
-      name: 'Deepfake verdicts',
-      answer:
-        'Returns Real, Fake, Suspicious or Needs Review, with a confidence figure and a frame-level breakdown.',
-      detail: [
-        'Needs Review routes to a person rather than asserting a result the model cannot support.',
-      ],
-    },
-    {
-      name: 'OSINT and image forensics',
-      answer: 'Username enumeration resolves one handle to accounts across sources [pending].',
-      detail: [
-        'EXIF returns GPS coordinates, capture time and device make and model.',
-        'Both attach to the case, with the original file preserved beside the extracted values.',
-      ],
-    },
-    {
-      name: 'Grievance lifecycle',
-      answer:
-        'Public complaints are routed to the responsible department and tracked through New, In Progress and Resolved.',
-      detail: [
-        'Each records the department holding it, the time in each state and who closed it.',
-        'Resolution reports by department and district, not as one total.',
-      ],
-    },
-  ],
-
-  signature: {
-    line: 'One handle, one image, one keyword — one record.',
-    body:
-      'A watchlist hit, an enumerated username, a set of EXIF coordinates and a deepfake verdict all attach to the same person-of-interest record and the same FIR number.',
+  "hero": {
+    "title": "Identify emerging risks.",
+    "lit": "Inform every response.",
+    "body": "Blura SAGA is a social media intelligence platform for law-enforcement teams. Monitor relevant public digital signals, investigate their context and bring findings together in a case record that helps officers decide what to do next.",
+    "image": "/images/verticals/public-safety-hero.webp",
+    "caption": "Public safety intelligence",
+    "tags": [
+      "Multilingual monitoring",
+      "Digital investigation",
+      "Case management"
+    ],
+    "secondary": "Explore public-safety capabilities"
   },
-
-  /* Scenario narratives replace screenshots — the product cannot show its UI
-     publicly. Anonymised: no real names, places, cases or accounts.
-     `outcome` is the bolded line the card closes on. */
-  scenarios: [
+  "overview": {
+    "eyebrow": "Built for public safety",
+    "title": "A signal is the start. Context makes it useful.",
+    "body": "A post, an account and a circulating video may belong to the same developing issue. Blura SAGA brings relevant public information into a connected workflow, giving intelligence teams and investigating officers the sources behind an alert and a place to record their follow-up.",
+    "note": "Collection covers the public sources, languages and subjects configured for your deployment.",
+    "steps": [
+      {
+        "title": "Define what matters",
+        "body": "Set watchlists around the terms, entities and subjects relevant to your responsibility."
+      },
+      {
+        "title": "Examine the context",
+        "body": "Review matched content, related accounts and available media analysis."
+      },
+      {
+        "title": "Record the response",
+        "body": "Connect findings to a case, an assigned officer or a departmental complaint."
+      }
+    ],
+    "link": {
+      "href": "/platform#idea",
+      "label": "How Blura SAGA turns signals into intelligence"
+    }
+  },
+  "features": [
     {
-      name: 'A term fires overnight',
-      setup:
-        'A Telugu-language watchlist term matches a post from an account with no prior history. Raised Critical, routed to the district officer on duty, acknowledged inside the escalation window.',
-      outcome:
-        'The account deleted the post hours later. The captured copy and its metadata stayed on the case.',
+      "id": "monitoring",
+      "eyebrow": "Monitoring & alerting",
+      "title": "Find the relevant signal. Put it in the right hands.",
+      "body": "Watchlists bring relevant public posts into view with the term that matched and the context around it. Prioritised alerts help teams decide which items need review and who is responsible for the next action.",
+      "visual": "signal",
+      "visualTitle": "From a watchlist to a reviewable alert",
+      "items": [
+        {
+          "title": "Multilingual watchlists",
+          "body": "Monitor terms in English, Telugu, Hindi and Urdu, including native script, romanised transliteration and mixed-script posts."
+        },
+        {
+          "title": "Context with every match",
+          "body": "Keep the matched term, original post, account and capture time together so the officer can inspect why the item was flagged."
+        },
+        {
+          "title": "Priority and ownership",
+          "body": "Route an alert to the officer responsible for its geography or subject, with acknowledgement and escalation recorded against the item."
+        }
+      ],
+      "note": "An alert identifies material for review. The officer assesses the context and decides whether action is needed."
     },
     {
-      name: 'A clip, before the clarification',
-      setup:
-        'A video appears to show a senior officer making an inflammatory statement, spreading through regional-language groups.',
-      outcome:
-        'Returned Fake, with a frame-level breakdown, before the press office drafted its clarification.',
+      "id": "investigate",
+      "eyebrow": "Digital investigation",
+      "title": "Follow the connections. Examine the evidence.",
+      "body": "Start with an account or a piece of media. Blura SAGA helps investigators explore related information and preserve the findings with the material that produced them.",
+      "visual": "investigation",
+      "visualTitle": "Connected findings, with their sources",
+      "flip": true,
+      "items": [
+        {
+          "title": "Accounts and identifiers",
+          "body": "Explore username matches, known aliases and related accounts across available sources. A matching handle is a candidate to investigate, not proof that two accounts belong to one person."
+        },
+        {
+          "title": "Image metadata",
+          "body": "Extract available GPS coordinates, capture time and device information from the original file. When metadata is missing, the tool reports its absence rather than estimating a location."
+        },
+        {
+          "title": "Media authenticity",
+          "body": "Review Real, Fake, Suspicious or Needs Review outcomes with confidence and frame-level analysis. A Needs Review result calls for a person to examine the material."
+        }
+      ],
+      "link": {
+        "href": "/investigation#tools",
+        "label": "Explore the investigation tools and their limits"
+      }
     },
     {
-      name: 'One image, one location',
-      setup:
-        'An image circulating with a protest call still carries its EXIF metadata.',
-      outcome:
-        'GPS and capture time placed it in a different district, several days earlier than the post claimed.',
-    },
+      "id": "casework",
+      "eyebrow": "Case & grievance management",
+      "title": "Keep the investigation together.",
+      "body": "A useful finding needs a place in the wider case. Blura SAGA connects digital material to investigative records while keeping departmental complaints in a traceable response workflow.",
+      "visual": "record",
+      "visualTitle": "What an investigative record holds",
+      "layout": "wide",
+      "items": [
+        {
+          "title": "Person-of-interest records",
+          "body": "Bring known accounts, aliases, captured media and observed locations into one record. Link the record to an FIR number so the digital trail and registered case reference each other."
+        },
+        {
+          "title": "Source material and context",
+          "body": "Keep the original file and capture metadata beside the values extracted from it. Investigators can return to the source when they assess a finding."
+        },
+        {
+          "title": "Grievances with an owner",
+          "body": "Categorise public complaints, route them to the responsible department and track New, In Progress and Resolved states, including time in each state and who closed the item."
+        }
+      ]
+    }
   ],
-
-  /* Bold lead-in, then one short statement. The lead-in is what a procurement
-     reader scans for; the statement is what they read when it matters. */
-  deployment: [
+  "workflow": {
+    "id": "workflow",
+    "eyebrow": "From detection to decision",
+    "title": "An accountable path from signal to action.",
+    "body": "The platform provides context and a record of activity. Officers retain responsibility for verification, investigation and the response.",
+    "steps": [
+      {
+        "title": "Detect",
+        "body": "A configured watchlist term matches public content."
+      },
+      {
+        "title": "Review",
+        "body": "An officer checks the source, priority and surrounding context."
+      },
+      {
+        "title": "Assign",
+        "body": "The geography or subject determines responsibility."
+      },
+      {
+        "title": "Investigate",
+        "body": "Related accounts, media and findings join the case."
+      },
+      {
+        "title": "Record",
+        "body": "The action taken and its supporting material stay together."
+      }
+    ]
+  },
+  "scenarios": {
+    "title": "See the workflow in practice.",
+    "intro": "Illustrative situations showing how teams can use the information. These are not customer case studies.",
+    "items": [
+      {
+        "icon": "signal",
+        "title": "A regional-language alert",
+        "setup": "A watchlist term appears in a mixed-script public post. The officer needs to establish what was said and why it matters.",
+        "action": "Open the matched term, captured post and account context; examine related signals before assigning further work.",
+        "outcome": "A review grounded in the source material."
+      },
+      {
+        "icon": "media",
+        "title": "A video requiring verification",
+        "setup": "A circulating clip appears to show an inflammatory statement. Its authenticity is uncertain.",
+        "action": "Examine media-analysis results and frame-level findings, then route uncertain material for human review.",
+        "outcome": "An informed assessment before a public response."
+      },
+      {
+        "icon": "location",
+        "title": "An image with another context",
+        "setup": "An image is being shared with a claim about an incident. The original file is available for examination.",
+        "action": "Check any retained location and capture-time metadata against the claim, preserving the file beside the extracted values.",
+        "outcome": "A documented basis for further verification."
+      }
+    ]
+  },
+  "access": {
+    "eyebrow": "Access & accountability",
+    "title": "Built around your team's responsibilities.",
+    "body": "An investigation needs clear ownership and traceable source material. Establish the operating boundaries alongside your department's requirements.",
+    "items": [
+      {
+        "title": "Scoped responsibility",
+        "body": "Access is bounded by role and the geography or subject assigned to the user."
+      },
+      {
+        "title": "Traceable activity",
+        "body": "Searches, exports and case actions carry an audit record connecting the activity to its user and time."
+      },
+      {
+        "title": "Deployment requirements",
+        "body": "Review hosting, data location, retention, role permissions and source coverage for your department's operating needs."
+      }
+    ],
+    "link": {
+      "href": "/trust",
+      "label": "Review access, audit and data handling"
+    }
+  },
+  "faqs": [
     {
-      lead: 'Deployment model',
-      body: `SAGA is deployed as [${PS}: deployment model]. Hosting location, data residency and retention are set per deployment [${PS}].`,
+      "q": "What is Blura SAGA for Public Safety?",
+      "a": "It is the public-safety use of the Blura SAGA social media intelligence platform. It connects monitoring of relevant public signals, investigation tools and case workflows so law-enforcement teams can review the information behind an issue and record their actions."
     },
     {
-      lead: 'Access',
-      body: `Bounded by role — Super Admin, Level-2 and Level-1 [${PS}: role names] — each scoped to its own geography or subject.`,
+      "q": "Which sources and languages can a team monitor?",
+      "a": "Source coverage is configured for each deployment. The watchlist capability described here covers English, Telugu, Hindi and Urdu, including script and transliteration matching. Confirm the current source list and any additional language requirements in your demonstration; monitoring does not imply access to all platforms or private conversations."
     },
     {
-      lead: 'Audit',
-      body:
-        'Every search, export, verdict request and case action is written to an immutable audit trail carrying the user, the time and the record touched.',
+      "q": "What happens after a watchlist match?",
+      "a": "The captured item retains the matched term, account and collection context. An alert is prioritised and routed by geography or subject so the responsible officer can review it. Exact tier definitions and escalation intervals need to be established for the deployment."
     },
+    {
+      "q": "Does an account match establish a person's identity?",
+      "a": "No. Username matching returns candidates across available sources. The investigator examines the profile details and other evidence before deciding whether accounts are connected to the same person."
+    },
+    {
+      "q": "Can every image reveal where it was taken?",
+      "a": "No. Location, capture time and device details are available only when the file retains that metadata. Many social platforms strip image metadata. An empty result means the information is absent from the file, not that a location has been verified."
+    },
+    {
+      "q": "What does a Needs Review media result mean?",
+      "a": "The available analysis does not support a more definite outcome. The result is deliberately referred to a person, with the confidence and frame-level findings available for examination. It is not an automatic determination of authenticity."
+    },
+    {
+      "q": "How do digital findings connect to a registered case?",
+      "a": "A person-of-interest record can carry known accounts, aliases, captured media and observed locations, and be linked to an FIR number. Original material and capture metadata stay available alongside the findings."
+    },
+    {
+      "q": "How are access and evidence handling arranged?",
+      "a": "Visibility is scoped to the geography or subject assigned to a user. Captured material keeps its metadata, and searches, exports and case activity are recorded in the audit trail. The department's own process governs how that material is used; hosting, retention and detailed permissions must be reviewed for the deployment."
+    }
   ],
-
-  /* Eight entries, not six. The depth table set six when the body carried the
-     detail; the density pass moved detail here rather than deleting it, and a
-     closed disclosure costs a reader nothing until they ask. */
-  faqs: [
-    {
-      q: 'What does SAGA actually monitor?',
-      a: 'Keyword watchlists that your team defines, running against public sources in English, Telugu, Hindi and Urdu. The list of sources covered is [pending] and is confirmed per deployment rather than published.',
-    },
-    {
-      q: 'How does an alert reach the right officer?',
-      a: `Each match is raised on one of four tiers — Critical, High, Medium or Low [${PS}: tier labels] — and routed by the geography or subject it belongs to. If it is not acknowledged, it escalates to the next level of command on a timer [${PS}: escalation intervals]. Acknowledgement, reassignment and closure are recorded against the alert.`,
-    },
-    {
-      q: 'How reliable is a deepfake verdict?',
-      a: "The verdict is one of four states — Real, Fake, Suspicious or Needs Review — returned with a confidence figure and a frame-level breakdown. Needs Review exists so that an uncertain result is routed to a person rather than reported as a decision. The verdict is an input to an investigator's judgement.",
-    },
-    {
-      q: 'What connects a digital record to a registered case?',
-      a: 'A person-of-interest record can be linked to an FIR number. Accounts, aliases, captured media, extracted locations and verdicts attach to that record, so the digital trail and the registered case reference each other.',
-    },
-    {
-      q: 'What is recorded when an officer runs a search?',
-      a: 'The user, the time and the records touched, written to an immutable audit trail that also covers exports, verdict requests and case actions.',
-    },
-    {
-      q: 'What happens when a post is deleted?',
-      a: 'A post captured before deletion is retained with its capture timestamp and the account metadata recorded at capture time. The captured copy stays attached to the case whether or not the original remains online.',
-    },
-    {
-      q: 'How is captured material held?',
-      a: 'With its original metadata and its capture time, alongside the values extracted from it. That supports evidence-grade workflows under the lawful basis your department already operates.',
-    },
-    {
-      q: 'Can one officer see everything?',
-      a: `No. Each role's visibility is scoped to its own geography or subject, so an officer sees the districts and watchlists they are responsible for and not the rest. Role names and the exact span of each are [${PS}].`,
-    },
-  ],
+  "cta": {
+    "title": "Explore Blura SAGA",
+    "lit": "for your department.",
+    "body": "Walk through the watchlists, investigation records and response responsibilities relevant to your team's requirements."
+  }
 };

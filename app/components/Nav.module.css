@@ -16,7 +16,7 @@
   font-family: var(--fb);
   font-size: 14px;
   line-height: inherit;
-  color: var(--muted);
+  color: var(--ink);
   background: none;
   border: 0;
   cursor: pointer;
@@ -28,15 +28,6 @@
 .trigger:hover {
   color: var(--ink);
   background: var(--glass);
-}
-
-:global(nav:not(.floating)) .trigger {
-  color: #3d3d45;
-}
-
-:global(nav:not(.floating)) .trigger:hover {
-  color: #000;
-  background: rgba(0, 0, 0, 0.05);
 }
 
 .chev {
@@ -123,10 +114,6 @@
     color: var(--ink);
     padding: 13px 14px;
     border-radius: 10px;
-  }
-
-  :global(nav:not(.floating)) .trigger {
-    color: var(--ink);
   }
 
   .menu {

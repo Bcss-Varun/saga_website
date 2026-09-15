@@ -2,7 +2,7 @@
    Chromium already cached by playwright. */
 import { spawn } from 'node:child_process';
 
-const CHROME = process.env.HOME + '/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome';
+const CHROME = process.env.CHROME_PATH || (process.env.HOME + '/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome');
 
 export async function launch() {
   const proc = spawn(CHROME, [

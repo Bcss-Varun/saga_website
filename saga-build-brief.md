@@ -160,7 +160,7 @@ deals. Reachable from the top nav, not only the footer.
 `/governance` at full depth, then `/brands` and `/celebrity` at medium depth.
 
 ### Checkpoint 10 — `/platform` and `/investigation`
-Pipeline in depth, architecture, RBAC, RSS engine. Investigation: SOC-EYE, deepfake,
+Pipeline in depth, architecture, RBAC, RSS engine. Investigation: Blura SAGA AI assistance, deepfake,
 OSINT, identity, location.
 
 ### Checkpoint 11 — `/contact`

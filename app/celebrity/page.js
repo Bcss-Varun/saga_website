@@ -1,14 +1,8 @@
 import VerticalPage from '../components/VerticalPage';
-import { NAMES } from '../lib/verticalContent';
+import { celebrity } from '../lib/content/celebrity';
 import { pageMetadata } from '../lib/meta';
 
-
-export const metadata = pageMetadata({
-  title: `SAGA — ${NAMES.celebrity}`,
-  description:
-    'SAGA — social media intelligence for ' + NAMES.celebrity + '. [draft — needs review]',
-  path: '/celebrity',
-});
+export const metadata = pageMetadata({ ...celebrity.meta, path: celebrity.path });
 
 export default function Page() {
   return <VerticalPage vertical="celebrity" />;

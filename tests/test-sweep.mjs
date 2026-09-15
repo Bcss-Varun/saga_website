@@ -9,8 +9,15 @@ const OUT = 'out';
    tracked. Sweeping it as prose would bury a claims problem in a list of
    digits. */
 const stripMock = h => h.replace(/<div class="mb-screen"[\s\S]*?<img class="mb-frame"/g, ' ');
+/* The /trust audit record panel, on the same footing. Its rows are invented —
+   five timestamps and three reference ids — and the panel says so on its own
+   header, which is the mitigation the console mock never had. Sweeping them as
+   prose would report a dozen digits as unapproved numbers and bury anything
+   real underneath. Tracked as APPROVALS item 0b, and asserted below to still
+   carry its "illustrative records" mark. */
+const stripRecord = h => h.replace(/<div [^>]*data-mock="audit-record"[\s\S]*?<\/table>/g, ' ');
 const strip = h => {
-  let t = stripMock(h).replace(/<script[\s\S]*?<\/script>/g, ' ')
+  let t = stripRecord(stripMock(h)).replace(/<script[\s\S]*?<\/script>/g, ' ')
            .replace(/<style[\s\S]*?<\/style>/g, ' ')
            .replace(/<svg[\s\S]*?<\/svg>/g, ' ')
            .replace(/<[^>]+>/g, ' ');
@@ -36,7 +43,15 @@ for (const f of pages) { const t = strip(fs.readFileSync(f,'utf8')).toLowerCase(
 out('no banned phrases', hits.length===0, hits.join(' | '));
 
 /* Numbers: everything rendered as visible text, minus the ones with a reason. */
-const ALLOWED = new Set(['01','02','03','04','05','0','100','1','2','2026']);
+/* `87`, `248`, `18`, `6` and `3` are the figures on the /platform alert card.
+   They are NOT approved — they are published at the client's instruction and
+   tracked as the BLOCKER at the top of item 6b in copy/APPROVALS.md, which is
+   where they get signed off or removed before launch. They are listed here so
+   this check keeps failing on any *other* unapproved number instead of being
+   ignored wholesale, and so anyone reading the allowlist is sent to the
+   blocker. Take them out the day the card is resolved. */
+const ALLOWED = new Set(['01','02','03','04','05','0','100','1','2','2026',
+                         '87','248','18','6','3']);
 let nums = {};
 for (const f of pages) {
   for (const m of strip(fs.readFileSync(f,'utf8')).matchAll(/\b\d[\d,.]*[MK+%]?\b/g)) {
@@ -58,9 +73,10 @@ for (const f of pages) {
 }
 const KEYWORD = { 'deployment model':'deployment model', 'role names':'role names',
   'sources and coverage for this tool':'email and phone intelligence',
+  'sources and coverage by tool':'sources and coverage by tool',
+  'which deployment models are offered':'which deployment models are offered',
   'which languages beyond these four are supported':'languages beyond english',
   'which languages beyond english, telugu, hindi and urdu are supported':'languages beyond english',
-  'deployment model — on-premise, private cloud, or department-hosted':'on-premise',
   'tier labels':'tier labels', 'escalation intervals':'escalation intervals',
   'retention period':'retention', 'attribution thresholds':'attribution threshold',
   'scoring thresholds':'scoring threshold', 'window length':'window',
@@ -75,6 +91,15 @@ for (const k of markers.keys()) {
 }
 out(`every [pending sign-off] marker is tracked in APPROVALS.md (${markers.size} distinct, ${[...markers.values()].reduce((a,b)=>a+b,0)} occurrences)`,
     missing.length===0, missing.length ? 'untracked: '+missing.join(', ') : [...markers.keys()].slice(0,6).join(', ')+'…');
+
+/* The audit record panel may only publish invented rows while it says so on
+   its own header. The sweep strips the panel, so this is the check that the
+   strip is still earned — remove the mark and this fails rather than the rows
+   going quietly unswept. */
+const withRecord = pages.filter(f => /data-mock="audit-record"/.test(fs.readFileSync(f,'utf8')));
+const marked = withRecord.filter(f => /illustrative records/i.test(fs.readFileSync(f,'utf8')));
+out('every audit record panel is marked illustrative', withRecord.length>0 && marked.length===withRecord.length,
+    `${marked.length}/${withRecord.length} panel(s)`);
 
 /* Walk the whole chunk tree. This used to read only the top level of
    out/_next/static/chunks and skip directories — which is precisely where the

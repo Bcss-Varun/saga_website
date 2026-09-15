@@ -124,18 +124,25 @@ out('Space toggles the disclosure open', (await ev(`document.querySelector('#faq
 
 /* ── 5. reduced motion ──────────────────────────────────────────── */
 console.log('\n5. Reduced motion — a static frame, never blank, never looping');
+/* The canvas scenes are gone. The four vertical heroes dropped the `worlds`
+   field on 2026-09-09 and Home dropped the `hero` field the same day, replaced
+   by a photographic background. No route declares a scene any more, so there is
+   no painted frame to assert and the old per-route loop would assert nothing.
+
+   What is checked instead is that the removal holds: if a scene host comes back
+   by accident, this fails and the reduced-motion behaviour has to be proven
+   again before it ships. The globe in the pillars stack is a separate renderer
+   and is still covered below. */
 await b.send('Emulation.setEmulatedMedia', { features: [{name:'prefers-reduced-motion', value:'reduce'}] });
-for (const r of ['/', '/public-safety/', '/governance/', '/brands/', '/celebrity/']) {
-  await b.goto(B + r); await sleep(1600);
-  const s1 = JSON.parse(await ev(`JSON.stringify({
-    lit: (()=>{const c=document.querySelector('#stage'); const g=c.getContext('2d');
-      const d=g.getImageData(0,0,c.width,c.height).data; let n=0; for(let i=3;i<d.length;i+=4) if(d[i]>8) n++; return n;})(),
-    world: document.querySelector('[data-scene]')?.dataset.world || null })`));
-  await sleep(1200);
-  const s2 = JSON.parse(await ev(`JSON.stringify({ lit: (()=>{const c=document.querySelector('#stage'); const g=c.getContext('2d');
-      const d=g.getImageData(0,0,c.width,c.height).data; let n=0; for(let i=3;i<d.length;i+=4) if(d[i]>8) n++; return n;})() })`));
-  out(`${r.padEnd(17)} scene painted and static`, s1.lit > 500 && s1.lit === s2.lit,
-      `${s1.lit} lit px${s1.world?' ('+s1.world+')':''}${s1.lit!==s2.lit?' CHANGED to '+s2.lit:''}`);
+{
+  const declared = [];
+  for (const r of ALL) {
+    await b.goto(B + r); await sleep(700);
+    const scenes = JSON.parse(await ev(`JSON.stringify(
+      [...document.querySelectorAll('[data-scene]')].map(e => e.dataset.scene).filter(n => n !== 'none'))`));
+    if (scenes.length) declared.push(r + ':' + scenes.join(','));
+  }
+  out('no route declares a canvas scene', declared.length === 0, declared.join(' | ') || 'every host is data-scene="none"');
 }
 await b.goto(B + '/'); await sleep(1500);
 const globe = JSON.parse(await ev(`JSON.stringify({ frames: (window.__CANVAS_STATS__||{}).frames, rafs: (window.__CANVAS_STATS__||{}).rafs })`));

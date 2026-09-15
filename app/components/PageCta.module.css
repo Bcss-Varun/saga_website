@@ -1,0 +1,94 @@
+.cta {
+  position: relative;
+  padding: clamp(92px, 13vh, 144px) clamp(20px, 4vw, 44px);
+  border-top: 1px solid var(--line);
+  overflow: clip;
+}
+
+/* ── the backdrop ───────────────────────────────────────────────────────
+   Sized `cover` and anchored to the bottom, so the horizon in the render sits
+   below the copy rather than through it whatever the section's height. */
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: center bottom / cover no-repeat url('/images/cta-backdrop.webp');
+  pointer-events: none;
+}
+
+.photoScrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(8, 8, 10, 0.92) 0, rgba(8, 8, 10, 0.44) 34%, rgba(8, 8, 10, 0.44) 66%, rgba(8, 8, 10, 0.9) 100%),
+    radial-gradient(80% 64% at 50% 44%, rgba(8, 8, 10, 0.44), transparent 72%);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 22px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: clamp(2.1rem, 4.4vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.034em;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+
+.body {
+  max-width: 54ch;
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.mail {
+  max-width: 58ch;
+  margin: 8px 0 0;
+  font-family: var(--fm);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--faint);
+}
+
+.mail a {
+  color: var(--orange);
+}
+
+/* A wide render shrunk to a phone is a smear, and the last thing before the
+   footer is where a reader wants the button rather than a picture. */
+@media (max-width: 720px) {
+  .photo {
+    display: none;
+  }
+}
+
+@media print {
+  .photo,
+  .photoScrim {
+    display: none;
+  }
+}

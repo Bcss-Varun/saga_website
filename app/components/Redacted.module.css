@@ -1,0 +1,11 @@
+.bar {
+  display: inline-block;
+  height: 0.82em;
+  vertical-align: -0.06em;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--faint) 0 3px,
+    rgba(138, 133, 127, 0.45) 3px 6px
+  );
+}

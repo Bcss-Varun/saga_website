@@ -1,105 +1,633 @@
-/* /investigation — for an investigating officer. The tool cards state what each
-   tool takes, returns and cannot do; the limits are styled as content, not as a
-   disclaimer, because they are the most useful part for this reader. */
+/* /investigation — blocks that exist only on this page. The shared vocabulary
+   is in Bento.module.css. */
 
-.draftBanner {
-  margin: 0;
-  /* The banner is a <p>, and the ported sheet caps every p at 60ch. Without
-     this its background and borders stop at ~492px inside a 1440px page and
-     the strip reads as a broken box at the left. See tests/test-layout.mjs. */
+
+/* ── investigation context ───────────────────────────────────────────────
+   Three fixed cards, equal height whatever their bodies run to: the grid
+   stretches them to the tallest and the minimum keeps a short set from
+   drawing three shallow cards. Same card language as the tools above —
+   one border, one ground, one hover — so the page reads as one object. */
+.recs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+  margin: clamp(44px, 6vh, 66px) auto 0;
+  max-width: 1240px;
+  padding: 0;
+  list-style: none;
+}
+
+.rec {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: clamp(26px, 2.4vw, 38px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  transition: border-color 0.32s var(--ease), background 0.32s var(--ease),
+    box-shadow 0.32s var(--ease);
+}
+
+.rec:hover {
+  border-color: var(--orange);
+  background: linear-gradient(180deg, rgba(241, 91, 38, 0.12), rgba(241, 91, 38, 0.035));
+  box-shadow: 0 0 0 1px rgba(241, 91, 38, 0.34), 0 16px 40px rgba(241, 91, 38, 0.13);
+}
+
+.recHead {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 0 0 18px;
   max-width: none;
-  padding: 10px 20px;
-  text-align: center;
+}
+
+.recN {
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.55rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--orange);
+}
+
+.recRule {
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--orange);
+}
+
+.recName {
   font-family: var(--fm);
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  color: var(--warn);
-  background: rgba(245, 165, 36, 0.08);
-  border-top: 1px solid rgba(245, 165, 36, 0.28);
-  border-bottom: 1px solid rgba(245, 165, 36, 0.28);
-}
-
-.anchor {
-  scroll-margin-top: 96px;
-}
-
-.lead {
-  max-width: 62ch;
-  margin: 20px 0 0;
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--ink);
 }
 
-.prose {
-  max-width: 68ch;
-  margin-top: 22px;
-}
-
-.prose p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: var(--muted);
-  margin: 0 0 16px;
-}
-
-.tools {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 18px;
-  margin-top: 32px;
-}
-
-.tool {
-  background: var(--s2);
-  border: 1px solid var(--line);
-  border-left: 2px solid var(--lineo);
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.tool h3 {
-  margin: 0 0 16px;
+.recLead {
+  margin: 0 0 12px;
   font-family: var(--fd);
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.08rem;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
   color: var(--strong);
 }
 
-.tool dl {
+.recBody {
   margin: 0;
-}
-
-.tool dt {
-  font-family: var(--fm);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-top: 14px;
-}
-
-.tool dt:first-of-type {
-  margin-top: 0;
-}
-
-.tool dd {
-  margin: 6px 0 0;
-  font-size: 0.9rem;
-  line-height: 1.6;
+  max-width: none;
+  font-size: 0.885rem;
+  line-height: 1.7;
   color: var(--muted);
 }
 
-/* Stated as content, not as small print. */
-.limit {
-  color: var(--faint) !important;
+@media (max-width: 900px) {
+  .recs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rec {
+    min-height: 0;
+  }
 }
 
 .onward {
-  margin-top: 8px;
-  font-size: 0.92rem;
+  max-width: none;
+  margin: 26px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
 }
 
 .onward a {
   color: var(--orange);
+  border-bottom: 1px solid var(--lineo);
+  padding-bottom: 3px;
+  text-decoration: none;
+}
+
+.onward a:hover,
+.onward a:focus-visible {
+  color: var(--lift);
+}
+
+/* ── how SAGA investigates ───────────────────────────────────────────────
+   Three stages across, each a card with its index, a rule and its name over
+   one paragraph. Indices are allowed because find, connect and build is a
+   genuine sequence, which is the test CLAUDE.md sets for numbering. */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 30px);
+  margin: clamp(44px, 6vh, 68px) auto 0;
+  max-width: 1320px;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  padding: clamp(28px, 2.6vw, 40px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  transition: border-color 0.32s var(--ease), background 0.32s var(--ease);
+}
+
+.step:hover {
+  border-color: rgba(241, 91, 38, 0.34);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.016));
+}
+
+.stepHead {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin: 0 0 18px;
+  max-width: none;
+}
+
+.stepN {
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.72rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--orange);
+}
+
+.stepRule {
+  width: 22px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--orange);
+}
+
+.stepName {
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.stepBody {
+  margin: 0;
+  max-width: none;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ── the tool explorer ───────────────────────────────────────────────────
+   Three category tabs over a card track, to a supplied reference. The
+   reasoning — and the objection to hiding two thirds of a section behind a
+   tab — is in ToolExplorer.js. */
+/* The 132px reserve keeps a gutter for the arrows at every width above the
+   1080px breakpoint, so they sit outside the cards rather than over them and
+   never push the document wider than the window. */
+.explorer {
+  margin: clamp(38px, 5vh, 58px) auto 0;
+  max-width: min(1240px, 100% - 132px);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(12px, 1.4vw, 20px);
+  margin: 0 0 clamp(38px, 5vh, 56px);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 250px;
+  padding: 14px 22px 14px 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.28s var(--ease), background 0.28s var(--ease),
+    box-shadow 0.28s var(--ease);
+}
+
+.tab:hover {
+  border-color: rgba(241, 91, 38, 0.3);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--lift);
+  outline-offset: 3px;
+}
+
+/* The selected category. The accent border and the glow are the state; the
+   name also goes to full white, because colour alone is not a state under the
+   accessibility rules this brief sets. */
+.tabOn {
+  border-color: var(--orange);
+  background: linear-gradient(180deg, rgba(241, 91, 38, 0.16), rgba(241, 91, 38, 0.05));
+  box-shadow: 0 0 0 1px rgba(241, 91, 38, 0.35), 0 12px 32px rgba(241, 91, 38, 0.14);
+}
+
+.tabIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  color: var(--faint);
+  transition: color 0.28s var(--ease);
+}
+
+.tabOn .tabIcon {
+  color: var(--orange);
+}
+
+.tabIconSvg {
+  width: 22px;
+  height: 22px;
+}
+
+.tabText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tabName {
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.tabOn .tabName {
+  color: var(--strong);
+}
+
+.tabDesc {
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: var(--faint);
+}
+
+/* `display: block` on the panel beats the user-agent `[hidden]` rule, so the
+   hidden state has to be restated here or every category renders at once. */
+.panel {
+  display: block;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.catHead {
+  margin: 0 0 clamp(24px, 3vw, 34px);
+  text-align: center;
+}
+
+.catKicker {
+  margin: 0 0 10px;
+  max-width: none;
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.catTitle {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: clamp(1.32rem, 2.2vw, 1.68rem);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  color: var(--strong);
+}
+
+.catLead {
+  margin: 10px auto 0;
+  max-width: 64ch;
+  font-size: 0.945rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* ── the card track ──────────────────────────────────────────────────────
+   Four fixed-width columns rather than four fluid ones, so a card is exactly
+   a quarter of the row whether its category holds one tool or seven; that
+   equality was asked for. Anything past the fourth is scrolled to.
+
+   It is a real scroll container, not a transformed strip: a card off screen
+   is still laid out, still focusable and still reachable with a trackpad
+   swipe, which is the only reason a carousel can carry content at all under
+   this brief's rule about content inside an interaction. */
+.trackWrap {
+  position: relative;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 3 * var(--gap)) / 4);
+  /* A category with fewer cards than the row holds is centred rather than
+     packed left — deepfake draws one card and it belongs under the head, not
+     against the left edge. `safe` is what makes that legal in a scroll
+     container: once a category does overflow, centring would put the first
+     card off the scrollable origin and make it unreachable, so the keyword
+     falls back to `start` at exactly that point. The bare `start` below it is
+     the fallback for anything that does not know the keyword, which is the
+     behaviour this had before. */
+  justify-content: start;
+  justify-content: safe center;
+  --gap: clamp(16px, 1.6vw, 24px);
+  gap: var(--gap);
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* A fixed height, not a minimum: every card in every category is the same
+   object, so the track does not change height when a category is picked and
+   a short body does not draw a short card. The value is set against the
+   longest body on the page (the legal mapping engine) with its widest line
+   count, and the padding above the capability line takes up the slack. */
+.tool {
+  display: flex;
+  flex-direction: column;
+  height: var(--card-h, 420px);
+  padding: clamp(22px, 1.9vw, 28px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  scroll-snap-align: start;
+  transition: border-color 0.32s var(--ease), background 0.32s var(--ease),
+    box-shadow 0.32s var(--ease);
+}
+
+/* Hover and keyboard focus only. No card is highlighted at rest — the
+   reference lights the first card of each category and that was dropped on
+   request. The border tint this replaced was not a state anyone could see. */
+.tool:hover,
+.tool:focus-within {
+  border-color: var(--orange);
+  background: linear-gradient(180deg, rgba(241, 91, 38, 0.12), rgba(241, 91, 38, 0.035));
+  box-shadow: 0 0 0 1px rgba(241, 91, 38, 0.34), 0 16px 40px rgba(241, 91, 38, 0.13);
+}
+
+.toolTop {
+  display: flex;
+  align-items: center;
+  margin: 0 0 18px;
+  max-width: none;
+}
+
+.toolIcon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  border: 1px solid rgba(241, 91, 38, 0.28);
+  background: linear-gradient(180deg, rgba(241, 91, 38, 0.18), rgba(241, 91, 38, 0.06));
+  color: var(--lift);
+}
+
+.toolIconSvg {
+  width: 22px;
+  height: 22px;
+}
+
+.toolName {
+  margin: 0 0 8px;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.06rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--strong);
+}
+
+.toolLead {
+  margin: 0 0 10px;
+  max-width: none;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.toolBody {
+  margin: 0 0 20px;
+  max-width: none;
+  font-size: 0.855rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+/* Pushed to the card foot, so the capability lines across a row share a
+   baseline whatever the paragraphs above them run to. */
+.toolCap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: auto 0 0;
+  max-width: none;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.toolCapLabel {
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.toolCapValue {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--orange);
+}
+
+/* ── carousel controls ───────────────────────────────────────────────────
+   Drawn only when the track actually overflows. A disabled arrow beside a row
+   that cannot scroll is a control that lies about what it does, so a category
+   whose cards all fit gets no arrows, no dots and no counter. */
+.arrow {
+  position: absolute;
+  top: calc(50% - 23px);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--line2);
+  background: rgba(14, 14, 17, 0.92);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.24s var(--ease), color 0.24s var(--ease),
+    opacity 0.24s var(--ease);
+}
+
+.arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+.arrow:hover:not(:disabled) {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.arrow:focus-visible {
+  outline: 2px solid var(--lift);
+  outline-offset: 3px;
+}
+
+.arrow:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.arrowPrev {
+  left: -56px;
+}
+
+.arrowNext {
+  right: -56px;
+}
+
+.trackFoot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(20px, 2.4vw, 30px);
+}
+
+.dots {
+  display: flex;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  display: block;
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: var(--line2);
+  cursor: pointer;
+  transition: width 0.28s var(--ease), background 0.28s var(--ease);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--lift);
+  outline-offset: 3px;
+}
+
+.dotOn {
+  width: 22px;
+  background: var(--orange);
+}
+
+.count {
+  position: absolute;
+  right: 0;
+  margin: 0;
+  max-width: none;
+  font-family: var(--fm);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+}
+
+/* Four across stops here rather than at 1080: below about 1340px a quarter of
+   the row is roughly 260px, and the longest body on the page needs a card
+   taller than the rest of the set to fit it. Two across keeps every card the
+   same fixed height instead. */
+@media (max-width: 1340px) {
+  /* The arrows overlay the track edges below this width, so the gutter the
+     explorer reserved for them goes back to the cards. */
+  .explorer {
+    max-width: 100%;
+  }
+
+  .track {
+    --card-h: 330px;
+    grid-auto-columns: calc((100% - var(--gap)) / 2);
+  }
+
+  .arrowPrev {
+    left: -10px;
+  }
+
+  .arrowNext {
+    right: -10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .track {
+    grid-auto-columns: 86%;
+  }
+
+  /* One card a screen at this width, so a fixed height would either clip the
+     longest body or leave the shortest card half empty. */
+  .tool {
+    height: auto;
+    min-height: 320px;
+  }
+
+  .tab {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  /* The counter would sit on top of the dots at this width. */
+  .count {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    scroll-behavior: auto;
+  }
+
+  .tool,
+  .tab,
+  .arrow,
+  .dot {
+    transition: none;
+  }
 }

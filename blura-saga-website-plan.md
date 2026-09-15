@@ -192,7 +192,7 @@ Indian AI-policing vendors are under active press scrutiny over accountability a
 
 ### Should Have
 - S1 — Platform page: the intelligence pipeline in depth, the three-layer architecture, RBAC, RSS intelligence engine.
-- S2 — Investigation & OSINT page: SOC-EYE, deepfake detection, username enumeration, EXIF/location, email and phone intelligence, cross-platform search.
+- S2 — Investigation & OSINT page: Blura SAGA AI assistance, deepfake detection, username enumeration, EXIF/location, email and phone intelligence, cross-platform search.
 - S3 — One signature abstract data-viz per vertical, differentiated by vertical (constituency-style map for Governance, threat density for Public Safety, sentiment trajectory for Brands, network graph for Celebrity).
 - S4 — Multilingual capability stated explicitly with named languages (English, Telugu, Hindi, Urdu) rather than a generic "multi-language support" chip.
 - S5 — Persistent nav CTA on desktop, fixed CTA on mobile.

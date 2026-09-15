@@ -20,9 +20,13 @@ export default function Nav() {
 
   const solutions = NAV.find((n) => n.items);
 
-  /* ── hide-on-scroll — ported from Saga.html frameTick ─────────── */
+  /* ── hide-on-scroll — ported from Saga.html frameTick ───────────
+     This used to write a 0→1 scroll progress to `--p` on the root element and
+     toggle `body.scrolled`, both for the hero's framed card. The frame was
+     removed on 2026-09-09 and nothing read either of them afterwards, so the
+     per-frame style write on the document element went with it. The pillars
+     stack writes its own `--p`, per card; that is unrelated and still live. */
   useEffect(() => {
-    const SHRINK = 280;
     let lastY = 0;
     let ticking = false;
 
@@ -32,8 +36,6 @@ export default function Nav() {
       const nav = navRef.current;
       if (!nav) return;
       const diff = y - lastY;
-      const p = Math.min(1, Math.max(0, y / SHRINK));
-      document.documentElement.style.setProperty('--p', p);
 
       if (y > 80) {
         nav.classList.add('floating');
@@ -42,7 +44,6 @@ export default function Nav() {
       } else {
         nav.classList.remove('floating', 'hidden');
       }
-      document.body.classList.toggle('scrolled', p >= 1);
       lastY = y;
     };
 
@@ -163,18 +164,13 @@ export default function Nav() {
   return (
     <nav id="nav" ref={navRef} className={menuOpen ? 'menu-open' : undefined}>
       <Link className="brand" href="/" aria-label="Blura SAGA home">
+        {/* One lockup, on a white ground supplied by CSS. The pair of images
+            that used to cross-fade here existed for the hero's light gutter,
+            which was removed on 2026-09-09. */}
         <Image
           src="/logo/saga-logo-transparent.png"
           alt="SAGA - Sentiment And Goodwill Analysis"
-          className="brand-logo logo-light"
-          width={132}
-          height={40}
-          priority
-        />
-        <Image
-          src="/logo/saga-logo-rounded.png"
-          alt="SAGA - Sentiment And Goodwill Analysis"
-          className="brand-logo logo-dark"
+          className="brand-logo"
           width={132}
           height={40}
           priority

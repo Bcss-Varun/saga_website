@@ -193,3 +193,23 @@
     transition: none;
   }
 }
+
+/* ══ bento layout, 2026-09-09 ═══════════════════════════════════════════════
+   The form sits in a card on the raised ground, with the direct route beside
+   it. Everything below is additive; the field, label, error and consent rules
+   above are unchanged. */
+
+.formCard {
+  min-width: 0;
+  padding: clamp(24px, 3vw, 38px);
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+/* The aside already had card styling; only its radius moves, to match the
+   20px the bento cards use. */
+.aside {
+  border-radius: 20px;
+  padding: clamp(22px, 2.4vw, 30px);
+}

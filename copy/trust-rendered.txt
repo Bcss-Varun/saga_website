@@ -4,65 +4,170 @@ Investigation
 Trust
 Request a Demo
 
-TRUST
+TRUST & SECURITY
 
-Where it runs, who can see it, and what gets recorded.
+Know where it runs.
+Control who can access it.
 
-SAGA is bought by departments that have to answer for it afterwards. This page states the deployment model, the access boundaries, what the audit trail captures and the basis on which data is handled — so a security review can be done from the page rather than from a call.
+Blura SAGA is designed for sensitive intelligence environments, with controlled deployment, role-based access, data protection and traceable activity built into the platform.
 
-[draft — needs review] — copy on this page is drafted and not yet signed off.
+Request a Demo
+Read the audit trail
+Three
+SCOPED ROLES
+Immutable
+AUDIT TRAIL
+Per deployment
+HOSTING & RETENTION
 
 DEPLOYMENT
 
-Where the system runs.
+Run SAGA where your intelligence belongs.
 
-SAGA is deployed as [pending sign-off: deployment model — on-premise, private cloud, or department-hosted]. Hosting location, data residency and retention periods are set per deployment and recorded in the deployment agreement rather than fixed by the product [pending sign-off].
+Choose the deployment model that best fits your organisation's security, infrastructure and operational requirements [pending sign-off: which deployment models are offered].
 
-Where a department requires the system to run inside its own network boundary, it does [pending sign-off: confirm supported topologies]. Update and support arrangements for an isolated deployment are agreed at contract [pending sign-off].
+01
+
+ON-PREMISE
+
+Keep SAGA within your own infrastructure.
+
+Deploy Blura SAGA inside your organisation's controlled environment for greater control over sensitive intelligence and access.
+
+BEST FOR
+High-security and controlled environments.
+02
+
+CLOUD
+
+Scale intelligence without managing the infrastructure.
+
+Run Blura SAGA in a secure cloud environment while keeping the platform accessible, scalable and centrally managed.
+
+BEST FOR
+Organisations looking for faster deployment and operational flexibility.
+03
+
+HYBRID
+
+Keep sensitive workloads close. Scale where needed.
+
+Combine on-premise and cloud environments so organisations can keep sensitive data within controlled infrastructure while using cloud capabilities where appropriate.
+
+BEST FOR
+Organisations with mixed security and infrastructure requirements.
 
 ACCESS CONTROL
 
-Three roles, and a boundary around each one.
+Bounded by role, and by scope.
 
-Access is bounded by role. Super Admin, Level-2 and Level-1 [pending sign-off: role names] each carry a different span, and a role's visibility is scoped to its own geography or subject — an officer sees the districts, watchlists and cases they are responsible for, and not the rest.
+Blura SAGA uses role-based access control to keep intelligence within the right organisational and operational boundaries.
 
-Super Admin
+01
 
-Creates and removes accounts, assigns roles, defines the geography or subject each role is scoped to, and sets which pages and features a role may reach. Holds the only view of the full deployment [pending sign-off: exact span].
+ROLE
 
-Level-2
+Access follows responsibility.
 
-Works across the scope assigned to it — multiple districts, watchlists or subjects — and can assign work to Level-1 users inside that scope. Cannot widen its own scope [pending sign-off: exact span].
+Users are assigned access based on their role within the organisation.
 
-Level-1
+02
 
-Works within a single assigned scope: the alerts, cases and grievances routed to it. Cannot see records outside that scope, including those belonging to peers [pending sign-off: exact span].
+SCOPE
 
-Page and feature-level permissions
+Access stays within its boundary.
 
-Permissions are set per page and per feature, not only per role — so a role can be granted a page while being denied a specific action on it, such as export or a verdict request. Two users holding the same role can therefore have different reach, set deliberately rather than by exception.
+Users only see the intelligence and operational areas authorised for them.
 
-One-click revoke
+03
 
-A user’s access can be revoked in a single action, taking effect for sessions already open rather than at next sign-in. Revocation is itself an audited event: who revoked, when, and which account.
+ACTION
+
+Every action remains accountable.
+
+Access and activity are logged to support traceability and review when required [pending sign-off: read-logging].
+
+BUILT INTO EVERY ACCESS LAYER
+
+ROLE-BASED ACCESS
+MULTI-FACTOR AUTHENTICATION
+SESSION LOGGING
+PRIVILEGED ACCESS REVIEW
+[pending sign-off: privileged access review]
 
 AUDIT TRAIL
 
-What is recorded, and what cannot be edited.
+Every action. One clear record.
 
-Every search, export, verdict request, case action, permission change and revocation is written to an immutable audit trail carrying the user, the timestamp and the record touched. The trail records reads as well as writes: looking at a person-of-interest record is an event, not a silent action.
+Blura SAGA records activity across the intelligence lifecycle, creating a traceable record of what happened, when it happened, and what was acted upon.
 
-Captured material is stored with its original metadata and its capture time — timestamped capture with metadata, retained alongside the original file. This supports evidence-grade workflows: an investigator can show what was collected, when, by whom, and what state it was in at collection.
+TRACE
+INVESTIGATE
+RESPOND
+WITH CLARITY
 
-Audit records are retained for the period set in the deployment agreement [pending sign-off: retention period] and can be exported for internal review or inspection.
+SAGA AUDIT RECORD
+ILLUSTRATIVE RECORDS
+LIVE RECORD
+TIME	EVENT	DESCRIPTION	USER / ROLE	REFERENCE
+ROW ACTIONS
+
+09:42:18
+QUERY	Intelligence search initiated	Analyst	#SR-2841	•••
+09:43:06
+READ	Intelligence record accessed	Analyst	#SR-2841	•••
+09:45:31
+ACTION	Case action recorded	Field Officer	#CASE-1092	•••
+09:47:02
+EXPORT	Evidence package generated	Investigation Lead	#CASE-1092	•••
+10:12:15
+PERMISSION	Access level updated	System Admin	#USR-7710	•••
+
+01
+
+ACTIVITY
+
+Every interaction is recorded.
+
+Alerts, queries, actions and data access are recorded with timestamps, creating a clear history of activity [pending sign-off: read-logging].
+
+02
+
+INTEGRITY
+
+The record is built to remain intact.
+
+Audit records use immutable logging and tamper-protection mechanisms to preserve the integrity of the record [pending sign-off: tamper-protection mechanisms].
+
+03
+
+EVIDENCE
+
+From intelligence to documented action.
+
+Evidence packages can retain a documented chain of custody for review and investigation.
+
+TIMESTAMPED
+Every action, with time.
+TRACEABLE
+End-to-end visibility.
+IMMUTABLE
+Built to remain intact.
+REVIEWABLE
+Ready for oversight.
 
 LAWFUL BASIS
 
 The department’s authority, not the platform’s.
+The platform confers no authority
 
-SAGA processes material from public sources. It does not confer authority: a department operates the system under the lawful basis it already holds, and the platform’s job is to make what was done under that basis legible afterwards.
+SAGA processes material from public sources. A department operates the system under the lawful basis it already holds, and the platform’s job is to make what was done under that basis legible afterwards.
 
-Scoping is the practical control. Watchlists, geographies and subjects are defined by the department, roles are bounded to them, and the audit trail records who looked at what. That combination is what allows a department to answer a question about its own use of the system months later.
+Scoping is the practical control
+
+Watchlists, geographies and subjects are defined by the department, roles are bounded to them, and the audit trail records who looked at what. That combination is what allows a department to answer a question about its own use of the system months later.
+
+Contractual terms
 
 Data protection terms, processor and controller responsibilities, and any sector-specific obligations are set in the deployment agreement [pending sign-off: contractual terms].
 
@@ -72,9 +177,17 @@ Who runs it.
 
 Described by descriptor only. No client is named on this site.
 
-A state police force [pending sign-off]
-A state Home Ministry [pending sign-off]
-A national government in West Africa [pending sign-off]
+A state police force
+
+[pending sign-off]
+
+A state Home Ministry
+
+[pending sign-off]
+
+A national government in West Africa
+
+[pending sign-off]
 
 SECURITY REVIEW
 

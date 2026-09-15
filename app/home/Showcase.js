@@ -151,7 +151,7 @@ export default function Showcase() {
                         <div className="sd-link"><span className="sd-ico">#</span> Keywords</div>
                         <div className="sd-link"><span className="sd-ico">▣</span> Reports</div>
                         <div className="sd-group">OSINT Tools</div>
-                        <div className="sd-link"><span className="sd-ico">◎</span> SOC-EYE AI</div>
+                        <div className="sd-link"><span className="sd-ico">◎</span> Blura SAGA AI</div>
                         <div className="sd-link"><span className="sd-ico">◐</span> Deepfake Detection</div>
                         <div className="sd-link"><span className="sd-ico">☖</span> Profile Intelligence</div>
                         <div className="sd-link"><span className="sd-ico">⌘</span> Location Intelligence</div>
@@ -317,7 +317,7 @@ export default function Showcase() {
                             </div>
 
                             <div className="sd-card">
-                              <div className="ch"><b>SOC-EYE AI Assistant</b></div>
+                              <div className="ch"><b>Blura SAGA AI Assistant</b></div>
                               <div className="sd-ai">
                                 <div className="orb">◎</div>
                                 <div className="ph">Ask anything about the intelligence data…</div>

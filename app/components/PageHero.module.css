@@ -1,0 +1,296 @@
+/* Page hero.
+
+   ── Why every rule here is prefixed with :global(#hero) ────────────────────
+   The ported sheet styles `#hero` as the full-viewport framed card: 100svh
+   tall, flex column, and above 1024px margined in by 200px a side so the light
+   gutter can show around it. That is the Home hero and it is correct there.
+   This hero is a compact block and needs none of it.
+
+   An ID selector beats a class, so a plain module class cannot override
+   `#hero` or `#hero h1`. The id is kept — the section order on a vertical page
+   is asserted against it — so the overrides are written `:global(#hero).hero`
+   and `:global(#hero) .x` instead. `:global()` keeps the id out of the module
+   hash; the local class supplies the extra specificity. The global sheet is
+   untouched. */
+
+/* Horizontal padding lives on `.inner`, not here, so the copy column can be
+   given the header's own geometry — see the note on `.inner` below. */
+:global(#hero).hero {
+  position: relative;
+  min-height: 0;
+  display: block;
+  margin: 0;
+  padding: clamp(112px, 14vh, 168px) 0 clamp(64px, 8vh, 96px);
+  overflow: clip;
+}
+
+/* The header's geometry, exactly: `max-width: 1600px` centred with
+   `clamp(18px, 3vw, 44px)` of padding inside it, which is what the ported
+   `nav` rule uses. The headline therefore begins on the same vertical as the
+   logo above it, at every width and on every route — below 1600 both are the
+   padding value, above it both are the same centred gutter plus the padding.
+
+   Copy this pair, not a number, if another block ever has to line up with the
+   header. A hand-picked measure drifts the moment either rule changes. */
+.inner {
+  position: relative;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 clamp(18px, 3vw, 44px);
+}
+
+.copy {
+  max-width: 62ch;
+}
+
+:global(#hero) .title {
+  margin: 22px 0 24px;
+  font-size: clamp(2.4rem, 5.2vw, 4.1rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.036em;
+  max-width: 17ch;
+  text-wrap: balance;
+}
+
+:global(#hero) .lead {
+  max-width: 56ch;
+  margin: 0 0 34px;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ── stat strip ──────────────────────────────────────────────────────────── */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 0;
+  margin: clamp(44px, 6vh, 64px) 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line2);
+}
+
+.stat {
+  padding: 0 clamp(20px, 2.6vw, 40px);
+  border-left: 1px solid var(--line2);
+}
+
+.stat:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.statValue {
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.statLabel {
+  margin: 0;
+  font-family: var(--fm);
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ── showcase ────────────────────────────────────────────────────────────
+   The wide card under the copy. It is lifted off the ground by a ring and a
+   shadow rather than by a glow behind it: a glow on a card this size is a
+   large soft-edged layer to composite on every scroll frame, which is the cost
+   CLAUDE.md's open performance item is about. */
+.showcase {
+  position: relative;
+  margin-top: clamp(44px, 6vh, 72px);
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 560px) {
+  :global(#hero).hero {
+    padding-top: 104px;
+    padding-bottom: 52px;
+  }
+
+  /* The header drops to a flat 14px here, so the hero does too. */
+  .inner {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .stat {
+    padding-left: 0;
+    padding-right: 24px;
+    border-left: 0;
+  }
+
+  .showcase {
+    padding: 8px;
+    border-radius: 16px;
+  }
+}
+
+@media print {
+  .showcase {
+    box-shadow: none;
+  }
+}
+
+/* ── split hero ──────────────────────────────────────────────────────────
+   Copy on the left, an object beside it rather than beneath it. Used where
+   the hero object is a photograph: a picture under the fold explains nothing
+   on arrival, and this one is the fastest statement of what the product does
+   that the page has.
+
+   The object takes a little under half the width, which is the brief's
+   45–50%; the copy column loses its 62ch cap because it now has a real column
+   to sit in. Below 940 the two stack and the photograph follows the copy —
+   the headline is what a reader arriving from a search result needs first. */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+
+.split .copy {
+  max-width: none;
+}
+
+/* 17ch is right for a hero whose headline owns the full width. Beside a
+   photograph the column is already narrow, and the cap turns a two-line
+   headline into four. */
+.split .title {
+  max-width: 20ch;
+}
+
+.media {
+  position: relative;
+  min-width: 0;
+}
+
+@media (max-width: 940px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .split .copy {
+    max-width: 62ch;
+  }
+}
+
+/* ── photographic backdrop ───────────────────────────────────────────────
+   Used where a hero carries a picture across its whole width instead of an
+   object beside the copy. `/platform` is the first.
+
+   The hero grows a floor when it has one: a wide photograph inside a compact
+   block is a letterbox strip, and the picture is doing the work of the object
+   the split layout would otherwise hold.
+
+   Layers, all decorative and all behind the copy:
+     · `.backdrop` is the picture. `cover` is right here — unlike the Home
+       hero, this image is a panorama with nothing at its edges that a crop
+       would destroy;
+     · `.backdropScrim` is opaque black across the copy column, gone by the
+       middle, plus a strip across the top. The headline is then read against
+       flat black, which is what the contrast figures assume, and the fixed
+       header does not sit on the brightest part of the image.
+
+   A background that fails to load paints nothing, so a missing file leaves the
+   hero black and nothing breaks. */
+/* `:global(#hero)` on the front, not a bare class.
+
+   The ported sheet styles `#hero`, and this module's own `:global(#hero).hero`
+   sets `min-height: 0` to undo the full-viewport card. An id plus a class
+   beats a lone class, so `.withBackdrop` on its own was dead: the floor never
+   applied and neither did the centring. That is why a hero with a short
+   headline sat at 543px against a taller one's 707px — every backdrop hero was
+   simply as tall as its own copy.
+
+   With the floor live, a hero with a picture behind it is at least 78vh on any
+   route, so the section reads as the same object whatever the copy runs to. */
+:global(#hero).withBackdrop {
+  min-height: min(88vh, 880px);
+  display: flex;
+  align-items: center;
+}
+
+:global(#hero).withBackdrop .inner {
+  width: 100%;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: center / cover no-repeat;
+  pointer-events: none;
+}
+
+.backdropScrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(8, 8, 10, 0.92) 0, rgba(8, 8, 10, 0.6) 96px, transparent 200px),
+    linear-gradient(100deg,
+      var(--s1) 0%,
+      var(--s1) 30%,
+      rgba(8, 8, 10, 0.82) 42%,
+      rgba(8, 8, 10, 0.36) 56%,
+      rgba(8, 8, 10, 0.14) 72%);
+}
+
+/* The copy column keeps its width as the viewport narrows, so it covers more
+   of the picture — at 1024 the headline was running across the label cards in
+   the image. The scrim's opaque region follows it right rather than the
+   headline being left on top of a lit panel. */
+@media (max-width: 1200px) {
+  .backdropScrim {
+    background:
+      linear-gradient(180deg, rgba(8, 8, 10, 0.92) 0, rgba(8, 8, 10, 0.6) 96px, transparent 200px),
+      linear-gradient(100deg,
+        var(--s1) 0%,
+        var(--s1) 52%,
+        rgba(8, 8, 10, 0.86) 66%,
+        rgba(8, 8, 10, 0.4) 82%,
+        rgba(8, 8, 10, 0.16) 96%);
+  }
+}
+
+/* A panorama shrunk to a phone is a smear. Below this the hero is the wash and
+   the copy alone, exactly as the Home hero does it — and with no picture there
+   is nothing for the height floor to make room for, so it goes too. */
+@media (max-width: 720px) {
+  .backdrop {
+    display: none;
+  }
+
+  :global(#hero).withBackdrop {
+    min-height: 0;
+  }
+
+}
+
+@media print {
+  .backdrop,
+  .backdropScrim {
+    display: none;
+  }
+}

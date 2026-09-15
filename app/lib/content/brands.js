@@ -1,101 +1,206 @@
-/* /brands — authored content. [draft — needs review] on every string.
-
-   Medium depth: 4 capability modules, 2 scenarios, 4 FAQ, short deployment
-   note. The deck lists six capabilities for this vertical and there are four
-   slots, so pre-viral detection is folded into viral risk scoring (they are the
-   same mechanism read at two thresholds) and competitor share of voice moves to
-   the triad and the FAQ. */
-
-const PS = 'pending sign-off';
-
+/* Standalone vertical content. Revised 2026-09-14.
+   Illustrations and scenarios describe concepts, not deployed product results.
+   Exact deployment specifications remain subject to product confirmation. */
 export const brands = {
-  hero: {
-    title: 'A complaint cluster, a velocity score, and someone to answer it.',
-    body:
-      'SAGA scores a conversation for viral risk while it is still small, clusters complaints by location and subject so a pattern is visible before it is a trend, separates organic criticism from coordinated activity, and opens a response workflow against the cluster rather than against a single post.',
+  "name": "Brands",
+  "path": "/brands",
+  "meta": {
+    "title": "Brand Reputation Monitoring and Social Intelligence | Blura SAGA",
+    "description": "Explore Blura SAGA for brand conversations, competitor share of voice, emerging reputation risks, complaint patterns and coordinated response workflows."
   },
-
-  triad: [
-    {
-      key: 'monitor',
-      name: 'Monitor',
-      body:
-        'Conversations are scored for viral risk on their rate of acceleration rather than their current size, so a thread is flagged while a response is still proportionate. Share of voice against named competitors is tracked on the same conversations.',
-    },
-    {
-      key: 'investigate',
-      name: 'Investigate',
-      body: `Complaints are clustered by location and subject, so a fault appearing in one region reads as a pattern rather than as scattered posts. Activity is attributed as organic or coordinated from account age, posting cadence and repeated phrasing [${PS}: attribution thresholds].`,
-    },
-    {
-      key: 'manage',
-      name: 'Manage',
-      body:
-        'A cluster becomes a response case with an owner, a state and a record of what was said publicly and when. Time from detection to first response is recorded against each case.',
-    },
-  ],
-
-  modules: [
-    {
-      name: 'Viral risk scoring',
-      body:
-        'A conversation is scored on how fast it is accelerating, not how large it currently is — so a thread can be flagged before it is widely visible. The score names the accounts and posts carrying it, so a team can see whether the growth is coming from many people or a few large ones.',
-    },
-    {
-      name: 'Location clustering of complaints',
-      body:
-        'Complaints are grouped by location and subject rather than listed chronologically. A fault reported by unrelated people in one region resolves into a single cluster with a location, a subject and a count of distinct accounts, which is the form a product or operations team can act on.',
-    },
-    {
-      name: 'Organic versus coordinated attribution',
-      body: `Criticism is attributed as organic or coordinated using account age, posting cadence, repeated phrasing and burst timing [${PS}: attribution thresholds]. The two are reported separately, so a coordinated push is not mistaken for consumer sentiment and genuine complaints inside it are not dismissed as bots.`,
-    },
-    {
-      name: 'Crisis response workflow',
-      body:
-        'A cluster or scored conversation opens a case with an owner and a state. Public statements made in response are attached to the case with their timestamps, and time from detection to first response is recorded — so a post-incident review reads from the record rather than from memory.',
-    },
-  ],
-
-  signature: {
-    line: 'From scattered posts to one cluster with an owner.',
-    body:
-      'A complaint cluster carries its location, its subject, the accounts behind it and whether the activity is organic or coordinated. That is enough for a communications team to decide whether to answer, and enough for a product team to decide whether there is something to fix.',
+  "hero": {
+    "title": "Understand the conversation.",
+    "lit": "Protect your reputation.",
+    "body": "Blura SAGA is a social media intelligence platform for brand and communications teams. Understand relevant public conversations, identify emerging reputation risks and connect complaint patterns with the people responsible for a response.",
+    "image": "/images/verticals/brands-hero.webp",
+    "caption": "Brand & reputation intelligence",
+    "tags": [
+      "Conversation intelligence",
+      "Emerging risks",
+      "Response workflows"
+    ],
+    "secondary": "Explore brand intelligence"
   },
-
-  scenarios: [
+  "overview": {
+    "eyebrow": "More context for your brand",
+    "title": "Know what is being said. Understand what needs attention.",
+    "body": "A rising mention count tells you that a brand is being discussed. Blura SAGA helps your team examine the issue behind the conversation, compare visibility against named competitors and find repeated complaints that communications or operations can act on.",
+    "note": "Share of voice describes the conversation within your monitored sources and comparison set, rather than the entire market.",
+    "steps": [
+      {
+        "title": "Understand the conversation",
+        "body": "Examine relevant brand discussion and competitor share of voice."
+      },
+      {
+        "title": "Find the underlying issue",
+        "body": "Connect accelerating conversations and complaints by subject and available location."
+      },
+      {
+        "title": "Coordinate the response",
+        "body": "Give the issue an owner and keep the response record with its context."
+      }
+    ],
+    "link": {
+      "href": "/platform#idea",
+      "label": "How Blura SAGA analyses digital signals"
+    }
+  },
+  "features": [
     {
-      name: 'A fault with a postcode',
-      body:
-        'Individually unremarkable complaints about the same product behaviour arrive over two days from unrelated accounts. Clustered by location and subject, they resolve into one region and one fault description. The cluster reaches the operations team as a pattern with a location, rather than as a rising count of tickets.',
+      "id": "risk",
+      "eyebrow": "Emerging reputation risks",
+      "title": "See the change before it becomes the whole conversation.",
+      "body": "Blura SAGA scores a conversation on its rate of acceleration, helping teams review emerging issues while they are still developing. The source posts and accounts driving the growth remain available for examination.",
+      "visual": "trend",
+      "visualTitle": "Examine the drivers of a developing conversation",
+      "items": [
+        {
+          "title": "Conversation velocity",
+          "body": "Assess how quickly discussion is growing, alongside its current size. A small accelerating thread can deserve attention even before it dominates your mention count."
+        },
+        {
+          "title": "Sources behind the movement",
+          "body": "Inspect the posts and accounts carrying the conversation to understand where the attention is coming from."
+        },
+        {
+          "title": "A basis for prioritisation",
+          "body": "Use the risk reading and underlying content to decide whether an issue needs monitoring, a communications response or investigation by another team."
+        }
+      ],
+      "note": "Risk scoring supports prioritisation. It does not guarantee that a conversation will go viral or provide a fixed warning time."
     },
     {
-      name: 'A push that was not a public',
-      body:
-        'Criticism of a campaign accelerates sharply. Attribution splits it: a majority of the volume comes from accounts created within a short window repeating near-identical phrasing, while a smaller organic group raises one specific and different objection. The coordinated volume is reported separately, and the response addresses the real objection instead of the noise.',
+      "id": "issues",
+      "eyebrow": "Complaint & coordination analysis",
+      "title": "Find the problem inside the pattern.",
+      "body": "Repeated complaints can point to an operational issue. Repeated phrasing can indicate amplification. Blura SAGA gives your team ways to examine both without losing the specific concern being raised.",
+      "visual": "clusters",
+      "visualTitle": "Organise the conversation around the issue",
+      "flip": true,
+      "items": [
+        {
+          "title": "Complaints by subject and location",
+          "body": "Group related complaints using their subject and available geographic context. Operations can examine a recurring fault in one region as a connected issue."
+        },
+        {
+          "title": "Distinct accounts and source posts",
+          "body": "Review the accounts raising the complaint and the original material behind the cluster to understand what customers are describing."
+        },
+        {
+          "title": "Coordinated activity indicators",
+          "body": "Examine account age, posting cadence, repeated phrasing and burst timing. Review genuine criticism alongside any signs of coordinated amplification."
+        }
+      ],
+      "note": "An activity pattern is an indicator for review, not proof that an account is automated or that a complaint is invalid."
     },
+    {
+      "id": "response",
+      "eyebrow": "Crisis response workflow",
+      "title": "One issue. A clear owner. A recorded response.",
+      "body": "Move from conversation analysis to a response case with an owner and a state. Keep the public statements and their timestamps with the issue so later review can follow what the team did and when.",
+      "visual": "response",
+      "visualTitle": "From a developing issue to a response record",
+      "layout": "wide",
+      "items": [
+        {
+          "title": "Establish responsibility",
+          "body": "Open a case against the relevant conversation or complaint cluster and assign ownership for follow-up."
+        },
+        {
+          "title": "Keep the response in context",
+          "body": "Attach public statements and their timestamps to the case, alongside the source material that informed them."
+        },
+        {
+          "title": "Review the sequence",
+          "body": "Examine the time from detection to first response and the recorded case history when reviewing the incident."
+        }
+      ],
+      "note": "The workflow records your team's response. It does not imply automatic publishing to social accounts."
+    }
   ],
-
-  deployment: [
-    `SAGA is deployed as [${PS}: deployment model], with hosting location and retention periods set per deployment [${PS}]. Access is bounded by role and scoped to the brands, markets or subjects a user is responsible for [${PS}: role names], and every search, export and case action is written to an immutable audit trail.`,
+  "scenarios": {
+    "title": "From a public conversation to a practical next step.",
+    "intro": "Illustrative brand situations showing how communications and operations can use the same source context.",
+    "items": [
+      {
+        "icon": "location",
+        "title": "A complaint with a location",
+        "setup": "Unrelated accounts describe the same product issue in one region, but the individual posts appear unremarkable.",
+        "action": "Group the reports by subject and available location, then review the source material with the operations team.",
+        "outcome": "A specific issue to investigate, with its context attached."
+      },
+      {
+        "icon": "network",
+        "title": "A campaign under criticism",
+        "setup": "Discussion grows around a campaign, mixing repeated wording with a specific consumer objection.",
+        "action": "Examine the amplification patterns separately from the substance of the objection before deciding how to respond.",
+        "outcome": "A response informed by what customers are actually raising."
+      }
+    ]
+  },
+  "outputs": {
+    "eyebrow": "Shared context, different responsibilities",
+    "title": "Give each team the detail it needs.",
+    "body": "The same issue can require a public response, an operational investigation and a later review. Blura SAGA keeps the conversation, complaint pattern and response history connected.",
+    "visual": "brandBrief",
+    "visualTitle": "The context behind a brand response",
+    "items": [
+      {
+        "title": "Communications",
+        "body": "Understand the narrative, its sources and the posts driving attention before preparing a response."
+      },
+      {
+        "title": "Operations & customer experience",
+        "body": "Examine the recurring complaint, its subject and available location to decide what needs investigation."
+      },
+      {
+        "title": "Team leads",
+        "body": "Review ownership, the statements attached to the case and the recorded response sequence."
+      }
+    ],
+    "note": "Access is scoped to assigned brands, markets or subjects. Review hosting, retention and detailed permissions for your team's requirements.",
+    "link": {
+      "href": "/trust",
+      "label": "Review team access and data handling"
+    }
+  },
+  "faqs": [
+    {
+      "q": "What is Blura SAGA for Brands?",
+      "a": "It is the brand and reputation use of the Blura SAGA social media intelligence platform. It helps teams understand relevant public conversations, review emerging risks, examine complaint patterns and coordinate a response case with its supporting context."
+    },
+    {
+      "q": "Which conversations and competitors are included?",
+      "a": "Monitoring depends on the sources, brand terms, subjects and named competitors configured for the deployment. Share of voice describes that monitored comparison set. Confirm the source list and comparison requirements in the demonstration."
+    },
+    {
+      "q": "How early can Blura SAGA identify a reputation risk?",
+      "a": "The reading considers how quickly a conversation is accelerating rather than only its current size. That can bring a developing thread to the team's attention while it is still small. It does not promise a particular lead time or predict with certainty whether the conversation will go viral."
+    },
+    {
+      "q": "How is a complaint cluster different from a mention count?",
+      "a": "A cluster connects complaints by subject and available location, with the distinct accounts and source posts behind them. It gives an operations team a particular issue to examine rather than a total that says only how often the brand was mentioned."
+    },
+    {
+      "q": "Can coordinated activity and genuine criticism happen together?",
+      "a": "Yes. Repeated phrasing, posting cadence, account age and burst timing provide indicators for review. Genuine consumer concerns can exist within an amplified discussion, so the substantive objection needs to be examined separately."
+    },
+    {
+      "q": "What is recorded during a response?",
+      "a": "The case owner, its state, public statements attached with their timestamps, and the time from detection to first response. The case history and audit trail help a team review how the issue was handled."
+    },
+    {
+      "q": "Does Blura SAGA publish responses automatically?",
+      "a": "The workflow described here organises and records the response. It does not establish an automatic social publishing capability. Your team remains responsible for deciding what to communicate and for publishing it through its own process."
+    },
+    {
+      "q": "Can access be limited to a particular brand or market?",
+      "a": "Access is bounded by role and the brands, markets or subjects assigned to a user. Detailed permissions, source coverage, hosting and retention requirements should be reviewed for your deployment."
+    }
   ],
-
-  faqs: [
-    {
-      q: 'How early is "pre-viral"?',
-      a: 'Scoring is based on rate of acceleration rather than size, so a conversation can be flagged while it is still small. The score names the posts and accounts driving the growth, so a team can judge for itself whether the trajectory is real.',
-    },
-    {
-      q: 'How is a complaint cluster different from a mention count?',
-      a: 'A cluster carries a location, a subject and the number of distinct accounts raising it. A mention count tells you volume; a cluster tells you what is wrong and where, which is the form an operations or product team can act on.',
-    },
-    {
-      q: 'Can you tell a coordinated attack from real criticism?',
-      a: `Activity is attributed using account age, posting cadence, repeated phrasing and burst timing [${PS}: attribution thresholds], and the organic and coordinated portions are reported separately rather than combined. Both can be present in the same conversation, and treating one as the other is the common failure.`,
-    },
-    {
-      q: 'What is recorded during a crisis response?',
-      a: 'The case owner, the state, the public statements attached with their timestamps, and the time from detection to first response — written to an immutable audit trail so a post-incident review reads from the record.',
-    },
-  ],
+  "cta": {
+    "title": "Explore Blura SAGA",
+    "lit": "for your brand.",
+    "body": "Walk through the conversations, complaint patterns and response responsibilities relevant to your brand and markets."
+  }
 };

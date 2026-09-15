@@ -1,7 +1,14 @@
 # Verification harness
 
-Zero-dependency browser tests. Drives the Chromium that Playwright already
-cached, over CDP, using Node's flagged WebSocket — nothing is installed.
+Zero-dependency browser tests. Drives a local Chrome over CDP, using Node's
+flagged WebSocket — nothing is installed.
+
+It looks for the Chromium Playwright caches at
+`~/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome`. That cache is not
+guaranteed to exist — it vanished from this machine on 2026-09-10 — so
+`CHROME_PATH` overrides it:
+
+    CHROME_PATH=/usr/bin/google-chrome node --experimental-websocket tests/test-cp12.mjs
 
     node "tests/serve.mjs" "$PWD/out" 3112 &      # serve the static export
     node --experimental-websocket tests/test-cp3.mjs

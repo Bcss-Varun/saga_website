@@ -1,0 +1,467 @@
+/* ══ The bento design language ═══════════════════════════════════════════
+   Full-bleed sections, centred heads, cards of mixed span, orange as the
+   highlight rather than as body colour.
+
+   Built 2026-09-09 from an approved reference. Tokens are the locked ones in
+   CLAUDE.md; nothing here introduces a new text colour. The one addition is a
+   blue used only inside background washes, never on type and never as a state,
+   so the contrast table and the colour-plus-label rule are unaffected.
+
+   Headings here were `--strong` until 2026-09-10 and are now `--orange`, on
+   request, sitewide: the layer sets no heading colour at all and inherits the
+   ported h1/h2 rule. The eyebrow lost its accent pill in the same pass and is
+   plain tracked capitals, matching the ported `.eyebrow`. The highlighted
+   phrase inverted with them — white on an orange heading. */
+
+.layer {
+  --wash-warm: rgba(241, 91, 38, 0.30);
+  --wash-cool: rgba(46, 92, 230, 0.26);
+  --edge: rgba(255, 255, 255, 0.07);
+  --edge-lit: rgba(241, 91, 38, 0.34);
+}
+
+/* ── section ─────────────────────────────────────────────────────────────── */
+.section {
+  position: relative;
+  padding: clamp(72px, 11vh, 132px) clamp(20px, 4vw, 44px);
+  overflow: clip;
+  scroll-margin-top: 100px;
+}
+
+.tight {
+  padding-top: clamp(40px, 6vh, 72px);
+}
+
+/* A raised ground, one step up from --s1. Alternating it section by section is
+   what makes a long page read as blocks rather than as one scroll. */
+.raised {
+  background: var(--s2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.inner {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.narrow {
+  max-width: 1080px;
+}
+
+/* One step wider than the page rhythm, for a block that is a wide object
+   rather than a column of prose — four side-by-side cards at 1240 leave every
+   second line of every caption wrapping. */
+.wide {
+  max-width: 1440px;
+}
+
+/* ── washes ──────────────────────────────────────────────────────────────
+   Decorative only. Plain radial gradients on a static layer: no filter, no
+   blur, no animation. CLAUDE.md's open performance item is about compositing
+   cost, and a blurred layer is the most expensive way to draw a soft edge. */
+.wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.washWarm {
+  background: radial-gradient(920px 500px at 8% 4%, var(--wash-warm), transparent 66%);
+}
+
+.washCool {
+  background: radial-gradient(920px 500px at 92% 4%, var(--wash-cool), transparent 66%);
+}
+
+/* The hero: cool high on the right, warm low on the left, and a smaller warm
+   core in the open right-hand space so the headline is not sitting beside a
+   dead half. */
+.washSplit {
+  background:
+    radial-gradient(940px 560px at 90% 12%, var(--wash-cool), transparent 66%),
+    radial-gradient(880px 560px at 2% 96%, var(--wash-warm), transparent 64%),
+    radial-gradient(560px 360px at 74% 66%, rgba(241, 91, 38, 0.20), transparent 68%);
+}
+
+.washFoot {
+  background:
+    radial-gradient(880px 420px at 22% 112%, var(--wash-warm), transparent 66%),
+    radial-gradient(880px 420px at 80% 112%, var(--wash-cool), transparent 66%);
+}
+
+@media print {
+  .wash {
+    display: none;
+  }
+}
+
+/* ── section head ────────────────────────────────────────────────────────── */
+.head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  max-width: 46ch;
+  margin: 0 auto clamp(36px, 5vh, 56px);
+}
+
+/* 46ch is right for a three-to-six-word section heading, which is what the
+   density criteria ask for. A head that carries a full sentence needs a much
+   wider measure, or `text-wrap: balance` breaks a two-line sentence into three
+   short ragged lines in the middle of a section that is itself full width.
+   `ch` here resolves against the container's own font size, not the heading's,
+   so this is roughly 700px rather than the 78 characters it reads as. */
+/* A short accent rule under the eyebrow. Opt-in per head: the reference for
+   one section draws it, and it is not the sitewide eyebrow treatment. */
+.headRule {
+  width: 44px;
+  height: 2px;
+  margin: -8px 0 -4px;
+  border-radius: 1px;
+  background: var(--orange);
+}
+
+/* Heading white, highlight orange — the inverse of the sitewide pairing, for a
+   section whose supplied reference draws it that way. */
+.headFlip .title {
+  color: var(--strong);
+}
+
+.headFlip .lit {
+  color: var(--orange);
+}
+
+.headWide {
+  max-width: 78ch;
+}
+
+.headWide .sub {
+  max-width: 74ch;
+}
+
+.headLeft {
+  align-items: flex-start;
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 56ch;
+}
+
+/* The eyebrow. Plain tracked capitals in white — the same treatment the
+   ported sheet gives `.eyebrow`, so the bento sections and the Home sections
+   read as one site.
+
+   It was a bordered accent pill until 2026-09-10; the client asked for this
+   instead, sitewide. The class keeps the name `pill` because every page and
+   component already passes through it. */
+.pill {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  font-family: var(--fd);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--strong);
+}
+
+/* Section headings are `--orange`, which is what the ported sheet paints and
+   what the client asked for sitewide on 2026-09-10. They were `--strong` under
+   the bento layout; that decision is reversed and the note in CLAUDE.md
+   records it. No colour is set here at all — the heading inherits the ported
+   `h2` rule, so there is one place to change it. */
+.title {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.9vw, 3.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  text-wrap: balance;
+}
+
+/* The one highlighted phrase.
+
+   Headings are orange sitewide from 2026-09-10, so the highlight inverts: the
+   phrase is white against an orange heading rather than orange against a white
+   one. The device is unchanged and it is still used on the h1 and the closing
+   call to action, and nowhere else. */
+.lit {
+  color: var(--strong);
+}
+
+.sub {
+  max-width: 58ch;
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* ── bento grid ──────────────────────────────────────────────────────────── */
+/* Twelve columns, so a quarter, a third, a half and two thirds are all
+   expressible without a second grid definition. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.s3 { grid-column: span 3; }
+.s4 { grid-column: span 4; }
+.s6 { grid-column: span 6; }
+.s8 { grid-column: span 8; }
+.s12 { grid-column: span 12; }
+
+/* ── card ────────────────────────────────────────────────────────────────
+   Flat background colour with the sheen on a pseudo-element. A gradient on the
+   card itself would make every colour pairing inside it unmeasurable to the
+   contrast probe, which reads composited backgrounds off the DOM. */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 24px;
+  background: var(--s2);
+  border: 1px solid var(--edge);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent 42%);
+}
+
+.card > * {
+  position: relative;
+}
+
+.raised .card {
+  background: var(--s3);
+}
+
+/* a card that carries the accent — one per grid, never more */
+.cardLit {
+  border-color: var(--edge-lit);
+}
+
+.cardLit::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(420px 200px at 50% 0%, rgba(241, 91, 38, 0.14), transparent 70%);
+}
+
+/* the visual half of a card: a padded well the mock or diagram sits in */
+.visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 168px;
+  margin: -4px -4px 22px;
+  padding: 20px;
+  background: var(--s1);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.raised .visual {
+  background: var(--s2);
+}
+
+.cardTitle {
+  margin: 0 0 8px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 1.06rem;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  color: var(--strong);
+}
+
+.cardBody {
+  max-width: none;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.cardFoot {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+/* ── check list ──────────────────────────────────────────────────────────── */
+.checks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+}
+
+.check {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  font-size: 0.885rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.tick {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 1px solid var(--lineo);
+  border-radius: 50%;
+  background: rgba(241, 91, 38, 0.09);
+}
+
+.tick svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: var(--lift);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── alternating feature row ─────────────────────────────────────────────── */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+  padding: clamp(26px, 3.4vh, 38px);
+  background: var(--s2);
+  border: 1px solid var(--edge);
+  border-radius: 20px;
+}
+
+.raised .row {
+  background: var(--s3);
+}
+
+.row + .row {
+  margin-top: 14px;
+}
+
+.rowFlip .rowCopy {
+  order: 2;
+}
+
+.rowTitle {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+  line-height: 1.16;
+  letter-spacing: -0.024em;
+  color: var(--strong);
+  max-width: 18ch;
+}
+
+.rowBody {
+  max-width: 52ch;
+  margin: 16px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.rowVisual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+  padding: 22px;
+  background: var(--s1);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.raised .rowVisual {
+  background: var(--s2);
+}
+
+/* ── numbered steps ──────────────────────────────────────────────────────── */
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+.stepN {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 8px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.stepRule {
+  width: 22px;
+  height: 1px;
+  background: var(--lineo);
+}
+
+/* ── pill row, in-page navigation ────────────────────────────────────────── */
+.pillNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ── responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .s3, .s4 { grid-column: span 6; }
+  .s8 { grid-column: span 12; }
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+  .rowFlip .rowCopy { order: 0; }
+  .rowTitle { max-width: 22ch; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .s3, .s4, .s6, .s8, .s12 { grid-column: span 1; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .visual { min-height: 140px; }
+}

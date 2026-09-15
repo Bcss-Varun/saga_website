@@ -1,0 +1,126 @@
+/* Disclosure list — one bordered row per question, matching the card language
+   rather than sitting in a ruled table. */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  background: var(--s2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: border-color 0.16s;
+}
+
+.item[open] {
+  border-color: var(--lineo);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover .q,
+.summary:focus-visible .q {
+  color: var(--lift);
+}
+
+.q {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 0.97rem;
+  line-height: 1.4;
+  color: var(--ink);
+  transition: color 0.16s;
+}
+
+.item[open] .q {
+  color: var(--strong);
+}
+
+/* A plus that loses its upright stroke when the item opens. Drawn rather than
+   typed so it cannot be read out as the character "+" by a screen reader that
+   ignores aria-hidden on text. */
+.mark {
+  position: relative;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line2);
+  border-radius: 50%;
+}
+
+.item[open] .mark {
+  border-color: var(--lineo);
+  background: rgba(241, 91, 38, 0.1);
+}
+
+.mark::before,
+.mark::after {
+  content: '';
+  position: absolute;
+  background: var(--orange);
+}
+
+.mark::before {
+  top: 11.5px;
+  left: 6px;
+  width: 12px;
+  height: 1.5px;
+}
+
+.mark::after {
+  top: 6px;
+  left: 11.5px;
+  width: 1.5px;
+  height: 12px;
+}
+
+.item[open] .mark::after {
+  display: none;
+}
+
+.body {
+  padding: 0 56px 20px 20px;
+}
+
+.body p {
+  max-width: 76ch;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .q,
+  .item {
+    transition: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .body {
+    padding-right: 20px;
+  }
+}
+
+/* Printed, a closed disclosure is a question with no answer. */
+@media print {
+  .body {
+    display: block !important;
+  }
+}

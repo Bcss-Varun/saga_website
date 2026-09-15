@@ -1,97 +1,142 @@
-Platform
-Solutions
-Investigation
-Trust
 Request a Demo
 
 INVESTIGATION
 
-You have a handle, an image or a number. What comes back.
+Start with a clue.
+Find what connects to it.
 
-SAGA’s investigation tools resolve identifiers into records: a username into accounts across sources, an image into coordinates and a capture time, a clip into a verdict with a frame-level breakdown. Each returns what it found, what it did not, and the time it looked — because an investigator needs the gaps as much as the hits.
+SAGA turns fragmented digital information into an investigation trail — connecting people, accounts, content, locations, activity and evidence across sources.
 
-[draft — needs review] — copy on this page is drafted and not yet signed off.
+Request a Demo
+See the tools
 
-SOC-EYE
-Tools
-Working the record
-FAQ
+HOW SAGA INVESTIGATES
 
-SOC-EYE
+One signal can reveal a much bigger picture.
 
-Ask the collected material a question.
+Blura SAGA connects related digital signals, entities and activity to give investigators the context behind what they find. Instead of reviewing isolated results, investigators can follow the relationships between them.
 
-SOC-EYE queries what the deployment has already collected. It is not a search of the open internet and it does not reach beyond the records the platform holds — which is precisely why its answers can be traced.
+01
+FIND THE SIGNAL
 
-A question is asked in plain language — an account, a term, a location, a date range, or a combination — and the answer returns as the matching records with their sources, capture times and the accounts behind them. The answer cites the records it was built from, so an investigator reads evidence rather than a summary they would have to take on trust.
+Start with a digital clue such as an account, keyword, image, location or piece of content. Blura SAGA identifies relevant signals and brings the surrounding context into view.
 
-Because it runs over collected records rather than a live crawl, SOC-EYE inherits the boundaries of the deployment: it can only answer from what collection retained, within the retention window, and within the scope the asking user’s role permits. A question outside that scope returns nothing rather than reaching for it.
+02
+CONNECT THE CONTEXT
 
-Queries are audited like any other access: the user, the question, the time and the records returned [pending sign-off: read-logging]. A question asked is an event in the audit trail, not a silent lookup.
+Link related accounts, content, entities and activity to reveal relationships, coordinated behaviour and emerging patterns that may not be visible from a single signal.
 
-TOOLS
+03
+BUILD THE INTELLIGENCE
 
-What each one takes, and what it gives back.
-Deepfake detection
-TAKES
-A video or image
-RETURNS
-One of four verdicts — Real, Fake, Suspicious or Needs Review — with a confidence figure and a frame-level breakdown showing which frames drove the result.
-LIMITS
-Needs Review is a real outcome, not an error. It is returned when the evidence does not support a verdict, and it routes to a person rather than reporting a decision the model cannot stand behind.
-OSINT username enumeration
-TAKES
-A username or handle
-RETURNS
-The accounts carrying that handle across sources, with the profile details visible at the time of the check and the time the check was run.
-LIMITS
-A match on a handle is a match on a string, not proof of a shared owner. The result is a set of candidates for an investigator to weigh, and the sources searched are [pending].
-EXIF and location extraction
-TAKES
-An image file
-RETURNS
-GPS coordinates, capture timestamp, and device make and model where the metadata is present, alongside the original file preserved unmodified.
-LIMITS
-Most platforms strip EXIF on upload. An image saved from a social platform will usually carry nothing; one received as a file often still does. The tool reports metadata absent rather than inferring a location.
-Email and phone intelligence
-TAKES
-An email address or phone number
-RETURNS
-The accounts and public records associated with the identifier where such an association is visible, with the time of the check recorded.
-LIMITS
-Returns are uneven by identifier type and by region, and an empty result is a statement about visibility rather than about existence [pending sign-off: sources and coverage for this tool].
-Cross-platform search
-TAKES
-A term, an entity or a date range
-RETURNS
-Matching records from every source the deployment collects, in one result set, with each item carrying its source, its capture time and the account that posted it.
-LIMITS
-Search covers what collection retained, not the open internet. The window is the deployment’s retention period, and the sources are [pending].
+Combine the relevant findings into a structured investigative picture, with source context and evidence that can support further investigation and reporting.
 
-WORKING THE RECORD
+INVESTIGATION TOOLS
 
-One identifier, one file.
+Specialised tools for deeper digital investigation.
 
-Results from every tool attach to the same person-of-interest record. An enumerated username, a set of EXIF coordinates, a deepfake verdict and a cross-platform result are held against one entity and, where a case exists, one FIR number — so an investigator reads a file rather than reconciling five exports.
+Blura SAGA brings identity intelligence, media analysis and contextual search together to help investigators move from digital signals to actionable intelligence.
 
-Every check is recorded with the identifier submitted, the tool used, the user who ran it and the time. That record exists whether or not the check returned anything, which is what makes a negative result usable later: it shows that the question was asked, and when.
+OSINT
+Open Source Intelligence
+Deepfake
+Media Verification
+Global Search
+Advanced Intelligence Search
 
-Captured material is stored with its original metadata and its capture time. Timestamped capture with metadata alongside an immutable audit trail is what supports evidence-grade workflows — the platform records what was collected and when, and the department’s own process determines what is done with it.
+OSINT TOOLS
+
+Explore open-source intelligence.
+
+Investigate digital identities, connections and visual information across available sources.
+
+Username Intelligence
+
+Identify digital identities.
+
+Investigate usernames across available sources to discover related profiles, activity and contextual signals.
+
+CAPABILITY
+Identity & profile intelligence
+
+Email Intelligence
+
+Investigate an email address.
+
+Analyse an email identifier to uncover available digital signals, associated information and relevant investigative context.
+
+CAPABILITY
+Email-based intelligence
+
+Cross-Platform Search
+
+Follow a signal across platforms.
+
+Search for related usernames, identifiers and content across multiple platforms to uncover connections that may be missed in a single source.
+
+CAPABILITY
+Cross-platform intelligence
+
+Image Intelligence
+
+Investigate what an image reveals.
+
+Analyse images to identify available visual and contextual signals that can support identification and investigation.
+
+CAPABILITY
+Visual intelligence
+
+INVESTIGATION CONTEXT
+
+Every finding stays connected to its source.
+
+Blura SAGA keeps the signals, relationships and evidence behind an investigation together, so investigators can understand where a finding came from and how it connects to the wider case.
+
+01
+ONE INVESTIGATIVE RECORD
+
+Keep related findings together.
+
+Signals from different investigation tools can be connected to the relevant person, account, content, location or event, giving investigators one contextual view instead of disconnected results.
+
+02
+TRACE EVERY FINDING
+
+Know where every result came from.
+
+Blura SAGA preserves the source and context behind investigative findings, making it easier to review how a result was identified and follow it back to the underlying information.
+
+03
+READY FOR INVESTIGATION
+
+Turn findings into usable intelligence.
+
+Relevant findings can be organised into structured intelligence for investigation, review and reporting, while preserving the context needed to understand the finding.
 
 Deployment, audit trail and lawful basis →
 
-FAQ
+QUESTIONS
 
 Investigation questions.
-Does SOC-EYE search the internet?
-Why did EXIF extraction return nothing?
-Is a search recorded even when it finds nothing?
+
+Anything not answered here, a product specialist can take in the demonstration.
+
+Ask a question
+Does Blura SAGA AI assistance search the open internet?
 What does a Needs Review verdict mean?
+Why did EXIF extraction return nothing?
 Is a username match proof of the same person?
+Why is a result empty for one identifier and full for another?
+Do the search tools reach the open internet?
+How is captured material held?
+Is a search recorded even when it finds nothing?
 
 REQUEST A DEMONSTRATION
 
 Bring an identifier and see what comes back.
+
+A product specialist can run the tools against the kind of material your team actually works with.
+
 Request a Demo
 How the platform works
 

@@ -24,7 +24,6 @@
     --fb: 'Outfit', system-ui, sans-serif;
     --fm: 'Outfit', system-ui, sans-serif;
     --ease: cubic-bezier(.16, 1, .3, 1);
-    --frame: #EEEEF5;
   }
 
   * {
@@ -78,9 +77,9 @@
     z-index: 1
   }
 
-  /* The hero's framed-card backdrop is now built in CSS from the --hero-*
-     variables (see HeroFrame.module.css). The two JS-synced fixed divs that
-     used to do it — #heroLightBg and #heroFrameBg — are gone. */
+  /* The hero's framed-card backdrop is gone entirely — first the two JS-synced
+     fixed divs that drew it (#heroLightBg, #heroFrameBg), then the CSS
+     rebuild that replaced them. See the note above #hero. */
 
   /* ── nav ───────────────────────────────────────── */
   nav {
@@ -135,27 +134,20 @@
     height: 42px
   }
 
-  .brand-logo.logo-dark {
+  /* The lockup is dark blue and orange type with no ground of its own, so it
+     needs a light one behind it to be legible on --s1. It used to get that
+     from the hero's light gutter, and a second transparent-ground image was
+     swapped in whenever the nav sat over it. The gutter was removed on
+     2026-09-09 and the swap went with it on 2026-09-10: one image, one white
+     ground, at every scroll position and every width. */
+  .brand-logo {
+    background: #fff;
     border-radius: 10px;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0;
-    pointer-events: none
+    padding: 4px 10px
   }
 
-  nav.floating .brand-logo.logo-dark {
+  nav.floating .brand-logo {
     border-radius: 8px
-  }
-
-  nav.floating .brand-logo.logo-light {
-    opacity: 0
-  }
-
-  nav.floating .brand-logo.logo-dark {
-    opacity: 1;
-    pointer-events: auto
   }
 
   .nav-menu {
@@ -186,7 +178,7 @@
   .navlinks a {
     font-family: var(--fb);
     font-size: 14px;
-    color: var(--muted);
+    color: var(--ink);
     text-decoration: none;
     padding: 8px 13px;
     border-radius: 8px;
@@ -196,15 +188,6 @@
   .navlinks a:hover {
     color: var(--ink);
     background: var(--glass)
-  }
-
-  nav:not(.floating) .navlinks a {
-    color: #3D3D45
-  }
-
-  nav:not(.floating) .navlinks a:hover {
-    color: #000;
-    background: rgba(0, 0, 0, .05)
   }
 
   .cta {
@@ -276,10 +259,6 @@
     transition: transform .25s var(--ease), opacity .18s var(--ease)
   }
 
-  nav:not(.floating) .navtoggle span {
-    background: #3D3D45
-  }
-
   nav.menu-open .navtoggle span:nth-child(1) {
     transform: translateY(7px) rotate(45deg)
   }
@@ -290,32 +269,6 @@
 
   nav.menu-open .navtoggle span:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg)
-  }
-
-  /* whenever the hero is full-bleed black the nav has no light gutter to sit on,
-     so it wears its dark treatment from the top of the page down */
-  @media(max-width:1024px) {
-    .brand-logo.logo-light {
-      opacity: 0
-    }
-
-    .brand-logo.logo-dark {
-      opacity: 1;
-      pointer-events: auto
-    }
-
-    nav:not(.floating) .navlinks a {
-      color: var(--muted)
-    }
-
-    nav:not(.floating) .navlinks a:hover {
-      color: var(--ink);
-      background: var(--glass)
-    }
-
-    nav:not(.floating) .navtoggle span {
-      background: var(--ink)
-    }
   }
 
   @media(max-width:940px) {
@@ -350,8 +303,7 @@
       transform: none
     }
 
-    .navlinks a,
-    nav:not(.floating) .navlinks a {
+    .navlinks a {
       display: block;
       font-size: 15px;
       color: var(--ink);
@@ -359,8 +311,7 @@
       border-radius: 10px
     }
 
-    .navlinks a:hover,
-    nav:not(.floating) .navlinks a:hover {
+    .navlinks a:hover {
       color: var(--orange);
       background: var(--glass)
     }
@@ -381,11 +332,9 @@
     }
 
     .brand-logo {
-      height: 38px
-    }
-
-    .brand-logo.logo-dark {
-      border-radius: 8px
+      height: 38px;
+      border-radius: 8px;
+      padding: 3px 8px
     }
 
     .nav-menu .cta {
@@ -484,46 +433,179 @@
     font-variant-numeric: tabular-nums
   }
 
-  /* ── hero ──────────────────────────────────────── */
-  :root {
-    --p: 0;
-    --hero-top: 112px;
-    --hero-side: 200px;
-    --hero-bottom: 0px;
-    --hero-radius: 28px
-  }
+  /* ── hero ──────────────────────────────────────────────────────────────
+     The framed-card treatment is gone, removed 2026-09-09 on request. The hero
+     was a black card inset in a light gutter, and the gutter closed to full
+     bleed on scroll, driven by a `--p` scroll progress on the root element.
 
+     Both are gone: the light frame, and the scroll-driven inset that went with
+     it. The hero is full-bleed black at every width. `HeroFrame`, the
+     `--hero-top/side/bottom/radius` tokens, the `--frame` colour and the root
+     `--p` write in Nav.js were all removed with it — nothing else read any of
+     them. Do not reintroduce a scroll effect that changes the hero's margins;
+     see the defect note in CLAUDE.md on effects that resize the document. */
   #hero {
+    position: relative;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
     text-align: left;
-    padding-top: calc(56px + var(--p) * 64px);
+    margin: 0;
+    padding-top: 96px;
     padding-bottom: 70px;
-    margin: calc((1 - var(--p)) * var(--hero-top)) calc((1 - var(--p)) * var(--hero-side)) calc((1 - var(--p)) * var(--hero-bottom))
+    /* Horizontal padding moves to `.inner`, which carries the header's own
+       geometry so the headline starts on the same vertical as the logo. */
+    padding-left: 0;
+    padding-right: 0;
+    overflow: clip
   }
 
-  /* ≤1024px the framed-card treatment is dropped entirely: the light gutter reads
-     as a stray white band on a phone, so the hero goes full-bleed black instead. */
-  @media(max-width:1024px) {
-    :root {
-      --hero-top: 0px;
-      --hero-side: 0px;
-      --hero-bottom: 0px;
-      --hero-radius: 0px
-    }
+  /* ── hero background ───────────────────────────────────────────────────
+     Replaced the particle canvas on 2026-09-09. Three decorative layers.
 
+     They are three elements rather than three background layers on one, so the
+     photograph can be masked without masking the wash behind it, and so `#hero`
+     itself keeps no background at all. That last part matters: the contrast
+     probe walks up from a text node to find its background, and a gradient on
+     an ancestor makes every pairing inside it unmeasurable. The hero copy still
+     measures against flat black, which is what it is actually read against. */
+
+  /* 1 — the ground the photograph sits on, and what fills the hero either side
+         of it at widths the photograph does not reach. */
+  .heroWash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(920px 580px at 72% 46%, rgba(241, 91, 38, .20), transparent 66%),
+      radial-gradient(780px 520px at 96% 6%, rgba(46, 92, 230, .16), transparent 66%),
+      radial-gradient(680px 460px at 12% 96%, rgba(241, 91, 38, .14), transparent 64%)
+  }
+
+  /* 2 — the photograph. Fitted to the hero's height and anchored right, NOT
+         `cover`.
+
+     `cover` scales the image up until it fills both axes, so on a wide screen
+     it zooms in and throws away the composition — the globe swells, the
+     subject is cropped to a shoulder and the panel labels run off the edges.
+     The whole point of this photograph is the arrangement: a person, a globe
+     and five panels around it. Fitting it to the hero's height and letting the
+     width follow keeps that arrangement intact at every viewport, and anchoring
+     it right leaves the left of the hero for the copy.
+
+     It runs most of the height of the hero (80%, inset 7% from the top), so
+     the panels sit near the top of the frame and the laptop near the foot of
+     it — the arrangement the reference asks for. It was 72% and bottom-
+     anchored until 2026-09-09, which left a dead black band across the top
+     third and shrank the composition to an object in the corner.
+
+     Its left edge is masked out over a third of its width and its top and
+     bottom edges over a tenth of their height, so it fades into the ground
+     instead of ending on straight lines; the right meets the hero's own edge,
+     where there is nothing to blend into. Served as WebP.
+
+     The source PNG was 1596KB, which is a poor thing to put in front of a
+     visitor on a department network; the same image at WebP q84 is 131KB and
+     the difference is not visible at this scale. The original is kept at
+     `images/hero-home.png`, outside `public/`, so it stays in the repository
+     without being shipped. */
+  .heroPhoto {
+    position: absolute;
+    right: 0;
+    top: 7%;
+    height: 80%;
+    /* the source is 1461x1076; the element is the photograph's own box, not the
+       hero, so a mask on it fades the photograph's edges rather than the
+       hero's — which is what the first attempt got wrong */
+    aspect-ratio: 1461 / 1076;
+    z-index: -1;
+    pointer-events: none;
+    background: url('/images/hero-home.webp') center / cover no-repeat;
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0, #000 12%, #000 92%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 34%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 0, #000 12%, #000 92%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 34%);
+    mask-composite: intersect
+  }
+
+  /* Two scrims over the photograph.
+
+     The first is opaque across the copy column and gone by the middle of the
+     hero: the headline is then read against flat black, which is what the
+     contrast figures assume, instead of against whatever the photograph is
+     doing behind it.
+
+     The second darkens the top strip. The header is fixed and transparent
+     until it starts scrolling, so its links used to sit on near-black and now
+     sit on the brightest part of the image. That pairing is not measurable
+     from the DOM — the contrast probe reports anything over a fixed element as
+     unmeasurable — so it would not have been caught by the suite. */
+  .heroScrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(8, 8, 10, .92) 0, rgba(8, 8, 10, .62) 96px, transparent 176px),
+      linear-gradient(100deg,
+        var(--s1) 0%,
+        var(--s1) 34%,
+        rgba(8, 8, 10, .82) 44%,
+        rgba(8, 8, 10, .34) 58%,
+        transparent 72%)
+  }
+
+  /* The photograph is fitted to the hero's height, so the narrower the window
+     the more of the width it takes. Two steps down keep it beside the copy
+     rather than behind it: at 1280 it stops reaching the top, and below 1024 it
+     drops to a bottom-anchored band. */
+  @media(max-width:1280px) {
+    .heroPhoto {
+      top: 8%;
+      height: 72%
+    }
+  }
+
+  @media(max-width:1024px) {
+    .heroPhoto {
+      top: auto;
+      bottom: 0;
+      height: 62%
+    }
+  }
+
+  /* A wide photograph shrunk to a phone is a face and no context. Below this
+     the hero is the wash and the copy alone. */
+  @media(max-width:720px) {
+    .heroPhoto {
+      display: none
+    }
+  }
+
+  @media print {
+    .heroWash,
+    .heroPhoto,
+    .heroScrim {
+      display: none
+    }
+  }
+
+  @media(max-width:1024px) {
     #hero {
-      padding-top: calc(92px + var(--p) * 40px);
+      padding-top: 92px;
       padding-bottom: 56px
     }
   }
 
   @media(max-width:560px) {
     #hero {
-      padding-top: calc(84px + var(--p) * 32px);
+      padding-top: 84px;
       padding-bottom: 44px
     }
   }
@@ -531,11 +613,33 @@
   /* width:100% is load-bearing — .inner carries `margin:0 auto`, and an auto
      cross-axis margin on a flex item beats align-items:stretch, which would
      shrink-wrap the column and centre it instead of pinning it to the left edge */
+  /* The header's geometry, exactly: `max-width: 1600px` centred with
+     `clamp(18px, 3vw, 44px)` of padding inside it — the same pair the ported
+     `nav` rule uses, and the same pair `PageHero.module.css` uses. The
+     headline therefore begins on the same vertical as the logo above it, at
+     every width and on every route.
+
+     Copy this pair, not a number, if another block has to line up with the
+     header. A hand-picked measure drifts the moment either rule changes. */
   #hero .inner {
     width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 clamp(18px, 3vw, 44px);
     display: flex;
     flex-direction: column;
     align-items: flex-start
+  }
+
+  /* The header drops to a flat 14px below 560, so the hero does too. This has
+     to come *after* the rule above, not inside the earlier 560 block: same
+     specificity, so the later declaration wins whatever the media query
+     says. */
+  @media(max-width:560px) {
+    #hero .inner {
+      padding-left: 14px;
+      padding-right: 14px
+    }
   }
 
   #hero .lead {
@@ -566,14 +670,10 @@
 
   /* margin pins the rule to the middle of the FIRST line, so it stays put
      when the eyebrow wraps to two lines on narrow screens */
-  #hero .eyebrow::before {
-    content: '';
-    flex: none;
-    width: 36px;
-    height: 1px;
-    margin-top: .8em;
-    background: var(--orange)
-  }
+  /* The rule that used to lead the Home hero eyebrow was removed 2026-09-10:
+     the requested eyebrow sitewide is plain tracked capitals with nothing
+     before them. The selector is kept as a marker because CLAUDE.md's
+     ID-selector note names it. */
 
   #hero h1 span {
     display: block
@@ -3587,3 +3687,50 @@
     color: var(--strong)
   }
 
+
+  /* ── closing call to action, Home ────────────────────────────────────────
+     The same photographic backdrop `PageCta` gives every other route, so the
+     last thing before the footer is one object across the site. Home's final
+     section is the ported `.sec#final`, which is why this is here rather than
+     in a module. */
+  .ctaShot {
+    position: relative;
+    overflow: clip
+  }
+
+  .ctaShot .inner {
+    position: relative;
+    z-index: 1
+  }
+
+  .ctaPhoto {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: center bottom / cover no-repeat url('/images/cta-backdrop.webp');
+    pointer-events: none
+  }
+
+  .ctaScrim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(8, 8, 10, .92) 0, rgba(8, 8, 10, .44) 34%, rgba(8, 8, 10, .44) 66%, rgba(8, 8, 10, .9) 100%),
+      radial-gradient(80% 64% at 50% 44%, rgba(8, 8, 10, .44), transparent 72%)
+  }
+
+  /* A wide render shrunk to a phone is a smear. */
+  @media(max-width:720px) {
+    .ctaPhoto {
+      display: none
+    }
+  }
+
+  @media print {
+    .ctaPhoto,
+    .ctaScrim {
+      display: none
+    }
+  }

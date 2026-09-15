@@ -1,0 +1,135 @@
+/* /public-safety — blocks that exist only on this page. The shared vocabulary
+   is in Bento.module.css. */
+
+/* ── monitor / investigate / manage ─────────────────────────────────────── */
+.triadName {
+  max-width: none;
+  margin: 0 0 14px;
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  color: var(--orange);
+}
+
+.triadLine {
+  max-width: none;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* ── capability detail ──────────────────────────────────────────────────── */
+.detail {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.detail p {
+  max-width: none;
+  margin: 0 0 10px;
+  font-size: 0.83rem;
+  line-height: 1.65;
+  color: var(--faint);
+}
+
+.detail p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── signal-to-action strip ─────────────────────────────────────────────
+   `.flow` and `.fstep` are ported global classes and keep their look. What is
+   added here is the connector: five boxes in a row are five things, and this
+   is a sequence, so each step reads as a point on a line. */
+.flow {
+  list-style: none;
+  margin-top: 0;
+  padding: 0;
+  gap: 14px;
+}
+
+.step {
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.stepRule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.stepDot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.stepWire {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--orange), rgba(241, 91, 38, 0.15));
+}
+
+.stepLast {
+  border-color: var(--lineo);
+}
+
+/* ── scenarios ──────────────────────────────────────────────────────────── */
+.outcome {
+  max-width: none;
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-family: var(--fd);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+/* ── deployment ─────────────────────────────────────────────────────────── */
+.cardLabel {
+  max-width: none;
+  margin: 0 0 12px;
+  font-family: var(--fm);
+  font-weight: 500;
+  font-size: 10.5px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.cardBody {
+  max-width: none;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.68;
+  color: var(--muted);
+}
+
+.onward {
+  max-width: none;
+  margin: 26px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.onward a {
+  color: var(--orange);
+  border-bottom: 1px solid var(--lineo);
+  padding-bottom: 3px;
+  text-decoration: none;
+}
+
+.onward a:hover,
+.onward a:focus-visible {
+  color: var(--lift);
+}

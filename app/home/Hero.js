@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import HeroFrame from '../components/HeroFrame';
 import { useEffect, useRef, useState } from 'react';
 
 /* [copy: needs specificity rewrite] — carried across from Saga.html unchanged. */
@@ -60,8 +59,22 @@ export default function Hero() {
   }, []);
 
   return (
-    <HeroFrame>
-      <section className="sec" id="hero" data-scene="hero">
+    <section className="sec" id="hero" data-scene="none">
+      {/* The hero background. Two layers, both decorative:
+
+          `heroWash` is the warm and cool ground the photograph sits on.
+          `heroPhoto` is the photograph itself, on its own element so it can be
+          masked without masking the wash. `heroScrim` is opaque black across
+          the left third and fades out across the middle, so the headline is
+          read against flat black rather than against whatever the photograph
+          happens to be doing behind it.
+
+          A CSS background that fails to load paints nothing, so if the image
+          file is missing the hero is simply black and nothing breaks. */}
+      <div className="heroWash" aria-hidden="true" />
+      <div className="heroPhoto" aria-hidden="true" />
+      <div className="heroScrim" aria-hidden="true" />
+
       <div className="inner">
         <p className="eyebrow rv">Dealing with something you can&rsquo;t fully see?</p>
 
@@ -95,7 +108,6 @@ export default function Hero() {
           One intelligence platform. Four specialized worlds.
         </p>
       </div>
-      </section>
-    </HeroFrame>
+    </section>
   );
 }
