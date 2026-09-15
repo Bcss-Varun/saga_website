@@ -158,7 +158,6 @@ export default function PlatformPage() {
           right={C.context.right}
           globeAlt="A globe ringed with connection points, standing for one digital signal and the context held around it."
         />
-        <p className={styles.figNote}>{C.context.note}</p>
       </Section>
 
       {/* ── 7. the alert ─────────────────────────────────────────────── */}

@@ -18,8 +18,6 @@ export default function Nav() {
   const [open, setOpen] = useState(false); // Solutions dropdown
   const pathname = usePathname();
 
-  const solutions = NAV.find((n) => n.items);
-
   /* ── hide-on-scroll — ported from Saga.html frameTick ───────────
      This used to write a 0→1 scroll progress to `--p` on the root element and
      toggle `body.scrolled`, both for the hero's framed card. The frame was
@@ -162,7 +160,7 @@ export default function Nav() {
   const isCurrent = (href) => pathname === href || pathname === `${href}/`;
 
   return (
-    <nav id="nav" ref={navRef} className={menuOpen ? 'menu-open' : undefined}>
+    <nav id="nav" ref={navRef} className={`${styles.nav}${menuOpen ? ' menu-open' : ''}`}>
       <Link className="brand" href="/" aria-label="Blura SAGA home">
         {/* One lockup, on a white ground supplied by CSS. The pair of images
             that used to cross-fade here existed for the hero's light gutter,
@@ -186,6 +184,7 @@ export default function Nav() {
                   type="button"
                   ref={triggerRef}
                   className={styles.trigger}
+                  data-active={item.items.some((v) => isCurrent(v.href)) || undefined}
                   aria-expanded={open}
                   aria-controls="solutions-menu"
                   aria-haspopup="true"
@@ -235,7 +234,7 @@ export default function Nav() {
           )}
         </div>
 
-        <Link className="cta" href={CTA.href}>
+        <Link className="cta" href={CTA.href} aria-current={isCurrent(CTA.href) ? 'page' : undefined}>
           {CTA.label}
         </Link>
 

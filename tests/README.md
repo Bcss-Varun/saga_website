@@ -1,5 +1,12 @@
 # Verification harness
 
+Responsive layout regression (nine routes, ten viewport sizes):
+
+    CHROME_PATH=/usr/bin/google-chrome node --experimental-websocket tests/test-responsive.mjs
+
+Uses `http://127.0.0.1:3130` by default; override with `SAGA_TEST_URL`.
+Checks horizontal overflow, home hero height, and pinned-card content bounds.
+
 Zero-dependency browser tests. Drives a local Chrome over CDP, using Node's
 flagged WebSocket — nothing is installed.
 

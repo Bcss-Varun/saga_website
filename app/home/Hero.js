@@ -59,7 +59,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="sec" id="hero" data-scene="none">
+    <section className="sec homeHero" id="hero" data-scene="none">
       {/* The hero background. Two layers, both decorative:
 
           `heroWash` is the warm and cool ground the photograph sits on.

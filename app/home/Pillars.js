@@ -43,7 +43,7 @@ export default function Pillars() {
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
-    const narrow = () => window.matchMedia('(max-width: 980px)').matches;
+    const narrow = () => getComputedStyle(cards[0]).position !== 'sticky';
 
     const intel = stack.querySelector('#pIntel');
     const sigIn = intel ? [...intel.querySelectorAll('.i-in')] : [];

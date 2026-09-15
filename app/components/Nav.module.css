@@ -7,6 +7,38 @@
   position: relative;
 }
 
+/* Keep the current destination visible in both desktop and mobile menus. */
+:global(#nav).nav :global(.navlinks) a[aria-current='page'],
+:global(#nav) .trigger[data-active='true'] {
+  color: var(--orange);
+  background: transparent;
+  box-shadow: none;
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 7px;
+}
+
+:global(#nav) .menu a[aria-current='page'] {
+  text-decoration: none;
+}
+
+:global(#nav) .menu a[aria-current='page'] .itemName {
+  color: var(--orange);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+:global(#nav) .menu a[aria-current='page'] .itemDesc {
+  color: var(--faint);
+}
+
+:global(#nav).nav :global(.cta)[aria-current='page'] {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
 /* Matches `.navlinks a` in the global sheet so the trigger sits level
    with the real links either side of it. */
 .trigger {

@@ -274,7 +274,7 @@ export const platform = {
       { name: 'Narrative', body: 'Key themes, related conversations', icon: 'news' },
       { name: 'Event', body: 'Related events, broader situation', icon: 'calendar' },
     ],
-    note: 'Illustrative. The entity-resolution graphic is [pending sign-off].',
+    note: '',
   },
 
   /* ── 7. the alert ─────────────────────────────────────────────────────

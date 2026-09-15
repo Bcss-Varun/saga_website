@@ -33,6 +33,7 @@ export const VERTICALS = [
 ];
 
 export const NAV = [
+  { href: '/', label: 'Home' },
   { href: '/platform', label: 'Platform' },
   { label: 'Solutions', items: VERTICALS },
   { href: '/investigation', label: 'Investigation' },

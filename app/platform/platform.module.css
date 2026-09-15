@@ -330,7 +330,8 @@
   --stack-strip: 15px;
   --stack-runway: 46vh;
 
-  display: block;
+  display: grid;
+  gap: var(--stack-runway);
   max-width: 1080px;
   /* One shorthand, not `margin-inline: auto` followed by `margin: 0` — the
      shorthand resets what the longhand set, which pinned the whole list to the
@@ -353,7 +354,7 @@
      its middle — it recedes into the pile instead of just getting smaller. */
   transform-origin: 50% 0;
   transform: scale(calc(1 - 0.055 * var(--cover, 0)));
-  margin-bottom: var(--stack-runway);
+  margin: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   /* Stretch, not centre. The row height is definite, so a stretched art column
@@ -372,25 +373,15 @@
 
 /* The art changes sides down the list. `order` rather than a second rule per
    card, so the reading order stays copy-then-art at every width. */
-/* Card five is covered by nothing, so it used to pin and then have the section
-   end immediately underneath it — on screen for a moment and gone.
-
-   Its runway is `padding-bottom` on the list, not `margin-bottom` on the card.
-   A last child's bottom margin collapses out of a parent that has no padding
-   or border, so it did not extend the list at all: the card unpinned at the
-   old boundary and the runway became empty space below it. Padding cannot
-   collapse, and a sticky element is held by its parent's padding box, so this
-   is what actually keeps card five on screen. */
-/* 18vh, not more: the runway is scroll distance the card holds for, and
-   whatever is left of it after the card releases is empty ground before the
-   next section. This is enough for card five to settle and be read, and short
-   enough that the space it leaves reads as section spacing. */
-.layers {
-  padding-bottom: 18vh;
-}
-
-.layer:last-child {
-  margin-bottom: 0;
+/* Grid gaps keep spacing out of the sticky cards' margin boxes: bottom
+   margins made the first four release before card five could cover them.
+   A final in-flow track lets the last card hold at its pinned edge. Cancel
+   the usual inter-card gap here so the tail adds only 18vh of scroll. */
+.layers::after {
+  content: '';
+  height: 18vh;
+  margin-top: calc(-1 * var(--stack-runway));
+  pointer-events: none;
 }
 
 /* How far the card above has been covered, 0-1, written by LayerStack. It
@@ -1766,6 +1757,14 @@
    longer side by side — so it is released and each card takes its own height.
    The art follows the copy on every card, including the flipped ones. */
 @media (max-width: 960px) {
+  .layers {
+    gap: clamp(16px, 2vw, 24px);
+  }
+
+  .layers::after {
+    display: none;
+  }
+
   /* Below this the card is already a column of its own and there is no room
      to stack anything, so the cards go back into normal flow. */
   .layer::after {
@@ -1776,7 +1775,7 @@
     position: static;
     height: auto;
     transform: none;
-    margin-bottom: clamp(16px, 2vw, 24px);
+    margin-bottom: 0;
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
   }
